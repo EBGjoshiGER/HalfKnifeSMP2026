@@ -9,15 +9,12 @@ body {
   padding: 40px;
   font-family: Arial, sans-serif;
   color: #e0e0e0;
-
-  /* Hintergrundbild */
   background-image: url('background.png');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; /* bleibt statisch */
+  background-attachment: fixed;
 }
 
-/* Blur-Overlay für bessere Lesbarkeit */
 body::before {
   content: "";
   position: fixed;
@@ -25,16 +22,30 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(6px); /* Blur-Effekt */
-  background: rgba(0, 0, 0, 0.55); /* leichte Abdunklung */
-  z-index: -1; /* hinter dem Inhalt */
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.55);
+  z-index: -1;
 }
 
-/* Container bleibt wie bisher */
 .container {
   max-width: 800px;
   margin: 0 auto;
   text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.button {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #4fc3f7;
+  color: #000;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-top: 20px;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
 }
   </style>
 </head>

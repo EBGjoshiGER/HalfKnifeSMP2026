@@ -4,52 +4,38 @@
   <meta charset="UTF-8">
   <title>HalfKnife SMP 2026</title>
   <style>
-    body {
-      background: #0d0d0d;
-      color: #e0e0e0;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 40px;
-      text-align: center;
-    }
+body {
+  margin: 0;
+  padding: 40px;
+  font-family: Arial, sans-serif;
+  color: #e0e0e0;
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+  /* Hintergrundbild */
+  background-image: url('background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* bleibt statisch */
+}
 
-    .nav a {
-      color: #4fc3f7;
-      margin-right: 20px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+/* Blur-Overlay für bessere Lesbarkeit */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(6px); /* Blur-Effekt */
+  background: rgba(0, 0, 0, 0.55); /* leichte Abdunklung */
+  z-index: -1; /* hinter dem Inhalt */
+}
 
-    h1 {
-      color: #4fc3f7;
-      font-size: 48px;
-      margin-bottom: 10px;
-    }
-
-    h2 {
-      color: #81d4fa;
-      margin-top: 40px;
-    }
-
-    .button {
-      display: inline-block;
-      padding: 12px 20px;
-      background: #4fc3f7;
-      color: #000;
-      text-decoration: none;
-      border-radius: 6px;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-
-    .section {
-      margin-top: 40px;
-    }
+/* Container bleibt wie bisher */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
   </style>
 </head>
 <body>

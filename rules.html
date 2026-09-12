@@ -4,125 +4,104 @@
   <meta charset="UTF-8">
   <title>HalfKnife SMP 2026 – Regeln</title>
   <style>
-    body {
-      background: #0d0d0d;
-      color: #e0e0e0;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 40px;
-      text-align: center;
-    }
+/* Hintergrund + Blur */
+body {
+  margin: 0;
+  padding: 40px;
+  font-family: Arial, sans-serif;
+  color: #e0e0e0;
+  background-image: url('background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.55);
+  z-index: -1;
+}
 
-    .nav a {
-      color: #4fc3f7;
-      margin-right: 20px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+/* Container */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
 
-    h1 {
-      color: #4fc3f7;
-      font-size: 42px;
-      margin-bottom: 10px;
-    }
+/* Logo oben */
+.logo-container {
+  margin-bottom: 20px;
+}
 
-    h2 {
-      color: #81d4fa;
-      margin-top: 40px;
-      border-bottom: 1px solid #333;
-      padding-bottom: 6px;
-    }
+.logo {
+  height: 70px;
+  width: auto;
+  filter: drop-shadow(0 0 6px #000);
+}
 
-    ul {
-      list-style: none;
-      padding: 0;
-      line-height: 1.8;
-      font-size: 18px;
-    }
+/* Navigation darunter */
+.nav {
+  background: rgba(0, 0, 0, 0.55);
+  padding: 15px 25px;
+  border-radius: 10px;
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
 
-    .section {
-      margin-top: 40px;
-    }
+.nav a {
+  color: #4fc3f7;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Sections */
+.section {
+  margin-top: 40px;
+}
+
+h1 {
+  color: #4fc3f7;
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  color: #81d4fa;
+  margin-top: 40px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 6px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  line-height: 1.8;
+  font-size: 18px;
+}
   </style>
 </head>
 <body>
 
 <div class="container">
 
-  <!-- Navigation -->
+  <!-- Logo oben -->
+  <div class="logo-container">
+    <img src="logo.png" class="logo">
+  </div>
+
+  <!-- Navigation darunter -->
   <div class="nav">
-    <a href="index.html">Startseite</a>
-    <a href="mods.html">Mods</a>
-    <a href="install.html">Installation</a>
-    <a href="players.html">Spieler</a>
-    <a href="rules.html">Regeln</a>
-    <a href="discord.html">Discord</a>
-  </div>
-
-  <h1>Server‑Regeln</h1>
-  <p>Ein paar einfache Regeln, damit unser SMP entspannt und fair bleibt.</p>
-
-  <div class="section">
-    <h2>🤝 Allgemeines Miteinander</h2>
-    <ul>
-      <li>Wir kennen uns alle — also respektvoll bleiben.</li>
-      <li>Kein unnötiges Drama, kein toxisches Verhalten.</li>
-      <li>Wenn etwas nervt: kurz ansprechen, nicht hochschaukeln.</li>
-      <li>Gemeinsam spielen > gegeneinander spielen.</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>🏠 Bauen & Grundstücke</h2>
-    <ul>
-      <li>Baue nicht direkt an jemand anderes Haus ohne Absprache.</li>
-      <li>Kein mutwilliges Zerstören oder „Umbauen“ fremder Builds.</li>
-      <li>Farmen dürfen genutzt werden — aber bitte wieder auffüllen.</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>🎒 Items & Inventar</h2>
-    <ul>
-      <li>Kein Stehlen — wenn du etwas brauchst, frag kurz nach.</li>
-      <li>Gemeinschaftskisten bitte ordentlich halten.</li>
-      <li>Wenn du jemandem hilfst, droppe Items nicht einfach irgendwo.</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>⚔️ PvP & Spaßaktionen</h2>
-    <ul>
-      <li>PvP nur, wenn beide Seiten einverstanden sind.</li>
-      <li>Pranks sind erlaubt — aber nicht zerstörerisch.</li>
-      <li>Kein Spawn‑Killing, kein permanentes Belästigen.</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>🌍 Welt & Umgebung</h2>
-    <ul>
-      <li>Bitte keine riesigen Löcher direkt neben der Base.</li>
-      <li>Wenn du die Landschaft veränderst, mach sie wieder halbwegs schön.</li>
-      <li>Nether‑Tunnel und Wege bitte ordentlich markieren.</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>🔧 Technisches</h2>
-    <ul>
-      <li>Keine Lag‑Maschinen oder übertriebene Redstone‑Clock‑Spams.</li>
-      <li>Wenn etwas kaputt ist, melde es kurz im Discord.</li>
-      <li>Mods nicht eigenständig ändern — wir spielen alle dasselbe Pack.</li>
-    </ul>
-  </div>
-
-</div>
-
-</body>
-</html>
+    <a href="index.html">

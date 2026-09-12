@@ -10,13 +10,19 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 40px;
-      text-align: center; /* Texte zentrieren */
+      text-align: center;
     }
 
-    /* Container für saubere Mitte */
     .container {
       max-width: 800px;
-      margin: 0 auto; /* horizontal zentriert */
+      margin: 0 auto;
+    }
+
+    .nav a {
+      color: #4fc3f7;
+      margin-right: 20px;
+      text-decoration: none;
+      font-weight: bold;
     }
 
     h1 {
@@ -24,10 +30,12 @@
       font-size: 48px;
       margin-bottom: 10px;
     }
+
     h2 {
       color: #81d4fa;
       margin-top: 40px;
     }
+
     .button {
       display: inline-block;
       padding: 12px 20px;
@@ -38,6 +46,7 @@
       margin-top: 20px;
       font-weight: bold;
     }
+
     .section {
       margin-top: 40px;
     }
@@ -47,12 +56,20 @@
 
 <div class="container">
 
+  <!-- Navigation oben -->
+  <div class="nav">
+    <a href="index.html">Startseite</a>
+    <a href="mods.html">Mods</a>
+    <a href="install.html">Installation</a>
+    <a href="players.html">Spieler</a>
+    <a href="rules.html">Regeln</a>
+    <a href="discord.html">Discord</a>
+  </div>
+
   <h1>HalfKnife SMP 2026</h1>
   <p>Ein modded SMP mit neuen Biomen, Strukturen und allem, was Minecraft noch besser macht.</p>
 
- <a class="button" href="mods.html">Mods</a>
-  <p>Installierte Mods</p>
-
+  <a class="button" href="mods.html">Installierte Mods</a>
 
   <div class="section">
     <h2>Server‑Infos</h2>
@@ -70,8 +87,8 @@
   </div>
 
   <div class="section">
-    <h2>Discord Kanal für alles Updates</h2>
-    <a class="button" href="https://discord.gg/TK9UQVsz8b" target="_blank">Zum Kanal</a>
+    <h2>Discord</h2>
+    <a class="button" href="https://discord.gg/TK9UQVsz8b" target="_blank">Discord beitreten</a>
   </div>
 
 </div>

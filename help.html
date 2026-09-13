@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>HalfKnife SMP 2026 – Hilfe & Neuerungen</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    h1, h2, h3 {
+      color: #fbbf24;
+      margin-top: 2rem;
+    }
+    h1 {
+      font-size: 2rem;
+      border-bottom: 1px solid #1f2937;
+      padding-bottom: 0.5rem;
+    }
+    h2 {
+      font-size: 1.4rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+    }
+    p {
+      margin: 0.4rem 0 0.8rem;
+    }
+    code {
+      background: #111827;
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    pre {
+      background: #020617;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      border: 1px solid #1f2937;
+      font-size: 0.9rem;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1f2937;
+      margin: 2rem 0;
+    }
+    ul {
+      margin: 0.4rem 0 0.8rem 1.2rem;
+    }
+    .section {
+      margin-bottom: 2rem;
+    }
+    .disclaimer {
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>HalfKnife SMP 2026 – Hilfe & Neuerungen</h1>
+
+  <p>Ein kleiner Einblick in die wichtigsten Neuerungen und eine kompakte Hilfeseite für die wichtigsten Commands.</p>
+  <p class="disclaimer">
+    DISCLAIMER: Hier sind bei weitem nicht alle Mods aufgelistet – aber die wichtigsten, inklusive kurzer Erklärung, wie man sie nutzt.
+  </p>
+
+  <hr>
+
+  <div class="section">
+    <h2>VoiceChat – Gruppen</h2>
+
+    <h3>Instant Groups</h3>
+    <p>
+      Der Befehl <code>/instantgroup</code> fügt automatisch alle Spieler in der Nähe zu einer Gruppe hinzu, sofern sie noch in keiner Gruppe sind.
+      Die Standardreichweite beträgt 128 Blöcke.
+    </p>
+    <p>
+      Alternativ kannst du die Reichweite als erstes Argument angeben:
+      <code>/instantgroup 256</code>
+    </p>
+
+    <h3>Gruppenübersicht</h3>
+    <p>
+      Spieler, die dem Server beitreten, bekommen eine kurze Übersicht über alle aktiven VoiceChat-Gruppen.
+    </p>
+
+    <h3>Persistente Gruppen</h3>
+    <p>
+      Der Befehl <code>/persistentgroup</code> erstellt eine Gruppe, die nicht gelöscht wird, wenn alle Spieler sie verlassen oder der Server neu startet.
+    </p>
+
+    <pre>/persistentgroup list
+  – Listet alle persistenten Gruppen
+
+/persistentgroup remove &lt;name&gt;
+  – Löscht die Gruppe mit dem angegebenen Namen
+
+/persistentgroup remove &lt;id&gt;
+  – Löscht die Gruppe mit der angegebenen ID (nur intern)
+
+/persistentgroup add &lt;name&gt; [&lt;normal|open|isolated&gt;] [&lt;hidden&gt;] [&lt;password&gt;]
+  – Erstellt eine persistente Gruppe</pre>
+
+    <h3>Automatisches Beitreten zu Gruppen</h3>
+    <p>
+      Spieler können automatisch zu einer Gruppe hinzugefügt werden, wenn sie dem Server beitreten.
+      Diese Funktion ist nur für persistente Gruppen verfügbar.
+    </p>
+
+    <pre>/autojoingroup set &lt;gruppenname&gt; [passwort]
+  – Setzt deine Auto-Join-Gruppe
+
+/autojoingroup set &lt;id&gt; [passwort]
+  – Setzt deine Auto-Join-Gruppe (nur intern)
+
+/autojoingroup remove
+  – Entfernt deine Auto-Join-Gruppe</pre>
+
+    <h3>Globale Auto-Join-Gruppe</h3>
+    <p>
+      Alle Spieler können automatisch derselben Gruppe beitreten, wenn sie dem Server beitreten.
+      Auch diese Funktion ist nur für persistente Gruppen verfügbar.
+    </p>
+
+    <pre>/autojoingroup global set &lt;gruppenname&gt; [passwort]
+  – Setzt die globale Auto-Join-Gruppe
+
+/autojoingroup global set &lt;id&gt; [passwort]
+  – Setzt die globale Auto-Join-Gruppe (nur intern)
+
+/autojoingroup global remove
+  – Entfernt die globale Auto-Join-Gruppe
+
+/autojoingroup global force &lt;true|false&gt;
+  – Erzwingt globales Auto-Join. Wenn deaktiviert, hat die persönliche Auto-Join-Gruppe Vorrang.</pre>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <h2>Chest Locker</h2>
+
+    <h3>Grundlegende Commands</h3>
+    <p>Basisbefehl: <code>/scl</code></p>
+
+    <pre>/scl lock
+  – Sperrt die Kiste, auf die du blickst.
+
+/scl unlock
+  – Entsperrt die Kiste, auf die du blickst.
+
+/scl trust &lt;spieler&gt;
+  – Vertraut einem Spieler die Kiste an, auf die du blickst.
+
+/scl untrust &lt;spieler&gt;
+  – Entzieht einem Spieler das Vertrauen für die Kiste, auf die du blickst.
+
+/scl players
+  – Listet alle Spieler, die für die Kiste, auf die du blickst, vertrauenswürdig sind.
+
+/scl label &lt;label&gt;
+  – Vergibt ein Label für die Kiste, auf die du blickst.
+
+/scl rename &lt;label&gt;
+  – Ändert das Label der Kiste, auf die du blickst.
+
+/scl unlabel
+  – Entfernt das Label von der Kiste, auf die du blickst.
+
+/scl list
+  – Listet alle deine gesperrten Container mit Index, Typ und Koordinaten.
+
+/scl gui
+  – Öffnet ein GUI zur Verwaltung deiner gesperrten Container.
+
+/scl help
+  – Zeigt alle Befehle und deren Nutzung.</pre>
+
+    <p><strong>Hinweis:</strong> Lass dich vom Namen nicht verwirren – der Mod funktioniert auch mit Fässern und allen modded Containern, die das Inventory-Interface implementieren.</p>
+
+    <h3>Remote-Verwaltung</h3>
+    <p>
+      Jeder Container bekommt einen Index, der in <code>/scl list</code> angezeigt wird (Container 0, Container 1, …).
+      Du kannst diesen Index oder ein Label als Ziel in Befehlen nutzen, um Container remote zu verwalten – sogar dimensionsübergreifend.
+    </p>
+
+    <pre>/scl unlock 2
+/scl label storage 0
+/scl trust Spielername 2
+/scl untrust Spielername storage</pre>
+
+    <h3>Wenn eine Kiste/Fass gesperrt ist</h3>
+    <ul>
+      <li>Sie ist immun gegen Explosionen.</li>
+      <li>Sie ist immun gegen Piston-Bewegungen.</li>
+      <li>Sie ist immun gegen Hopper-Transfer.</li>
+      <li>Nicht vertrauenswürdige Spieler können sie nicht öffnen.</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <h2>Better Tridents</h2>
+
+    <p>
+      Dreizacke haben endlich ein Crafting-Rezept! Alle drei Elder Guardians in einem Ozeanmonument droppen jeweils ein neues Dreizack-Fragment.
+      Kombiniere diese drei mit ein paar Prismarinscherben – und du erhältst einen brandneuen Dreizack.
+    </p>
+    <p>
+      Nutze einige Prismarinscherben, um deinen Dreizack auf einem Amboss zu reparieren, wenn seine Haltbarkeit fast aufgebraucht ist.
+    </p>
+    <ul>
+      <li>Dreizacke kehren beim Aufheben immer in den Slot zurück, aus dem sie geworfen wurden.</li>
+      <li>Mit Loyalität verzauberte Dreizacke, die versehentlich in die Void geworfen werden, kehren zurück, statt gelöscht zu werden.</li>
+      <li>Jeglicher Loot von Mobs (Items und Erfahrung) fliegt zusammen mit einem Loyalitäts-Dreizack zu dir.</li>
+      <li>Impaling funktioniert wie in der Bedrock Edition: Jeder Mob, der mit Wasser oder Regen in Kontakt ist, erhält erhöhten Schaden – nicht nur ausgewählte Wasser-Mobs.</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <h2>Grabsteine</h2>
+
+    <ul>
+      <li>Grabsteine haben kein Zeitlimit – sie bleiben, bis ihr eure Items und Level einsammelt.</li>
+      <li>Grabsteine werden nicht gelöscht, wenn ihr auf dem Weg zum letzten Grabstein erneut sterbt.</li>
+      <li>Ihr bekommt die Hälfte eurer Level zurück, wenn ihr euren Grabstein einsammelt.</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <h2>End &amp; Nether</h2>
+
+    <p>
+      Beide Dimensionen sind komplett überarbeitet. Der Zugriff auf diese Dimensionen erfolgt zu einem späteren Zeitpunkt und ist zu Beginn gesperrt.
+    </p>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <h2>Lootr</h2>
+
+    <p>
+      Alle Dörfer, Dungeons und alle Orte, an denen Lootkisten spawnen, sind clientseitig bestückt.
+      Geht ihr als Gruppe in einen Dungeon oder plündert ein Piratenschiff? Kein Problem:
+    </p>
+    <ul>
+      <li>Jeder Spieler hat seinen eigenen Loot.</li>
+      <li>Alle können dieselben Kisten öffnen, ohne sich gegenseitig den Loot wegzunehmen.</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <h2>Deko &amp; Baumöglichkeiten</h2>
+
+    <p>
+      Dieses Jahr gibt es extrem viele neue Möglichkeiten zu bauen – probiert euch aus und entdeckt alle neuen Blöcke und Deko-Optionen!
+    </p>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <h2>Jahreszeiten</h2>
+
+    <p>
+      Auf dem Server sind Jahreszeiten aktiv. Sie laufen ganz normal im Hintergrund und machen die Welt dynamischer und lebendiger.
+    </p>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <h2>RPG-System</h2>
+
+    <p>
+      Die wohl größte Änderung dieses Jahr: Ein komplett ausgebautes und von dir überarbeitetes, ausbalanciertes Levelsystem.
+    </p>
+    <ul>
+      <li>Wir starten alle nur mit 3 Herzen.</li>
+      <li>Max-Level? Lasst euch überraschen.</li>
+      <li>Verwendet eure Skillpunkte weise.</li>
+      <li>Keine Sorge: Gegen einen kleinen Preis könnt ihr eure Punkte neu verteilen.</li>
+    </ul>
+    <p>
+      Hier gibt es noch viel mehr zu entdecken und zu erzählen – aber am besten findet ihr es einfach selbst heraus.
+    </p>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <h2>Map</h2>
+
+    <p>
+      Dieses Jahr nutzen wir ausschließlich <strong>Xaero’s World Map</strong>.
+      Ihr könnt Wegpunkte setzen und die Welt übersichtlich betrachten – auf eine Minimap wurde bewusst verzichtet.
+    </p>
+  </div>
+</body>
+</html>

@@ -28,6 +28,24 @@ body::before {
   z-index: -1;
 }
 
+/* Navigation */
+.nav {
+  background: rgba(0, 0, 0, 0.55);
+  padding: 15px 25px;
+  border-radius: 10px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 0 auto 30px auto;
+}
+
+.nav a {
+  color: #4fc3f7;
+  text-decoration: none;
+  font-weight: bold;
+}
+
 /* Container */
 .container {
   max-width: 900px;
@@ -38,26 +56,6 @@ body::before {
   padding: 30px 40px;
   border-radius: 12px;
   box-shadow: 0 0 12px rgba(79, 195, 247, 0.25);
-  text-align: left;
-}
-
-/* Navigation */
-.nav {
-  background: rgba(0, 0, 0, 0.55);
-  padding: 15px 25px;
-  border-radius: 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 30px;
-  justify-content: center;
-  width: 100%;
-}
-
-.nav a {
-  color: #4fc3f7;
-  text-decoration: none;
-  font-weight: bold;
 }
 
 /* Headings */
@@ -132,17 +130,17 @@ pre {
 </head>
 <body>
 
-<div class="container">
+<!-- Navigation (korrekt außerhalb des Containers) -->
+<div class="nav">
+  <a href="index.html">Startseite</a>
+  <a href="mods.html">Mods</a>
+  <a href="install.html">Installation</a>
+  <a href="players.html">Spieler</a>
+  <a href="rules.html">Regeln</a>
+  <a href="discord.html">Discord</a>
+</div>
 
-  <!-- Navigation -->
-  <div class="nav">
-    <a href="index.html">Startseite</a>
-    <a href="mods.html">Mods</a>
-    <a href="install.html">Installation</a>
-    <a href="players.html">Spieler</a>
-    <a href="rules.html">Regeln</a>
-    <a href="discord.html">Discord</a>
-  </div>
+<div class="container">
 
   <h1>HalfKnife SMP 2026 – Hilfe & Neuerungen</h1>
 

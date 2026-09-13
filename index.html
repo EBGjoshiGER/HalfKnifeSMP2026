@@ -97,6 +97,29 @@ h2 {
   color: #81d4fa;
   margin-top: 40px;
 }
+
+/* Countdown Block */
+#countdown-box {
+  margin-top: 35px;
+  padding: 25px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(79, 195, 247, 0.4);
+}
+
+#countdown-title {
+  font-size: 32px;
+  color: #4fc3f7;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#countdown {
+  font-size: 40px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 0 10px #4fc3f7;
+}
   </style>
 </head>
 <body>
@@ -121,6 +144,12 @@ h2 {
   <h1>HalfKnife SMP 2026</h1>
   <p>Ein modded SMP mit neuen Biomen, Strukturen und allem, was Minecraft noch besser macht.</p>
 
+  <!-- COUNTDOWN BLOCK -->
+  <div id="countdown-box">
+    <div id="countdown-title">Seasonstart am 24.10.2026 – 14:00 Uhr</div>
+    <div id="countdown">Lädt...</div>
+  </div>
+
   <a class="button" href="mods.html">Installierte Mods</a>
 
   <div class="section">
@@ -144,6 +173,32 @@ h2 {
   </div>
 
 </div>
+
+<!-- Countdown Script -->
+<script>
+  const startDate = new Date("2026-10-24T14:00:00");
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = startDate - now;
+
+    if (diff <= 0) {
+      document.getElementById("countdown").innerHTML = "Der Server ist jetzt ONLINE!";
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("countdown").innerHTML =
+      `${days} Tage • ${hours} Std • ${minutes} Min • ${seconds} Sek`;
+  }
+
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+</script>
 
 </body>
 </html>

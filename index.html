@@ -28,6 +28,26 @@ body::before {
   z-index: -1;
 }
 
+/* Fixierter Spendenbutton */
+.donate-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 999;
+}
+
+.donate-button img {
+  width: 160px;
+  height: auto;
+  filter: drop-shadow(0 0 6px #000);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.donate-button img:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
 /* Container */
 .container {
   max-width: 800px;
@@ -145,6 +165,13 @@ h2 {
   </style>
 </head>
 <body>
+
+<!-- Fixierter Spendenbutton -->
+<div class="donate-button">
+  <a href="https://www.paypal.com/ncp/payment/XWKY58K2FBHQC" target="_blank">
+    <img src="donation.png" alt="Spendenbutton">
+  </a>
+</div>
 
 <div class="container">
 

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="de">
 <head>
   <meta charset="UTF-8">
@@ -18,97 +19,97 @@ body {
 }
 
 body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: -1;
+content: "";
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.55);
+z-index: -1;
 }
 
 /* Container */
 .container {
-  max-width: 900px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-  background: rgba(0, 0, 0, 0.55);
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(79, 195, 247, 0.25);
+max-width: 900px;
+margin: 0 auto;
+position: relative;
+z-index: 1;
+background: rgba(0, 0, 0, 0.55);
+padding: 30px 40px;
+border-radius: 12px;
+box-shadow: 0 0 12px rgba(79, 195, 247, 0.25);
 }
 
 /* Headings */
 h1 {
-  color: #4fc3f7;
-  font-size: 42px;
-  margin-bottom: 10px;
-  text-align: center;
+color: #4fc3f7;
+font-size: 42px;
+margin-bottom: 10px;
+text-align: center;
 }
 
 h2 {
-  color: #81d4fa;
-  margin-top: 40px;
+color: #81d4fa;
+margin-top: 40px;
 }
 
 h3 {
-  color: #4fc3f7;
-  margin-top: 20px;
+color: #4fc3f7;
+margin-top: 20px;
 }
 
 /* Code Blocks */
 code {
-  background: #111827;
-  padding: 4px 6px;
-  border-radius: 4px;
+background: #111827;
+padding: 4px 6px;
+border-radius: 4px;
 }
 
 pre {
-  background: #020617;
-  padding: 12px 16px;
-  border-radius: 8px;
-  border: 1px solid #1f2937;
-  overflow-x: auto;
-  color: #e0e0e0;
+background: #020617;
+padding: 12px 16px;
+border-radius: 8px;
+border: 1px solid #1f2937;
+overflow-x: auto;
+color: #e0e0e0;
 }
 
 /* Sections */
 .section {
-  margin-top: 40px;
+margin-top: 40px;
 }
 
 /* Disclaimer */
 .disclaimer {
-  color: #9ca3af;
-  font-size: 0.9rem;
-  margin-bottom: 20px;
+color: #9ca3af;
+font-size: 0.9rem;
+margin-bottom: 20px;
 }
 
 /* Footer */
 .footer {
-  margin-top: 60px;
-  text-align: center;
-  opacity: 0.6;
+margin-top: 60px;
+text-align: center;
+opacity: 0.6;
 }
 
 .footer a {
-  display: inline-block;
-  padding: 8px 16px;
-  background: rgba(0, 0, 0, 0.45);
-  color: #4fc3f7;
-  text-decoration: none;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: 0.2s ease;
+display: inline-block;
+padding: 8px 16px;
+background: rgba(0, 0, 0, 0.45);
+color: #4fc3f7;
+text-decoration: none;
+border-radius: 6px;
+font-size: 14px;
+transition: 0.2s ease;
 }
 
 .footer a:hover {
-  opacity: 0.9;
-  background: rgba(0, 0, 0, 0.6);
-}
-  </style>
+opacity: 0.9;
+background: rgba(0, 0, 0, 0.6);
+} </style>
+
 </head>
 <body>
 
@@ -124,83 +125,106 @@ pre {
   <hr>
 
   <!-- VoiceChat -->
+
   <div class="section">
     <h2>VoiceChat – Gruppen</h2>
 
-    <h3>Instant Groups</h3>
-    <p>Der Befehl <code>/instantgroup</code> fügt automatisch alle Spieler in der Nähe zu einer Gruppe hinzu.</p>
-    <p>Standardreichweite: 128 Blöcke – alternativ: <code>/instantgroup 256</code></p>
+```
+<h3>Instant Groups</h3>
+<p>Der Befehl <code>/instantgroup</code> fügt automatisch alle Spieler in der Nähe zu einer Gruppe hinzu.</p>
+<p>Standardreichweite: 128 Blöcke – alternativ: <code>/instantgroup 256</code></p>
 
-    <h3>Gruppenübersicht</h3>
-    <p>Spieler erhalten beim Joinen eine Übersicht aller aktiven Gruppen.</p>
+<h3>Gruppenübersicht</h3>
+<p>Spieler erhalten beim Joinen eine Übersicht aller aktiven Gruppen.</p>
 
-    <h3>Persistente Gruppen</h3>
-    <pre>/persistentgroup list
-/persistentgroup remove &lt;name&gt;
-/persistentgroup remove &lt;id&gt;
-/persistentgroup add &lt;name&gt; [&lt;normal|open|isolated&gt;] [&lt;hidden&gt;] [&lt;password&gt;]</pre>
+<h3>Persistente Gruppen</h3>
+<pre>/persistentgroup list
+```
 
-    <h3>Auto Join</h3>
-    <pre>/autojoingroup set &lt;gruppe&gt; [passwort]
+/persistentgroup remove <name>
+/persistentgroup remove <id>
+/persistentgroup add <name> [<normal|open|isolated>] [<hidden>] [<password>]</pre>
+
+```
+<h3>Auto Join</h3>
+<pre>/autojoingroup set &lt;gruppe&gt; [passwort]
+```
+
 /autojoingroup remove
 
-/autojoingroup global set &lt;gruppe&gt;
+/autojoingroup global set <gruppe>
 /autojoingroup global remove
-/autojoingroup global force &lt;true|false&gt;</pre>
+/autojoingroup global force <true|false></pre>
+
   </div>
 
   <hr>
 
   <!-- Chest Locker -->
+
   <div class="section">
     <h2>Chest Locker</h2>
 
-    <h3>Grundbefehle</h3>
-    <pre>/scl lock
+```
+<h3>Grundbefehle</h3>
+<pre>/scl lock
+```
+
 /scl unlock
-/scl trust &lt;spieler&gt;
-/scl untrust &lt;spieler&gt;
+/scl trust <spieler>
+/scl untrust <spieler>
 /scl players
-/scl label &lt;label&gt;
-/scl rename &lt;label&gt;
+/scl label <label>
+/scl rename <label>
 /scl unlabel
 /scl list
 /scl gui
 /scl help</pre>
 
-    <h3>Remote-Verwaltung</h3>
-    <pre>/scl unlock 2
+```
+<h3>Remote-Verwaltung</h3>
+<pre>/scl unlock 2
+```
+
 /scl label storage 0
 /scl trust Spieler 2
 /scl untrust Spieler storage</pre>
 
-    <ul>
-      <li>Immun gegen Explosionen</li>
-      <li>Immun gegen Pistons</li>
-      <li>Immun gegen Hopper</li>
-      <li>Nur vertrauenswürdige Spieler können öffnen</li>
-    </ul>
+```
+<ul>
+  <li>Immun gegen Explosionen</li>
+  <li>Immun gegen Pistons</li>
+  <li>Immun gegen Hopper</li>
+  <li>Nur vertrauenswürdige Spieler können öffnen</li>
+</ul>
+```
+
   </div>
 
   <hr>
 
   <!-- Better Tridents -->
+
   <div class="section">
     <h2>Better Tridents</h2>
 
-    <p>Dreizacke haben ein Crafting-Rezept – Elder Guardians droppen Fragmente.</p>
-    <ul>
-      <li>Reparierbar mit Prismarinscherben</li>
-      <li>Kehren immer in den ursprünglichen Slot zurück</li>
-      <li>Loyalität-Dreizacke kommen aus der Void zurück</li>
-      <li>Loot fliegt mit dem Dreizack zu dir</li>
-      <li>Impaling wie Bedrock Edition</li>
-    </ul>
+```
+<p>Dreizacke haben ein Crafting-Rezept – Elder Guardians droppen Fragmente.</p>
+<ul>
+  <li>Reparierbar mit Prismarinscherben</li>
+  <li>Kehren immer in den ursprünglichen Slot zurück</li>
+  <li>Loyalität-Dreizacke kommen aus der Void zurück</li>
+  <li>Loot fliegt mit dem Dreizack zu dir</li>
+  <li>Impaling wie Bedrock Edition</li>
+</ul>
+```
+
   </div>
 
   <hr>
 
   <!-- Gravestones -->
+
   <div class="section">
     <h2>Grabsteine</h2>
     <ul>
@@ -213,6 +237,7 @@ pre {
   <hr>
 
   <!-- End & Nether -->
+
   <div class="section">
     <h2>End &amp; Nether</h2>
     <p>Beide Dimensionen sind komplett überarbeitet und zu Beginn gesperrt.</p>
@@ -221,6 +246,7 @@ pre {
   <hr>
 
   <!-- Lootr -->
+
   <div class="section">
     <h2>Lootr</h2>
     <p>Alle Lootkisten sind clientseitig – jeder Spieler erhält eigenen Loot.</p>
@@ -229,6 +255,7 @@ pre {
   <hr>
 
   <!-- Deko -->
+
   <div class="section">
     <h2>Deko &amp; Baumöglichkeiten</h2>
     <p>Viele neue Blöcke und Deko-Optionen – entdeckt alles!</p>
@@ -237,6 +264,7 @@ pre {
   <hr>
 
   <!-- Seasons -->
+
   <div class="section">
     <h2>Jahreszeiten</h2>
     <p>Aktive Jahreszeiten machen die Welt dynamischer.</p>
@@ -245,6 +273,7 @@ pre {
   <hr>
 
   <!-- RPG -->
+
   <div class="section">
     <h2>RPG-System</h2>
     <ul>
@@ -257,14 +286,156 @@ pre {
   <hr>
 
   <!-- Map -->
+
   <div class="section">
     <h2>Map</h2>
     <p>Wir nutzen ausschließlich Xaero’s World Map – keine Minimap.</p>
   </div>
 
+  <hr>
+
+  <!-- Easy Shop -->
+
+  <div class="section">
+    <h2>Easy Shop</h2>
+
+```
+<p>Mit Easy Shop kann jeder Spieler einen eigenen Shop erstellen und mit anderen Spielern handeln.</p>
+
+<h3>Shop erstellen</h3>
+<pre>/shop create</pre>
+
+<p>Erstellt einen persönlichen Shop und spawnt einen eigenen NPC mit dem Namen <code>[Spielername]'s Shop</code>.</p>
+
+<ul>
+  <li>Der NPC bewegt sich nicht</li>
+  <li>Der NPC ist unverwundbar</li>
+  <li>Pro Spieler kann nur ein Shop erstellt werden</li>
+  <li>Angebote und gelagerte Items bleiben dauerhaft erhalten</li>
+</ul>
+
+<h3>Shop schließen</h3>
+<pre>/shop close</pre>
+
+<p>Schließt den eigenen Shop und entfernt den NPC aus der Welt. Alle Angebote und gelagerten Items bleiben erhalten. Der Shop kann später jederzeit wieder geöffnet werden.</p>
+
+<h3>Shops anzeigen</h3>
+<pre>/shops</pre>
+
+<p>Öffnet eine Übersicht aller verfügbaren Shops inklusive der Anzahl ihrer aktiven Angebote.</p>
+
+<h3>Items wiederherstellen</h3>
+<pre>/shop recover</pre>
+
+<p>Falls ein Shop gelöscht wurde, können mit diesem Befehl alle darin gespeicherten Items zurückgeholt werden.</p>
+
+<ul>
+  <li>Alle Items aus den Shop-Angeboten</li>
+  <li>Alle Items aus dem Shop-Lager</li>
+  <li>Keine Items gehen durch das Löschen eines Shops verloren</li>
+</ul>
+```
+
+  </div>
+
+  <hr>
+
+  <!-- Mondphasen -->
+
+  <div class="section">
+    <h2>Mondphasen</h2>
+
+```
+<p>Bestimmte Mondphasen bringen besondere Ereignisse und verändern die Welt für eine Nacht.</p>
+
+<h3>Blood Moon</h3>
+<p>Der Himmel färbt sich rot und riesige Horden von Untoten erscheinen. Während einer Blood Moon Nacht ist die Anzahl der Untoten deutlich erhöht.</p>
+<p>Wenn der Mond besonders groß erscheint, wird die Nacht noch gefährlicher – bleibt besser drinnen!</p>
+
+<h3>Blue Moon</h3>
+<p>Eine besonders glückliche Nacht. Beim Minen besteht eine erhöhte Chance, auf verlassene Minenschächte zu stoßen.</p>
+<p>Auch beim Angeln könnt ihr mehr Glück haben und besondere Fänge machen. Ein besonders großer Mond verstärkt den Effekt.</p>
+
+<h3>Harvest Moon</h3>
+<p>Die perfekte Nacht für eure Farmen. Während einer Harvest Moon fällt eure Ernte besonders großzügig aus.</p>
+<p>Je größer der Mond erscheint, desto größer fällt auch die Ernte aus.</p>
+
+<h3>Super Moon</h3>
+<p>Heute wird es schleimig! Während einer Super Moon wird die Welt von deutlich mehr Slimes bevölkert.</p>
+```
+
+  </div>
+
+  <hr>
+
+  <!-- Backpacks -->
+
+  <div class="section">
+    <h2>Backpacks</h2>
+
+```
+<p>Backpacks bieten zusätzlichen Stauraum und können unterwegs oder auf dem Rücken verwendet werden.</p>
+
+<h3>Benutzung</h3>
+<ul>
+  <li>In der Haupthand halten und Rechtsklick drücken, um den Rucksack zu öffnen</li>
+  <li>Über den Button <code>Equip</code> im Backpack-GUI kann der Rucksack auf dem Rücken ausgerüstet werden</li>
+  <li>Ein ausgerüsteter Rucksack kann standardmäßig mit <code>B</code> geöffnet werden</li>
+  <li>Durch die Curios/Trinkets/Accessories-Kompatibilität wird der Rucksack im <code>Back</code>-Slot getragen</li>
+  <li>Backpacks können als Block in der Welt platziert werden</li>
+  <li>Platzierte Backpacks können über Hopper und Pipes automatisiert befüllt und entleert werden</li>
+  <li>Ausgerüstete Backpacks werden sichtbar auf dem Rücken des Spielers dargestellt</li>
+</ul>
+
+<h3>Rucksack-Stufen</h3>
+<p>Es gibt insgesamt fünf verschiedene Rucksack-Stufen:</p>
+
+<ul>
+  <li>Leather</li>
+  <li>Iron</li>
+  <li>Gold</li>
+  <li>Diamond</li>
+  <li>Netherite</li>
+</ul>
+
+<p>Mit jeder höheren Stufe erhält der Rucksack mehr Stauraum sowie zusätzliche Upgrade- und Werkzeugplätze.</p>
+
+<p>Das Upgrade erfolgt an einem Schmiedetisch:</p>
+
+<pre>Leather Backpack + Tier Upgrade Item
+```
+
+→ nächsthöhere Backpack-Stufe</pre>
+
+```
+<h3>Funktionale Upgrades</h3>
+<p>Backpacks können mit zahlreichen verschiedenen Upgrades erweitert werden.</p>
+
+<ul>
+  <li>Tank – Flüssigkeiten speichern</li>
+  <li>Crafting – Crafting unterwegs ermöglichen</li>
+  <li>Feeding – automatische bzw. vereinfachte Versorgung mit Nahrung</li>
+  <li>Magnet – Items automatisch aufsammeln</li>
+  <li>Pickup – zusätzliche Möglichkeiten zum Aufnehmen von Items</li>
+  <li>Void – unerwünschte Items automatisch entfernen</li>
+  <li>Furnace – Items direkt im Rucksack verarbeiten</li>
+  <li>und weitere Upgrades</li>
+</ul>
+
+<h3>Weitere Funktionen</h3>
+<ul>
+  <li>Schlafsack benutzen, ohne den Spawnpunkt zu verändern</li>
+  <li>Praktische Werkzeugplätze für schnellen Zugriff auf Tools</li>
+  <li>Hose-Item zur Verwaltung von Flüssigkeiten im Backpack</li>
+</ul>
+```
+
+  </div>
+
 </div>
 
 <!-- Footer -->
+
 <div class="footer">
   <a href="index.html">Zurück zur Startseite</a>
 </div>

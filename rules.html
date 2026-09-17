@@ -2,175 +2,1281 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>HalfKnife SMP 2026 – Regeln</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>HalfKnife SMP 2026</title>
+
   <link rel="icon" type="image/png" href="favicon-32x32.png">
+
   <style>
-/* Hintergrund + Blur */
-body {
-  margin: 0;
-  padding: 40px;
-  font-family: Arial, sans-serif;
-  color: #e0e0e0;
-  background-image: url('background.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
 
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: -1;
-}
+    /* =========================================================
+       GRUNDLAYOUT
+    ========================================================= */
 
-/* Container */
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-/* Logo oben */
-.logo-container {
-  margin-bottom: 20px;
-}
+    html {
+      scroll-behavior: smooth;
+    }
 
-.logo {
-  height: 70px;
-  width: auto;
-  filter: drop-shadow(0 0 6px #000);
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
 
-/* Navigation darunter */
-.nav {
-  background: rgba(0, 0, 0, 0.55);
-  padding: 15px 25px;
-  border-radius: 10px;
-  position: relative;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 30px;
-}
+      font-family: Arial, Helvetica, sans-serif;
+      color: #e8f7ff;
 
-.nav a {
-  color: #4fc3f7;
-  text-decoration: none;
-  font-weight: bold;
-}
+      background-image:
+        linear-gradient(
+          rgba(3, 8, 14, 0.78),
+          rgba(3, 8, 14, 0.88)
+        ),
+        url('background.png');
 
-/* Sections */
-.section {
-  margin-top: 40px;
-}
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
 
-h1 {
-  color: #4fc3f7;
-  font-size: 42px;
-  margin-bottom: 10px;
-}
+      overflow-x: hidden;
+    }
 
-h2 {
-  color: #81d4fa;
-  margin-top: 40px;
-  border-bottom: 1px solid #333;
-  padding-bottom: 6px;
-}
+    /* zusätzliche Abdunklung */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
 
-ul {
-  list-style: none;
-  padding: 0;
-  line-height: 1.8;
-  font-size: 18px;
-}
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(79, 195, 247, 0.12),
+          transparent 40%
+        );
+
+      pointer-events: none;
+      z-index: -1;
+    }
+
+
+    /* =========================================================
+       CONTAINER
+    ========================================================= */
+
+    .container {
+      width: min(1100px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+
+    /* =========================================================
+       SPENDENBUTTON
+    ========================================================= */
+
+    .donate-button {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+
+      z-index: 1000;
+
+      transition: transform 0.2s ease;
+    }
+
+    .donate-button img {
+      width: 190px;
+      height: auto;
+
+      filter:
+        drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));
+
+      transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+    .donate-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .donate-button img:hover {
+      transform: scale(1.04);
+      opacity: 0.92;
+    }
+
+
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
+    header {
+      padding-top: 45px;
+      text-align: center;
+    }
+
+    .logo-container {
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      width: min(440px, 80%);
+      height: auto;
+
+      filter:
+        drop-shadow(0 0 8px rgba(0, 0, 0, 0.9))
+        drop-shadow(0 0 25px rgba(79, 195, 247, 0.15));
+    }
+
+
+    /* =========================================================
+       NAVIGATION
+    ========================================================= */
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+
+      gap: 6px;
+
+      width: fit-content;
+      max-width: 100%;
+
+      margin: 0 auto;
+
+      padding: 8px;
+
+      background: rgba(5, 12, 19, 0.72);
+
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .nav a {
+      color: #b8d9e8;
+
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: bold;
+
+      padding: 10px 15px;
+
+      border-radius: 9px;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .nav a:hover {
+      color: #ffffff;
+      background: rgba(79, 195, 247, 0.12);
+
+      transform: translateY(-1px);
+    }
+
+    .nav a.active {
+      color: #061019;
+      background: #4fc3f7;
+
+      box-shadow:
+        0 0 18px rgba(79, 195, 247, 0.28);
+    }
+
+
+    /* =========================================================
+       HERO
+    ========================================================= */
+
+    .hero {
+      text-align: center;
+
+      padding: 75px 20px 55px;
+    }
+
+    .season-label {
+      display: inline-block;
+
+      padding: 7px 13px;
+
+      margin-bottom: 18px;
+
+      border: 1px solid rgba(79, 195, 247, 0.3);
+      border-radius: 999px;
+
+      background: rgba(79, 195, 247, 0.08);
+
+      color: #81d4fa;
+
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 0;
+
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 0.95;
+
+      color: #ffffff;
+
+      letter-spacing: -2px;
+
+      text-shadow:
+        0 0 25px rgba(79, 195, 247, 0.18);
+    }
+
+    .hero h1 span {
+      color: #4fc3f7;
+    }
+
+    .hero p {
+      max-width: 680px;
+
+      margin: 25px auto 0;
+
+      color: #b9cbd4;
+
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+
+    /* =========================================================
+       COUNTDOWN
+    ========================================================= */
+
+    .countdown-box {
+      max-width: 850px;
+
+      margin: 10px auto 0;
+
+      padding: 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(10, 25, 35, 0.86),
+          rgba(4, 12, 19, 0.86)
+        );
+
+      border: 1px solid rgba(79, 195, 247, 0.22);
+
+      border-radius: 20px;
+
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35),
+        0 0 35px rgba(79, 195, 247, 0.07);
+    }
+
+    .countdown-title {
+      color: #81d4fa;
+
+      font-size: 14px;
+      font-weight: bold;
+
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+
+      margin-bottom: 15px;
+    }
+
+    #countdown {
+      color: #ffffff;
+
+      font-size: clamp(26px, 5vw, 48px);
+      font-weight: bold;
+
+      letter-spacing: 1px;
+
+      text-shadow:
+        0 0 20px rgba(79, 195, 247, 0.35);
+    }
+
+
+    /* =========================================================
+       BUTTONS
+    ========================================================= */
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      gap: 12px;
+
+      margin-top: 25px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      min-width: 190px;
+
+      padding: 13px 22px;
+
+      border-radius: 10px;
+
+      text-decoration: none;
+
+      font-weight: bold;
+      font-size: 14px;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .button-primary {
+      background: #4fc3f7;
+      color: #041018;
+
+      box-shadow:
+        0 8px 25px rgba(79, 195, 247, 0.18);
+    }
+
+    .button-primary:hover {
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 12px 35px rgba(79, 195, 247, 0.3);
+    }
+
+    .button-secondary {
+      background: rgba(255, 255, 255, 0.06);
+
+      color: #e8f7ff;
+
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .button-secondary:hover {
+      transform: translateY(-3px);
+
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+
+    /* =========================================================
+       SECTIONS
+    ========================================================= */
+
+    .section {
+      margin-top: 90px;
+    }
+
+    .section-heading {
+      text-align: center;
+
+      margin-bottom: 35px;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 10px;
+
+      color: #ffffff;
+
+      font-size: 32px;
+    }
+
+    .section-heading p {
+      margin: 0;
+
+      color: #8fa8b5;
+
+      font-size: 15px;
+    }
+
+
+    /* =========================================================
+       INFO CARDS
+    ========================================================= */
+
+    .info-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 14px;
+    }
+
+    .info-card {
+      padding: 24px;
+
+      background: rgba(7, 16, 24, 0.72);
+
+      border: 1px solid rgba(255, 255, 255, 0.07);
+
+      border-radius: 16px;
+
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-4px);
+
+      border-color: rgba(79, 195, 247, 0.25);
+
+      background: rgba(9, 21, 30, 0.82);
+    }
+
+    .info-icon {
+      font-size: 25px;
+
+      margin-bottom: 14px;
+    }
+
+    .info-card .label {
+      color: #7f9aa8;
+
+      font-size: 12px;
+      font-weight: bold;
+
+      text-transform: uppercase;
+      letter-spacing: 1px;
+
+      margin-bottom: 6px;
+    }
+
+    .info-card .value {
+      color: #ffffff;
+
+      font-size: 16px;
+      font-weight: bold;
+
+      word-break: break-word;
+    }
+
+
+    /* =========================================================
+       KOPIEREN
+    ========================================================= */
+
+    .server-address {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .copy-button {
+      border: none;
+
+      padding: 5px 8px;
+
+      border-radius: 6px;
+
+      background: rgba(79, 195, 247, 0.12);
+
+      color: #81d4fa;
+
+      cursor: pointer;
+
+      transition: 0.2s ease;
+    }
+
+    .copy-button:hover {
+      background: rgba(79, 195, 247, 0.22);
+    }
+
+
+    /* =========================================================
+       FEATURES
+    ========================================================= */
+
+    .features {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 18px;
+    }
+
+    .feature {
+      padding: 32px 28px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(10, 22, 31, 0.85),
+          rgba(4, 12, 18, 0.8)
+        );
+
+      border: 1px solid rgba(255, 255, 255, 0.07);
+
+      border-radius: 18px;
+
+      transition:
+        transform 0.25s ease,
+        border-color 0.25s ease;
+    }
+
+    .feature:hover {
+      transform: translateY(-6px);
+
+      border-color: rgba(79, 195, 247, 0.25);
+    }
+
+    .feature-icon {
+      font-size: 38px;
+
+      margin-bottom: 18px;
+    }
+
+    .feature h3 {
+      margin: 0 0 10px;
+
+      color: #ffffff;
+
+      font-size: 21px;
+    }
+
+    .feature p {
+      margin: 0;
+
+      color: #91a7b2;
+
+      line-height: 1.65;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       VANILLA+ BOX
+    ========================================================= */
+
+    .vanilla-box {
+      padding: 35px;
+
+      text-align: center;
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(79, 195, 247, 0.08),
+          rgba(5, 13, 20, 0.85)
+        );
+
+      border: 1px solid rgba(79, 195, 247, 0.15);
+
+      border-radius: 20px;
+    }
+
+    .vanilla-box h2 {
+      margin-top: 0;
+
+      color: #ffffff;
+    }
+
+    .vanilla-box p {
+      max-width: 700px;
+
+      margin: 0 auto;
+
+      color: #9eb2bc;
+
+      line-height: 1.7;
+    }
+
+    .vanilla-bar {
+      max-width: 700px;
+
+      height: 7px;
+
+      margin: 28px auto 12px;
+
+      border-radius: 999px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #607d8b 0%,
+          #4fc3f7 50%,
+          #607d8b 100%
+        );
+
+      box-shadow:
+        0 0 15px rgba(79, 195, 247, 0.2);
+    }
+
+    .vanilla-labels {
+      display: flex;
+      justify-content: space-between;
+
+      max-width: 700px;
+
+      margin: 0 auto;
+
+      color: #78909c;
+
+      font-size: 12px;
+    }
+
+
+    /* =========================================================
+       DISCORD
+    ========================================================= */
+
+    .discord {
+      text-align: center;
+
+      padding: 55px 25px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(79, 195, 247, 0.09),
+          rgba(5, 14, 21, 0.85)
+        );
+
+      border: 1px solid rgba(79, 195, 247, 0.14);
+
+      border-radius: 22px;
+    }
+
+    .discord h2 {
+      margin-top: 0;
+
+      color: #ffffff;
+
+      font-size: 32px;
+    }
+
+    .discord p {
+      max-width: 600px;
+
+      margin: 0 auto 25px;
+
+      color: #9eb2bc;
+
+      line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+
+    footer {
+      margin-top: 100px;
+
+      padding: 35px 20px 25px;
+
+      text-align: center;
+
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+      color: #607681;
+
+      font-size: 13px;
+    }
+
+    .footer-links {
+      margin-bottom: 18px;
+    }
+
+    .footer-links a {
+      color: #81d4fa;
+
+      text-decoration: none;
+
+      margin: 0 8px;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .disclaimer {
+      max-width: 700px;
+
+      margin: 0 auto;
+
+      opacity: 0.6;
+
+      line-height: 1.5;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 850px) {
+
+      .info-grid {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .donate-button img {
+        width: 145px;
+      }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+      body {
+        background-attachment: scroll;
+      }
+
+      .container {
+        width: min(100% - 24px, 1100px);
+      }
+
+      header {
+        padding-top: 30px;
+      }
+
+      .donate-button {
+        top: 10px;
+        left: 10px;
+      }
+
+      .donate-button img {
+        width: 115px;
+      }
+
+      .nav {
+        width: 100%;
+      }
+
+      .nav a {
+        padding: 9px 10px;
+
+        font-size: 12px;
+      }
+
+      .hero {
+        padding-top: 55px;
+      }
+
+      .hero p {
+        font-size: 15px;
+      }
+
+      .countdown-box {
+        padding: 24px 15px;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        margin-top: 65px;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .vanilla-box {
+        padding: 28px 20px;
+      }
+
+    }
+
   </style>
 </head>
+
+
 <body>
 
-<div class="container">
 
-  <!-- Logo oben -->
-  <div class="logo-container">
-    <img src="logo.png" class="logo">
+  <!-- =======================================================
+       SPENDENBUTTON
+  ======================================================== -->
+
+  <div class="donate-button">
+    <a
+      href="https://www.paypal.com/ncp/payment/XWKY58K2FBHQC"
+      target="_blank"
+      rel="noopener"
+    >
+      <img
+        src="donation.png"
+        alt="HalfKnife SMP unterstützen"
+      >
+    </a>
   </div>
 
-  <!-- Navigation darunter -->
-  <div class="nav">
-    <a href="index.html">Startseite</a>
-    <a href="mods.html">Mods</a>
-    <a href="install.html">Installation</a>
-    <a href="players.html">Spieler</a>
-    <a href="rules.html">Regeln</a>
-    <a href="discord.html">Discord</a>
+
+  <div class="container">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header>
+
+      <div class="logo-container">
+        <img
+          src="logo.png"
+          class="logo"
+          alt="HalfKnife SMP 2026"
+        >
+      </div>
+
+
+      <nav class="nav">
+
+        <a href="index.html" >
+          Startseite
+        </a>
+
+        <a href="mods.html">
+          Mods
+        </a>
+
+        <a href="install.html">
+          Installation
+        </a>
+
+        <a href="players.html">
+          Spieler
+        </a>
+
+        <a href="rules.html" class="active">
+          Regeln
+        </a>
+
+        <a href="discord.html">
+          Discord
+        </a>
+
+      </nav>
+
+    </header>
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+<main>
+
+  <section class="hero">
+
+    <div class="season-label">
+      📜 Regeln
+    </div>
+
+    <h1>
+      Wenige Regeln. <span>Viel Freiheit.</span>
+    </h1>
+
+    <p>
+      HalfKnife SMP soll vor allem Spaß machen.
+      Die Regeln dienen dazu, die Community zu schützen
+      und ein faires Miteinander zu ermöglichen.
+    </p>
+
+  </section>
+
+
+  <section class="section">
+
+    <div class="info-grid">
+
+      <div class="info-card">
+
+        <div class="info-icon">🤝</div>
+
+        <div class="label">
+          Respekt
+        </div>
+
+        <div class="value">
+          Miteinander statt gegeneinander
+        </div>
+
+      </div>
+
+
+      <div class="info-card">
+
+        <div class="info-icon">⚖️</div>
+
+        <div class="label">
+          Fairness
+        </div>
+
+        <div class="value">
+          Gleiche Regeln für alle
+        </div>
+
+      </div>
+
+
+      <div class="info-card">
+
+        <div class="info-icon">🏠</div>
+
+        <div class="label">
+          Eigentum
+        </div>
+
+        <div class="value">
+          Fremde Builds respektieren
+        </div>
+
+      </div>
+
+
+      <div class="info-card">
+
+        <div class="info-icon">🎉</div>
+
+        <div class="label">
+          Spielspaß
+        </div>
+
+        <div class="value">
+          Gemeinsam die Season genießen
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="section">
+
+    <div class="vanilla-box">
+
+      <h2>
+        ❤️ Das Wichtigste
+      </h2>
+
+      <p>
+        Nutze gesunden Menschenverstand.
+        Wenn du etwas selbst unfair finden würdest,
+        dann lasse es auch bei anderen Spielern.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <section class="section">
+
+    <div class="section-heading">
+
+      <h2>
+        Die Regeln
+      </h2>
+
+      <p>
+        Kurz, einfach und verständlich.
+      </p>
+
+    </div>
+
+    <div class="features">
+
+      <div class="feature">
+
+        <h3>
+          🤝 Allgemeines Miteinander
+        </h3>
+
+        <p>
+          • Respektvoll bleiben<br>
+          • Kein unnötiges Drama<br>
+          • Probleme direkt ansprechen<br>
+          • Gemeinsam spielen statt gegeneinander
+        </p>
+
+      </div>
+
+
+      <div class="feature">
+
+        <h3>
+          🏠 Bauen & Grundstücke
+        </h3>
+
+        <p>
+          • Nicht direkt an fremde Builds bauen<br>
+          • Keine fremden Gebäude beschädigen<br>
+          • Farmen nach Nutzung wieder auffüllen
+        </p>
+
+      </div>
+
+
+      <div class="feature">
+
+        <h3>
+          🎒 Items & Inventar
+        </h3>
+
+        <p>
+          • Kein Stehlen<br>
+          • Gemeinschaftskisten ordentlich halten<br>
+          • Vor dem Nehmen lieber kurz fragen
+        </p>
+
+      </div>
+
+
+      <div class="feature">
+
+        <h3>
+          ⚔️ PvP & Pranks
+        </h3>
+
+        <p>
+          • PvP nur mit Zustimmung<br>
+          • Harmlose Pranks sind erlaubt<br>
+          • Kein Griefing oder permanentes Belästigen
+        </p>
+
+      </div>
+
+
+      <div class="feature">
+
+        <h3>
+          🌍 Welt & Umgebung
+        </h3>
+
+        <p>
+          • Landschaft ordentlich hinterlassen<br>
+          • Wege und Tunnel markieren<br>
+          • Großprojekte sauber planen
+        </p>
+
+      </div>
+
+
+      <div class="feature">
+
+        <h3>
+          🔧 Technik
+        </h3>
+
+        <p>
+          • Keine Lag-Maschinen<br>
+          • Keine Redstone-Spam-Anlagen<br>
+          • Probleme im Discord melden
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="section">
+
+    <div class="discord">
+
+      <h2>
+        ❓ Fragen zu den Regeln?
+      </h2>
+
+      <p>
+        Falls etwas unklar ist oder es zu einem Konflikt kommt,
+        melde dich einfach auf Discord.
+        Fast alles lässt sich durch ein kurzes Gespräch lösen.
+      </p>
+
+      <a
+        class="button button-primary"
+        href="https://discord.gg/TK9UQVsz8b"
+        target="_blank"
+        rel="noopener"
+      >
+        Discord öffnen
+      </a>
+
+    </div>
+
+  </section>
+
+</main>
+
   </div>
 
-  <h1>Server‑Regeln</h1>
-  <p>Ein paar einfache Regeln, damit unser SMP entspannt und fair bleibt.</p>
 
-  <div class="section">
-    <h2>🤝 Allgemeines Miteinander</h2>
-    <ul>
-      <li>Wir kennen uns alle — also respektvoll bleiben.</li>
-      <li>Kein unnötiges Drama, kein toxisches Verhalten.</li>
-      <li>Wenn etwas nervt: kurz ansprechen, nicht hochschaukeln.</li>
-      <li>Gemeinsam spielen > gegeneinander spielen.</li>
-    </ul>
-  </div>
+  <!-- =======================================================
+       FOOTER
+  ======================================================== -->
 
-  <div class="section">
-    <h2>🏠 Bauen & Grundstücke</h2>
-    <ul>
-      <li>Baue nicht direkt an jemand anderes Haus ohne Absprache.</li>
-      <li>Kein mutwilliges Zerstören oder „Umbauen“ fremder Builds.</li>
-      <li>Farmen dürfen genutzt werden — aber bitte wieder auffüllen.</li>
-    </ul>
-  </div>
+  <footer>
 
-  <div class="section">
-    <h2>🎒 Items & Inventar</h2>
-    <ul>
-      <li>Kein Stehlen — wenn du etwas brauchst, frag kurz nach.</li>
-      <li>Gemeinschaftskisten bitte ordentlich halten.</li>
-      <li>Wenn du jemandem hilfst, droppe Items nicht einfach irgendwo.</li>
-    </ul>
-  </div>
+    <div class="footer-links">
 
-  <div class="section">
-    <h2>⚔️ PvP & Spaßaktionen</h2>
-    <ul>
-      <li>PvP nur, wenn beide Seiten einverstanden sind.</li>
-      <li>Pranks sind erlaubt — aber nicht zerstörerisch.</li>
-      <li>Kein Spawn‑Killing, kein permanentes Belästigen.</li>
-    </ul>
-  </div>
+      <a href="help.html">
+        Hilfe & Neuerungen
+      </a>
 
-  <div class="section">
-    <h2>🌍 Welt & Umgebung</h2>
-    <ul>
-      <li>Bitte keine riesigen Löcher direkt neben der Base.</li>
-      <li>Wenn du die Landschaft veränderst, mach sie wieder halbwegs schön.</li>
-      <li>Nether‑Tunnel und Wege bitte ordentlich markieren.</li>
-    </ul>
-  </div>
+      ·
 
-  <div class="section">
-    <h2>🔧 Technisches</h2>
-    <ul>
-      <li>Keine Lag‑Maschinen oder übertriebene Redstone‑Clock‑Spams.</li>
-      <li>Wenn etwas kaputt ist, melde es kurz im Discord.</li>
-      <li>Mods nicht eigenständig ändern — wir spielen alle dasselbe Pack.</li>
-    </ul>
-  </div>
+      <a href="rules.html">
+        Regeln
+      </a>
 
-</div>
+      ·
+
+      <a href="discord.html">
+        Discord
+      </a>
+
+    </div>
+
+
+    <div class="disclaimer">
+
+      HalfKnife SMP 2026 ·
+      Hinweis: Teile dieser Website (Grafiken, Texte und Layout)
+      wurden mit Unterstützung von KI erstellt.
+
+    </div>
+
+  </footer>
+
+
+  <!-- =======================================================
+       JAVASCRIPT
+  ======================================================== -->
+
+  <script>
+
+    /* =======================================================
+       COUNTDOWN
+    ======================================================== */
+
+    const startDate =
+      new Date("2026-10-24T14:00:00+02:00");
+
+
+    function updateCountdown() {
+
+      const now = new Date();
+
+      const diff =
+        startDate.getTime() - now.getTime();
+
+
+      const countdown =
+        document.getElementById("countdown");
+
+
+      if (diff <= 0) {
+
+        countdown.innerHTML =
+          "🟢 Der Server ist jetzt ONLINE!";
+
+        return;
+
+      }
+
+
+      const days =
+        Math.floor(
+          diff / (1000 * 60 * 60 * 24)
+        );
+
+
+      const hours =
+        Math.floor(
+          (diff / (1000 * 60 * 60)) % 24
+        );
+
+
+      const minutes =
+        Math.floor(
+          (diff / (1000 * 60)) % 60
+        );
+
+
+      const seconds =
+        Math.floor(
+          (diff / 1000) % 60
+        );
+
+
+      countdown.innerHTML =
+        `${days} Tage · ${hours} Std · ${minutes} Min · ${seconds} Sek`;
+
+    }
+
+
+    updateCountdown();
+
+    setInterval(updateCountdown, 1000);
+
+
+    /* =======================================================
+       SERVER-IP KOPIEREN
+    ======================================================== */
+
+    function copyIP() {
+
+      const ip =
+        document.getElementById("server-ip").innerText;
+
+
+      navigator.clipboard.writeText(ip);
+
+
+      const button =
+        document.querySelector(".copy-button");
+
+
+      button.innerHTML = "✓";
+
+
+      setTimeout(() => {
+
+        button.innerHTML = "📋";
+
+      }, 1500);
+
+    }
+
+  </script>
+
 
 </body>
 </html>

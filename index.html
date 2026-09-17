@@ -809,54 +809,6 @@
 
     }
 
-.help-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-}
-
-.help-card {
-  padding: 28px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(10, 22, 31, 0.85),
-      rgba(4, 12, 18, 0.8)
-    );
-
-  border: 1px solid rgba(255,255,255,0.07);
-
-  border-radius: 18px;
-}
-
-.help-card h3 {
-  margin-top: 0;
-  color: #ffffff;
-}
-
-.help-card code {
-  display: block;
-
-  margin: 8px 0;
-
-  padding: 10px 12px;
-
-  border-radius: 8px;
-
-  background: rgba(255,255,255,0.04);
-
-  color: #81d4fa;
-}
-
-@media (max-width: 850px) {
-
-  .help-grid {
-    grid-template-columns: 1fr;
-  }
-
-}
-
   </style>
 </head>
 
@@ -935,583 +887,319 @@
          HERO
     ====================================================== -->
 
-<main>
+    <main>
 
-  <section class="hero">
+      <section class="hero">
 
-    <div class="season-label">
-      📚 Hilfe & Neuerungen
-    </div>
-
-    <h1>
-      Alles Wichtige zum <span>Modpack.</span>
-    </h1>
-
-    <p>
-      Die wichtigsten Neuerungen, Funktionen
-      und Befehle von HalfKnife SMP 2026
-      kompakt erklärt.
-    </p>
-
-  </section>
-
-
-  <section class="section">
-
-    <div class="info-grid">
-
-      <div class="info-card">
-
-        <div class="info-icon">🎙️</div>
-
-        <div class="label">
-          Voice Chat
+        <div class="season-label">
+          ✦ Season 2026
         </div>
 
-        <div class="value">
-          Gruppen & Kommunikation
+        <h1>
+          HALFKNIFE <span>SMP</span>
+        </h1>
+
+        <p>
+          Eine gemeinsame Minecraft-Welt, jedes Jahr neu.
+          Vanilla-Feeling trifft auf ausgewählte Mods,
+          neue Strukturen, neue Abenteuer und unsere Community.
+        </p>
+
+      </section>
+
+
+      <!-- ===================================================
+           COUNTDOWN
+      ==================================================== -->
+
+      <section class="countdown-box">
+
+        <div class="countdown-title">
+          Seasonstart · 24. Oktober 2026 · 14:00 Uhr
         </div>
 
-      </div>
-
-      <div class="info-card">
-
-        <div class="info-icon">🔒</div>
-
-        <div class="label">
-          Chest Locker
+        <div id="countdown">
+          Lädt...
         </div>
 
-        <div class="value">
-          Container schützen
+      </section>
+
+
+      <!-- ===================================================
+           BUTTONS
+      ==================================================== -->
+
+      <div class="button-row">
+
+        <a
+          class="button button-primary"
+          href="https://modrinth.com/modpack/halfknifesmp2026"
+        >
+          🧩 Modpack ansehen
+        </a>
+
+        <a
+          class="button button-secondary"
+          href="install.html"
+        >
+          ⚙️ Installation
+        </a>
+
+      </div>
+
+
+      <!-- ===================================================
+           SERVER INFOS
+      ==================================================== -->
+
+      <section class="section">
+
+        <div class="section-heading">
+
+          <h2>Server-Infos</h2>
+
+          <p>
+            Alles, was du zum Beitreten wissen musst.
+          </p>
+
         </div>
 
-      </div>
 
-      <div class="info-card">
+        <div class="info-grid">
 
-        <div class="info-icon">🎒</div>
 
-        <div class="label">
-          Backpacks
+          <div class="info-card">
+
+            <div class="info-icon">🌐</div>
+
+            <div class="label">
+              Serveradresse
+            </div>
+
+            <div class="value server-address">
+
+              <span id="server-ip">
+                halfknife2026.serverminer.com
+              </span>
+
+              <button
+                class="copy-button"
+                onclick="copyIP()"
+                title="Serveradresse kopieren"
+              >
+                📋
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <div class="info-icon">⛏️</div>
+
+            <div class="label">
+              Minecraft
+            </div>
+
+            <div class="value">
+              Fabric 1.26.2
+            </div>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <div class="info-icon">🎙️</div>
+
+            <div class="label">
+              Voice Chat
+            </div>
+
+            <div class="value">
+              🟢 Aktiv
+            </div>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <div class="info-icon">🔒</div>
+
+            <div class="label">
+              Whitelist
+            </div>
+
+            <div class="value">
+              Aktiv
+            </div>
+
+          </div>
+
+
         </div>
 
-        <div class="value">
-          Mobiler Stauraum
+      </section>
+
+
+      <!-- ===================================================
+           WAS DICH ERWARTET
+      ==================================================== -->
+
+      <section class="section">
+
+        <div class="section-heading">
+
+          <h2>Was dich erwartet</h2>
+
+          <p>
+            Mehr Minecraft, ohne Minecraft aus den Augen zu verlieren.
+          </p>
+
         </div>
 
-      </div>
 
-      <div class="info-card">
+        <div class="features">
 
-        <div class="info-icon">🛒</div>
 
-        <div class="label">
-          Easy Shop
+          <div class="feature">
+
+            <div class="feature-icon">
+              🌍
+            </div>
+
+            <h3>
+              Eine neue Welt
+            </h3>
+
+            <p>
+              Erkunde eine abwechslungsreichere Welt mit
+              neuen Strukturen, Dörfern und Landschaften.
+              Dabei bleibt der Stil bewusst nah an Vanilla Minecraft.
+            </p>
+
+          </div>
+
+
+          <div class="feature">
+
+            <div class="feature-icon">
+              ⚔️
+            </div>
+
+            <h3>
+              Gemeinsam spielen
+            </h3>
+
+            <p>
+              Ob riesiges Bauprojekt, gemeinsames Abenteuer,
+              spontanes Chaos oder geplantes Event –
+              HalfKnife SMP lebt von den Spielern.
+            </p>
+
+          </div>
+
+
+          <div class="feature">
+
+            <div class="feature-icon">
+              🧩
+            </div>
+
+            <h3>
+              Vanilla+
+            </h3>
+
+            <p>
+              Ausgewählte Mods erweitern Minecraft um
+              neue Möglichkeiten, Komfort und Atmosphäre,
+              ohne das Grundgefühl des Spiels komplett zu verändern.
+            </p>
+
+          </div>
+
+
         </div>
 
-        <div class="value">
-          Spielerhandel
+      </section>
+
+
+      <!-- ===================================================
+           VANILLA+
+      ==================================================== -->
+
+      <section class="section">
+
+        <div class="vanilla-box">
+
+          <h2>
+            Unser Modpack: Vanilla+
+          </h2>
+
+          <p>
+            HalfKnife SMP soll sich weiterhin wie Minecraft anfühlen.
+            Die Mods sollen die Welt erweitern, nicht das Spiel ersetzen.
+          </p>
+
+
+          <div class="vanilla-bar"></div>
+
+          <div class="vanilla-labels">
+
+            <span>
+              VANILLA
+            </span>
+
+            <span>
+              HALFKNIFE SMP
+            </span>
+
+            <span>
+              HEAVILY MODDED
+            </span>
+
+          </div>
+
         </div>
 
-      </div>
-
-    </div>
-
-  </section>
+      </section>
 
 
-  <section class="section">
+      <!-- ===================================================
+           DISCORD
+      ==================================================== -->
 
-    <div class="section-heading">
+      <section class="section">
 
-      <h2>
-        Die größten Neuerungen
-      </h2>
+        <div class="discord">
 
-      <p>
-        Diese Features werden die neue Season prägen.
-      </p>
+          <h2>
+            🗨️ Teil der Community werden
+          </h2>
 
-    </div>
+          <p>
+            Alle wichtigen Informationen, Ankündigungen,
+            Absprachen und der Voice-Chat laufen über unseren Discord.
+          </p>
 
-    <div class="features">
+          <a
+            class="button button-primary"
+            href="https://discord.gg/TK9UQVsz8b"
+            target="_blank"
+            rel="noopener"
+          >
+            Discord beitreten
+          </a>
 
-      <div class="feature">
-
-        <div class="feature-icon">
-          🎒
         </div>
 
-        <h3>
-          Backpacks
-        </h3>
+      </section>
 
-        <p>
-          Zusätzlicher Stauraum,
-          zahlreiche Upgrades
-          und sogar ein tragbarer Crafting-Bereich.
-        </p>
 
-      </div>
-
-      <div class="feature">
-
-        <div class="feature-icon">
-          🌕
-        </div>
-
-        <h3>
-          Mondphasen
-        </h3>
-
-        <p>
-          Blood Moon, Harvest Moon,
-          Blue Moon und weitere besondere Nächte
-          verändern die Welt.
-        </p>
-
-      </div>
-
-      <div class="feature">
-
-        <div class="feature-icon">
-          ⚔️
-        </div>
-
-        <h3>
-          RPG-System
-        </h3>
-
-        <p>
-          Skillpunkte, Attribute
-          und ein eigener Charakterfortschritt
-          begleiten dich durch die Season.
-        </p>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section class="section">
-
-    <div class="section-heading">
-
-      <h2>
-        Voice Chat
-      </h2>
-
-      <p>
-        Kommunikation direkt im Spiel.
-      </p>
-
-    </div>
-
-    <div class="features">
-
-      <div class="feature">
-
-        <h3>
-          🎙️ Instant Groups
-        </h3>
-
-        <p>
-          Fügt automatisch alle Spieler
-          in deiner Nähe einer Gruppe hinzu.
-        </p>
-
-        <p>
-          <code>/instantgroup</code>
-        </p>
-
-      </div>
-
-      <div class="feature">
-
-        <h3>
-          🔄 Auto Join
-        </h3>
-
-        <p>
-          Automatischer Beitritt
-          zu einer festgelegten Gruppe.
-        </p>
-
-        <p>
-          <code>/autojoingroup set &lt;gruppe&gt;</code>
-        </p>
-
-      </div>
-
-      <div class="feature">
-
-        <h3>
-          👥 Permanente Gruppen
-        </h3>
-
-        <p>
-          Dauerhafte Gruppen
-          für Teams und Projekte.
-        </p>
-
-        <p>
-          <code>/persistentgroup list</code>
-        </p>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section class="section">
-
-    <div class="section-heading">
-
-      <h2>
-        Weitere Features
-      </h2>
-
-      <p>
-        Die wichtigsten Mods kurz erklärt.
-      </p>
-
-    </div>
-
-    <div class="features">
-
-      <div class="feature">
-
-        <h3>
-          🔒 Chest Locker
-        </h3>
-
-        <p>
-          Schütze Kisten, Fässer und Container
-          vor fremdem Zugriff.
-        </p>
-
-      </div>
-
-      <div class="feature">
-
-        <h3>
-          ⚡ Better Tridents
-        </h3>
-
-        <p>
-          Überarbeitete Dreizacke,
-          neue Reparaturmöglichkeiten
-          und zusätzliche Funktionen.
-        </p>
-
-      </div>
-
-      <div class="feature">
-
-        <h3>
-          ⚰️ Grabsteine
-        </h3>
-
-        <p>
-          Verlorene Items verschwinden nicht,
-          sondern werden sicher gespeichert.
-        </p>
-
-      </div>
-
-      <div class="feature">
-
-        <h3>
-          🌍 End & Nether
-        </h3>
-
-        <p>
-          Beide Dimensionen wurden massiv erweitert
-          und bieten deutlich mehr zu entdecken.
-        </p>
-
-      </div>
-
-      <div class="feature">
-
-        <h3>
-          📦 Lootr
-        </h3>
-
-        <p>
-          Jeder Spieler erhält
-          seinen eigenen Loot aus Truhen.
-        </p>
-
-      </div>
-
-      <div class="feature">
-
-        <h3>
-          🏠 Neue Baumöglichkeiten
-        </h3>
-
-        <p>
-          Viele zusätzliche Blöcke,
-          Möbel und Dekorationen.
-        </p>
-
-      </div>
-
-    </div>
-
-  </section>
-
-<section class="section">
-
-  <div class="section-heading">
-
-    <h2>
-      Wichtige Befehle
-    </h2>
-
-    <p>
-      Die wichtigsten Commands im Überblick.
-    </p>
-
-  </div>
-
-  <div class="help-grid">
-
-
-    <div class="help-card">
-
-      <h3>
-        🎙️ Voice Chat
-      </h3>
-
-      <code>/instantgroup</code>
-
-      <p>
-        Erstellt automatisch eine Gruppe
-        mit Spielern in deiner Nähe.
-      </p>
-
-      <code>/persistentgroup list</code>
-
-      <p>
-        Zeigt alle permanenten Gruppen.
-      </p>
-
-      <code>/autojoingroup set &lt;gruppe&gt;</code>
-
-      <p>
-        Automatischer Gruppenbeitritt.
-      </p>
-
-    </div>
-
-
-    <div class="help-card">
-
-      <h3>
-        🔒 Chest Locker
-      </h3>
-
-      <code>/scl lock</code>
-
-      <p>
-        Container sperren.
-      </p>
-
-      <code>/scl unlock</code>
-
-      <p>
-        Container entsperren.
-      </p>
-
-      <code>/scl trust &lt;spieler&gt;</code>
-
-      <p>
-        Spieler freigeben.
-      </p>
-
-      <code>/scl players</code>
-
-      <p>
-        Berechtigte Spieler anzeigen.
-      </p>
-
-    </div>
-
-
-    <div class="help-card">
-
-      <h3>
-        🛒 Easy Shop
-      </h3>
-
-      <code>/shop create</code>
-
-      <p>
-        Eigenen Shop erstellen.
-      </p>
-
-      <code>/shop close</code>
-
-      <p>
-        Shop schließen.
-      </p>
-
-      <code>/shops</code>
-
-      <p>
-        Alle Shops anzeigen.
-      </p>
-
-      <code>/shop recover</code>
-
-      <p>
-        Shop-Inhalte wiederherstellen.
-      </p>
-
-    </div>
-
-
-    <div class="help-card">
-
-      <h3>
-        🎒 Backpack
-      </h3>
-
-      <code>B</code>
-
-      <p>
-        Ausgerüsteten Backpack öffnen.
-      </p>
-
-      <code>Equip</code>
-
-      <p>
-        Rucksack auf dem Rücken anlegen.
-      </p>
-
-      <code>Back Slot</code>
-
-      <p>
-        Backpack sichtbar tragen.
-      </p>
-
-    </div>
-
-  </div>
-
-</section>
-
-  <section class="section">
-
-    <div class="vanilla-box">
-
-      <h2>
-        📖 Nicht alles aufgeführt
-      </h2>
-
-      <p>
-        Diese Seite erklärt nur die wichtigsten
-        Neuerungen und Funktionen.
-        Viele weitere Inhalte entdeckst du
-        beim Spielen ganz automatisch.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <section class="section">
-
-    <div class="section-heading">
-
-      <h2>
-        Häufige Fragen
-      </h2>
-
-      <p>
-        Schnell beantwortet.
-      </p>
-
-    </div>
-
-    <div class="features">
-
-      <div class="feature">
-
-        <h3>
-          Wo finde ich weitere Infos?
-        </h3>
-
-        <p>
-          Im Discord und auf dieser Seite,
-          sobald neue Funktionen ergänzt werden.
-        </p>
-
-      </div>
-
-      <div class="feature">
-
-        <h3>
-          Mod funktioniert nicht?
-        </h3>
-
-        <p>
-          Melde dich im Discord-Support.
-        </p>
-
-      </div>
-
-      <div class="feature">
-
-        <h3>
-          Fehlende Erklärung?
-        </h3>
-
-        <p>
-          Die Hilfeseite wird während der Season
-          regelmäßig erweitert.
-        </p>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section class="section">
-
-    <div class="discord">
-
-      <h2>
-        ❓ Weitere Fragen?
-      </h2>
-
-      <p>
-        Wenn du Hilfe benötigst oder eine Funktion
-        nicht verstehst, melde dich einfach im Discord.
-      </p>
-
-      <a
-        class="button button-primary"
-        href="discord.html"
-      >
-        Discord öffnen
-      </a>
-
-    </div>
-
-  </section>
-
-</main>
+    </main>
 
   </div>
 

@@ -1,441 +1,1660 @@
 <!DOCTYPE html>
-
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>HalfKnife SMP 2026 – Hilfe & Neuerungen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>HalfKnife SMP 2026</title>
+
   <link rel="icon" type="image/png" href="favicon-32x32.png">
+
   <style>
-/* Hintergrund + Blur */
-body {
-  margin: 0;
-  padding: 40px;
-  font-family: Arial, sans-serif;
-  color: #e0e0e0;
-  background-image: url('background.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+
+    /* =========================================================
+       GRUNDLAYOUT
+    ========================================================= */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family: Arial, Helvetica, sans-serif;
+      color: #e8f7ff;
+
+      background-image:
+        linear-gradient(
+          rgba(3, 8, 14, 0.78),
+          rgba(3, 8, 14, 0.88)
+        ),
+        url('background.png');
+
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+
+      overflow-x: hidden;
+    }
+
+    /* zusätzliche Abdunklung */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(79, 195, 247, 0.12),
+          transparent 40%
+        );
+
+      pointer-events: none;
+      z-index: -1;
+    }
+
+
+    /* =========================================================
+       CONTAINER
+    ========================================================= */
+
+    .container {
+      width: min(1100px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+
+    /* =========================================================
+       SPENDENBUTTON
+    ========================================================= */
+
+    .donate-button {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+
+      z-index: 1000;
+
+      transition: transform 0.2s ease;
+    }
+
+    .donate-button img {
+      width: 190px;
+      height: auto;
+
+      filter:
+        drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));
+
+      transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+    .donate-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .donate-button img:hover {
+      transform: scale(1.04);
+      opacity: 0.92;
+    }
+
+
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
+    header {
+      padding-top: 45px;
+      text-align: center;
+    }
+
+    .logo-container {
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      width: min(440px, 80%);
+      height: auto;
+
+      filter:
+        drop-shadow(0 0 8px rgba(0, 0, 0, 0.9))
+        drop-shadow(0 0 25px rgba(79, 195, 247, 0.15));
+    }
+
+
+    /* =========================================================
+       NAVIGATION
+    ========================================================= */
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+
+      gap: 6px;
+
+      width: fit-content;
+      max-width: 100%;
+
+      margin: 0 auto;
+
+      padding: 8px;
+
+      background: rgba(5, 12, 19, 0.72);
+
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .nav a {
+      color: #b8d9e8;
+
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: bold;
+
+      padding: 10px 15px;
+
+      border-radius: 9px;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .nav a:hover {
+      color: #ffffff;
+      background: rgba(79, 195, 247, 0.12);
+
+      transform: translateY(-1px);
+    }
+
+    .nav a.active {
+      color: #061019;
+      background: #4fc3f7;
+
+      box-shadow:
+        0 0 18px rgba(79, 195, 247, 0.28);
+    }
+
+
+    /* =========================================================
+       HERO
+    ========================================================= */
+
+    .hero {
+      text-align: center;
+
+      padding: 75px 20px 55px;
+    }
+
+    .season-label {
+      display: inline-block;
+
+      padding: 7px 13px;
+
+      margin-bottom: 18px;
+
+      border: 1px solid rgba(79, 195, 247, 0.3);
+      border-radius: 999px;
+
+      background: rgba(79, 195, 247, 0.08);
+
+      color: #81d4fa;
+
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 0;
+
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 0.95;
+
+      color: #ffffff;
+
+      letter-spacing: -2px;
+
+      text-shadow:
+        0 0 25px rgba(79, 195, 247, 0.18);
+    }
+
+    .hero h1 span {
+      color: #4fc3f7;
+    }
+
+    .hero p {
+      max-width: 680px;
+
+      margin: 25px auto 0;
+
+      color: #b9cbd4;
+
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+
+    /* =========================================================
+       COUNTDOWN
+    ========================================================= */
+
+    .countdown-box {
+      max-width: 850px;
+
+      margin: 10px auto 0;
+
+      padding: 30px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(10, 25, 35, 0.86),
+          rgba(4, 12, 19, 0.86)
+        );
+
+      border: 1px solid rgba(79, 195, 247, 0.22);
+
+      border-radius: 20px;
+
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35),
+        0 0 35px rgba(79, 195, 247, 0.07);
+    }
+
+    .countdown-title {
+      color: #81d4fa;
+
+      font-size: 14px;
+      font-weight: bold;
+
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+
+      margin-bottom: 15px;
+    }
+
+    #countdown {
+      color: #ffffff;
+
+      font-size: clamp(26px, 5vw, 48px);
+      font-weight: bold;
+
+      letter-spacing: 1px;
+
+      text-shadow:
+        0 0 20px rgba(79, 195, 247, 0.35);
+    }
+
+
+    /* =========================================================
+       BUTTONS
+    ========================================================= */
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      gap: 12px;
+
+      margin-top: 25px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      min-width: 190px;
+
+      padding: 13px 22px;
+
+      border-radius: 10px;
+
+      text-decoration: none;
+
+      font-weight: bold;
+      font-size: 14px;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .button-primary {
+      background: #4fc3f7;
+      color: #041018;
+
+      box-shadow:
+        0 8px 25px rgba(79, 195, 247, 0.18);
+    }
+
+    .button-primary:hover {
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 12px 35px rgba(79, 195, 247, 0.3);
+    }
+
+    .button-secondary {
+      background: rgba(255, 255, 255, 0.06);
+
+      color: #e8f7ff;
+
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .button-secondary:hover {
+      transform: translateY(-3px);
+
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+
+    /* =========================================================
+       SECTIONS
+    ========================================================= */
+
+    .section {
+      margin-top: 90px;
+    }
+
+    .section-heading {
+      text-align: center;
+
+      margin-bottom: 35px;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 10px;
+
+      color: #ffffff;
+
+      font-size: 32px;
+    }
+
+    .section-heading p {
+      margin: 0;
+
+      color: #8fa8b5;
+
+      font-size: 15px;
+    }
+
+
+    /* =========================================================
+       INFO CARDS
+    ========================================================= */
+
+    .info-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 14px;
+    }
+
+    .info-card {
+      padding: 24px;
+
+      background: rgba(7, 16, 24, 0.72);
+
+      border: 1px solid rgba(255, 255, 255, 0.07);
+
+      border-radius: 16px;
+
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-4px);
+
+      border-color: rgba(79, 195, 247, 0.25);
+
+      background: rgba(9, 21, 30, 0.82);
+    }
+
+    .info-icon {
+      font-size: 25px;
+
+      margin-bottom: 14px;
+    }
+
+    .info-card .label {
+      color: #7f9aa8;
+
+      font-size: 12px;
+      font-weight: bold;
+
+      text-transform: uppercase;
+      letter-spacing: 1px;
+
+      margin-bottom: 6px;
+    }
+
+    .info-card .value {
+      color: #ffffff;
+
+      font-size: 16px;
+      font-weight: bold;
+
+      word-break: break-word;
+    }
+
+
+    /* =========================================================
+       KOPIEREN
+    ========================================================= */
+
+    .server-address {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .copy-button {
+      border: none;
+
+      padding: 5px 8px;
+
+      border-radius: 6px;
+
+      background: rgba(79, 195, 247, 0.12);
+
+      color: #81d4fa;
+
+      cursor: pointer;
+
+      transition: 0.2s ease;
+    }
+
+    .copy-button:hover {
+      background: rgba(79, 195, 247, 0.22);
+    }
+
+
+    /* =========================================================
+       FEATURES
+    ========================================================= */
+
+    .features {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 18px;
+    }
+
+    .feature {
+      padding: 32px 28px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(10, 22, 31, 0.85),
+          rgba(4, 12, 18, 0.8)
+        );
+
+      border: 1px solid rgba(255, 255, 255, 0.07);
+
+      border-radius: 18px;
+
+      transition:
+        transform 0.25s ease,
+        border-color 0.25s ease;
+    }
+
+    .feature:hover {
+      transform: translateY(-6px);
+
+      border-color: rgba(79, 195, 247, 0.25);
+    }
+
+    .feature-icon {
+      font-size: 38px;
+
+      margin-bottom: 18px;
+    }
+
+    .feature h3 {
+      margin: 0 0 10px;
+
+      color: #ffffff;
+
+      font-size: 21px;
+    }
+
+    .feature p {
+      margin: 0;
+
+      color: #91a7b2;
+
+      line-height: 1.65;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       VANILLA+ BOX
+    ========================================================= */
+
+    .vanilla-box {
+      padding: 35px;
+
+      text-align: center;
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(79, 195, 247, 0.08),
+          rgba(5, 13, 20, 0.85)
+        );
+
+      border: 1px solid rgba(79, 195, 247, 0.15);
+
+      border-radius: 20px;
+    }
+
+    .vanilla-box h2 {
+      margin-top: 0;
+
+      color: #ffffff;
+    }
+
+    .vanilla-box p {
+      max-width: 700px;
+
+      margin: 0 auto;
+
+      color: #9eb2bc;
+
+      line-height: 1.7;
+    }
+
+    .vanilla-bar {
+      max-width: 700px;
+
+      height: 7px;
+
+      margin: 28px auto 12px;
+
+      border-radius: 999px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #607d8b 0%,
+          #4fc3f7 50%,
+          #607d8b 100%
+        );
+
+      box-shadow:
+        0 0 15px rgba(79, 195, 247, 0.2);
+    }
+
+    .vanilla-labels {
+      display: flex;
+      justify-content: space-between;
+
+      max-width: 700px;
+
+      margin: 0 auto;
+
+      color: #78909c;
+
+      font-size: 12px;
+    }
+
+
+    /* =========================================================
+       DISCORD
+    ========================================================= */
+
+    .discord {
+      text-align: center;
+
+      padding: 55px 25px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(79, 195, 247, 0.09),
+          rgba(5, 14, 21, 0.85)
+        );
+
+      border: 1px solid rgba(79, 195, 247, 0.14);
+
+      border-radius: 22px;
+    }
+
+    .discord h2 {
+      margin-top: 0;
+
+      color: #ffffff;
+
+      font-size: 32px;
+    }
+
+    .discord p {
+      max-width: 600px;
+
+      margin: 0 auto 25px;
+
+      color: #9eb2bc;
+
+      line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+
+    footer {
+      margin-top: 100px;
+
+      padding: 35px 20px 25px;
+
+      text-align: center;
+
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+      color: #607681;
+
+      font-size: 13px;
+    }
+
+    .footer-links {
+      margin-bottom: 18px;
+    }
+
+    .footer-links a {
+      color: #81d4fa;
+
+      text-decoration: none;
+
+      margin: 0 8px;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .disclaimer {
+      max-width: 700px;
+
+      margin: 0 auto;
+
+      opacity: 0.6;
+
+      line-height: 1.5;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 850px) {
+
+      .info-grid {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .donate-button img {
+        width: 145px;
+      }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+      body {
+        background-attachment: scroll;
+      }
+
+      .container {
+        width: min(100% - 24px, 1100px);
+      }
+
+      header {
+        padding-top: 30px;
+      }
+
+      .donate-button {
+        top: 10px;
+        left: 10px;
+      }
+
+      .donate-button img {
+        width: 115px;
+      }
+
+      .nav {
+        width: 100%;
+      }
+
+      .nav a {
+        padding: 9px 10px;
+
+        font-size: 12px;
+      }
+
+      .hero {
+        padding-top: 55px;
+      }
+
+      .hero p {
+        font-size: 15px;
+      }
+
+      .countdown-box {
+        padding: 24px 15px;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        margin-top: 65px;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .vanilla-box {
+        padding: 28px 20px;
+      }
+
+    }
+
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
 }
 
-body::before {
-content: "";
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background: rgba(0, 0, 0, 0.55);
-z-index: -1;
+.help-card {
+  padding: 28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10, 22, 31, 0.85),
+      rgba(4, 12, 18, 0.8)
+    );
+
+  border: 1px solid rgba(255,255,255,0.07);
+
+  border-radius: 18px;
 }
 
-/* Container */
-.container {
-max-width: 900px;
-margin: 0 auto;
-position: relative;
-z-index: 1;
-background: rgba(0, 0, 0, 0.55);
-padding: 30px 40px;
-border-radius: 12px;
-box-shadow: 0 0 12px rgba(79, 195, 247, 0.25);
+.help-card h3 {
+  margin-top: 0;
+  color: #ffffff;
 }
 
-/* Headings */
-h1 {
-color: #4fc3f7;
-font-size: 42px;
-margin-bottom: 10px;
-text-align: center;
+.help-card code {
+  display: block;
+
+  margin: 8px 0;
+
+  padding: 10px 12px;
+
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.04);
+
+  color: #81d4fa;
 }
 
-h2 {
-color: #81d4fa;
-margin-top: 40px;
+@media (max-width: 850px) {
+
+  .help-grid {
+    grid-template-columns: 1fr;
+  }
+
 }
 
-h3 {
-color: #4fc3f7;
-margin-top: 20px;
-}
-
-/* Code Blocks */
-code {
-background: #111827;
-padding: 4px 6px;
-border-radius: 4px;
-}
-
-pre {
-background: #020617;
-padding: 12px 16px;
-border-radius: 8px;
-border: 1px solid #1f2937;
-overflow-x: auto;
-color: #e0e0e0;
-}
-
-/* Sections */
-.section {
-margin-top: 40px;
-}
-
-/* Disclaimer */
-.disclaimer {
-color: #9ca3af;
-font-size: 0.9rem;
-margin-bottom: 20px;
-}
-
-/* Footer */
-.footer {
-margin-top: 60px;
-text-align: center;
-opacity: 0.6;
-}
-
-.footer a {
-display: inline-block;
-padding: 8px 16px;
-background: rgba(0, 0, 0, 0.45);
-color: #4fc3f7;
-text-decoration: none;
-border-radius: 6px;
-font-size: 14px;
-transition: 0.2s ease;
-}
-
-.footer a:hover {
-opacity: 0.9;
-background: rgba(0, 0, 0, 0.6);
-} </style>
-
+  </style>
 </head>
+
+
 <body>
 
-<div class="container">
 
-  <h1>HalfKnife SMP 2026 – Hilfe & Neuerungen</h1>
+  <!-- =======================================================
+       SPENDENBUTTON
+  ======================================================== -->
 
-  <p>Ein kleiner Einblick in die wichtigsten Neuerungen und eine kompakte Hilfeseite für die wichtigsten Commands.</p>
-  <p class="disclaimer">
-    DISCLAIMER: Hier sind bei weitem nicht alle Mods aufgelistet – aber die wichtigsten, inklusive kurzer Erklärung, wie man sie nutzt.
-  </p>
+  <div class="donate-button">
+    <a
+      href="https://www.paypal.com/ncp/payment/XWKY58K2FBHQC"
+      target="_blank"
+      rel="noopener"
+    >
+      <img
+        src="donation.png"
+        alt="HalfKnife SMP unterstützen"
+      >
+    </a>
+  </div>
 
-  <hr>
 
-  <!-- VoiceChat -->
+  <div class="container">
 
-  <div class="section">
-    <h2>VoiceChat – Gruppen</h2>
 
-```
-<h3>Instant Groups</h3>
-<p>Der Befehl <code>/instantgroup</code> fügt automatisch alle Spieler in der Nähe zu einer Gruppe hinzu.</p>
-<p>Standardreichweite: 128 Blöcke – alternativ: <code>/instantgroup 256</code></p>
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
-<h3>Gruppenübersicht</h3>
-<p>Spieler erhalten beim Joinen eine Übersicht aller aktiven Gruppen.</p>
+    <header>
 
-<h3>Persistente Gruppen</h3>
-<pre>/persistentgroup list
-```
+      <div class="logo-container">
+        <img
+          src="logo.png"
+          class="logo"
+          alt="HalfKnife SMP 2026"
+        >
+      </div>
 
-/persistentgroup remove <name>
-/persistentgroup remove <id>
-/persistentgroup add <name> [<normal|open|isolated>] [<hidden>] [<password>]</pre>
 
-```
-<h3>Auto Join</h3>
-<pre>/autojoingroup set &lt;gruppe&gt; [passwort]
-```
+      <nav class="nav">
 
-/autojoingroup remove
+        <a href="index.html" class="active">
+          Startseite
+        </a>
 
-/autojoingroup global set <gruppe>
-/autojoingroup global remove
-/autojoingroup global force <true|false></pre>
+        <a href="mods.html">
+          Mods
+        </a>
+
+        <a href="install.html">
+          Installation
+        </a>
+
+        <a href="players.html">
+          Spieler
+        </a>
+
+        <a href="rules.html">
+          Regeln
+        </a>
+
+        <a href="discord.html">
+          Discord
+        </a>
+
+      </nav>
+
+    </header>
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+<main>
+
+  <section class="hero">
+
+    <div class="season-label">
+      📚 Hilfe & Neuerungen
+    </div>
+
+    <h1>
+      Alles Wichtige zum <span>Modpack.</span>
+    </h1>
+
+    <p>
+      Die wichtigsten Neuerungen, Funktionen
+      und Befehle von HalfKnife SMP 2026
+      kompakt erklärt.
+    </p>
+
+  </section>
+
+
+  <section class="section">
+
+    <div class="info-grid">
+
+      <div class="info-card">
+
+        <div class="info-icon">🎙️</div>
+
+        <div class="label">
+          Voice Chat
+        </div>
+
+        <div class="value">
+          Gruppen & Kommunikation
+        </div>
+
+      </div>
+
+      <div class="info-card">
+
+        <div class="info-icon">🔒</div>
+
+        <div class="label">
+          Chest Locker
+        </div>
+
+        <div class="value">
+          Container schützen
+        </div>
+
+      </div>
+
+      <div class="info-card">
+
+        <div class="info-icon">🎒</div>
+
+        <div class="label">
+          Backpacks
+        </div>
+
+        <div class="value">
+          Mobiler Stauraum
+        </div>
+
+      </div>
+
+      <div class="info-card">
+
+        <div class="info-icon">🛒</div>
+
+        <div class="label">
+          Easy Shop
+        </div>
+
+        <div class="value">
+          Spielerhandel
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="section">
+
+    <div class="section-heading">
+
+      <h2>
+        Die größten Neuerungen
+      </h2>
+
+      <p>
+        Diese Features werden die neue Season prägen.
+      </p>
+
+    </div>
+
+    <div class="features">
+
+      <div class="feature">
+
+        <div class="feature-icon">
+          🎒
+        </div>
+
+        <h3>
+          Backpacks
+        </h3>
+
+        <p>
+          Zusätzlicher Stauraum,
+          zahlreiche Upgrades
+          und sogar ein tragbarer Crafting-Bereich.
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <div class="feature-icon">
+          🌕
+        </div>
+
+        <h3>
+          Mondphasen
+        </h3>
+
+        <p>
+          Blood Moon, Harvest Moon,
+          Blue Moon und weitere besondere Nächte
+          verändern die Welt.
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <div class="feature-icon">
+          ⚔️
+        </div>
+
+        <h3>
+          RPG-System
+        </h3>
+
+        <p>
+          Skillpunkte, Attribute
+          und ein eigener Charakterfortschritt
+          begleiten dich durch die Season.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="section">
+
+    <div class="section-heading">
+
+      <h2>
+        Voice Chat
+      </h2>
+
+      <p>
+        Kommunikation direkt im Spiel.
+      </p>
+
+    </div>
+
+    <div class="features">
+
+      <div class="feature">
+
+        <h3>
+          🎙️ Instant Groups
+        </h3>
+
+        <p>
+          Fügt automatisch alle Spieler
+          in deiner Nähe einer Gruppe hinzu.
+        </p>
+
+        <p>
+          <code>/instantgroup</code>
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <h3>
+          🔄 Auto Join
+        </h3>
+
+        <p>
+          Automatischer Beitritt
+          zu einer festgelegten Gruppe.
+        </p>
+
+        <p>
+          <code>/autojoingroup set &lt;gruppe&gt;</code>
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <h3>
+          👥 Permanente Gruppen
+        </h3>
+
+        <p>
+          Dauerhafte Gruppen
+          für Teams und Projekte.
+        </p>
+
+        <p>
+          <code>/persistentgroup list</code>
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="section">
+
+    <div class="section-heading">
+
+      <h2>
+        Weitere Features
+      </h2>
+
+      <p>
+        Die wichtigsten Mods kurz erklärt.
+      </p>
+
+    </div>
+
+    <div class="features">
+
+      <div class="feature">
+
+        <h3>
+          🔒 Chest Locker
+        </h3>
+
+        <p>
+          Schütze Kisten, Fässer und Container
+          vor fremdem Zugriff.
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <h3>
+          ⚡ Better Tridents
+        </h3>
+
+        <p>
+          Überarbeitete Dreizacke,
+          neue Reparaturmöglichkeiten
+          und zusätzliche Funktionen.
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <h3>
+          ⚰️ Grabsteine
+        </h3>
+
+        <p>
+          Verlorene Items verschwinden nicht,
+          sondern werden sicher gespeichert.
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <h3>
+          🌍 End & Nether
+        </h3>
+
+        <p>
+          Beide Dimensionen wurden massiv erweitert
+          und bieten deutlich mehr zu entdecken.
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <h3>
+          📦 Lootr
+        </h3>
+
+        <p>
+          Jeder Spieler erhält
+          seinen eigenen Loot aus Truhen.
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <h3>
+          🏠 Neue Baumöglichkeiten
+        </h3>
+
+        <p>
+          Viele zusätzliche Blöcke,
+          Möbel und Dekorationen.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+<section class="section">
+
+  <div class="section-heading">
+
+    <h2>
+      Wichtige Befehle
+    </h2>
+
+    <p>
+      Die wichtigsten Commands im Überblick.
+    </p>
 
   </div>
 
-  <hr>
+  <div class="help-grid">
 
-  <!-- Chest Locker -->
 
-  <div class="section">
-    <h2>Chest Locker</h2>
+    <div class="help-card">
 
-```
-<h3>Grundbefehle</h3>
-<pre>/scl lock
-```
+      <h3>
+        🎙️ Voice Chat
+      </h3>
 
-/scl unlock
-/scl trust <spieler>
-/scl untrust <spieler>
-/scl players
-/scl label <label>
-/scl rename <label>
-/scl unlabel
-/scl list
-/scl gui
-/scl help</pre>
+      <code>/instantgroup</code>
 
-```
-<h3>Remote-Verwaltung</h3>
-<pre>/scl unlock 2
-```
+      <p>
+        Erstellt automatisch eine Gruppe
+        mit Spielern in deiner Nähe.
+      </p>
 
-/scl label storage 0
-/scl trust Spieler 2
-/scl untrust Spieler storage</pre>
+      <code>/persistentgroup list</code>
 
-```
-<ul>
-  <li>Immun gegen Explosionen</li>
-  <li>Immun gegen Pistons</li>
-  <li>Immun gegen Hopper</li>
-  <li>Nur vertrauenswürdige Spieler können öffnen</li>
-</ul>
-```
+      <p>
+        Zeigt alle permanenten Gruppen.
+      </p>
 
-  </div>
+      <code>/autojoingroup set &lt;gruppe&gt;</code>
 
-  <hr>
+      <p>
+        Automatischer Gruppenbeitritt.
+      </p>
 
-  <!-- Better Tridents -->
+    </div>
 
-  <div class="section">
-    <h2>Better Tridents</h2>
 
-```
-<p>Dreizacke haben ein Crafting-Rezept – Elder Guardians droppen Fragmente.</p>
-<ul>
-  <li>Reparierbar mit Prismarinscherben</li>
-  <li>Kehren immer in den ursprünglichen Slot zurück</li>
-  <li>Loyalität-Dreizacke kommen aus der Void zurück</li>
-  <li>Loot fliegt mit dem Dreizack zu dir</li>
-  <li>Impaling wie Bedrock Edition</li>
-</ul>
-```
+    <div class="help-card">
 
-  </div>
+      <h3>
+        🔒 Chest Locker
+      </h3>
 
-  <hr>
+      <code>/scl lock</code>
 
-  <!-- Gravestones -->
+      <p>
+        Container sperren.
+      </p>
 
-  <div class="section">
-    <h2>Grabsteine</h2>
-    <ul>
-      <li>Kein Zeitlimit</li>
-      <li>Werden nicht gelöscht, wenn man erneut stirbt</li>
-      <li>50% der XP zurück beim Einsammeln</li>
-    </ul>
-  </div>
+      <code>/scl unlock</code>
 
-  <hr>
+      <p>
+        Container entsperren.
+      </p>
 
-  <!-- End & Nether -->
+      <code>/scl trust &lt;spieler&gt;</code>
 
-  <div class="section">
-    <h2>End &amp; Nether</h2>
-    <p>Beide Dimensionen sind komplett überarbeitet und zu Beginn gesperrt.</p>
-  </div>
+      <p>
+        Spieler freigeben.
+      </p>
 
-  <hr>
+      <code>/scl players</code>
 
-  <!-- Lootr -->
+      <p>
+        Berechtigte Spieler anzeigen.
+      </p>
 
-  <div class="section">
-    <h2>Lootr</h2>
-    <p>Alle Lootkisten sind clientseitig – jeder Spieler erhält eigenen Loot.</p>
-  </div>
+    </div>
 
-  <hr>
 
-  <!-- Deko -->
+    <div class="help-card">
 
-  <div class="section">
-    <h2>Deko &amp; Baumöglichkeiten</h2>
-    <p>Viele neue Blöcke und Deko-Optionen – entdeckt alles!</p>
-  </div>
+      <h3>
+        🛒 Easy Shop
+      </h3>
 
-  <hr>
+      <code>/shop create</code>
 
-  <!-- Seasons -->
+      <p>
+        Eigenen Shop erstellen.
+      </p>
 
-  <div class="section">
-    <h2>Jahreszeiten</h2>
-    <p>Aktive Jahreszeiten machen die Welt dynamischer.</p>
-  </div>
+      <code>/shop close</code>
 
-  <hr>
+      <p>
+        Shop schließen.
+      </p>
 
-  <!-- RPG -->
+      <code>/shops</code>
 
-  <div class="section">
-    <h2>RPG-System</h2>
-    <ul>
-      <li>Start mit 3 Herzen</li>
-      <li>Skillpunkte frei verteilbar</li>
-      <li>Punkte können neu verteilt werden</li>
-    </ul>
-  </div>
+      <p>
+        Alle Shops anzeigen.
+      </p>
 
-  <hr>
+      <code>/shop recover</code>
 
-  <!-- Map -->
+      <p>
+        Shop-Inhalte wiederherstellen.
+      </p>
 
-  <div class="section">
-    <h2>Map</h2>
-    <p>Wir nutzen ausschließlich Xaero’s World Map – keine Minimap.</p>
-  </div>
+    </div>
 
-  <hr>
 
-  <!-- Easy Shop -->
+    <div class="help-card">
 
-  <div class="section">
-    <h2>Easy Shop</h2>
+      <h3>
+        🎒 Backpack
+      </h3>
 
-```
-<p>Mit Easy Shop kann jeder Spieler einen eigenen Shop erstellen und mit anderen Spielern handeln.</p>
+      <code>B</code>
 
-<h3>Shop erstellen</h3>
-<pre>/shop create</pre>
+      <p>
+        Ausgerüsteten Backpack öffnen.
+      </p>
 
-<p>Erstellt einen persönlichen Shop und spawnt einen eigenen NPC mit dem Namen <code>[Spielername]'s Shop</code>.</p>
+      <code>Equip</code>
 
-<ul>
-  <li>Der NPC bewegt sich nicht</li>
-  <li>Der NPC ist unverwundbar</li>
-  <li>Pro Spieler kann nur ein Shop erstellt werden</li>
-  <li>Angebote und gelagerte Items bleiben dauerhaft erhalten</li>
-</ul>
+      <p>
+        Rucksack auf dem Rücken anlegen.
+      </p>
 
-<h3>Shop schließen</h3>
-<pre>/shop close</pre>
+      <code>Back Slot</code>
 
-<p>Schließt den eigenen Shop und entfernt den NPC aus der Welt. Alle Angebote und gelagerten Items bleiben erhalten. Der Shop kann später jederzeit wieder geöffnet werden.</p>
+      <p>
+        Backpack sichtbar tragen.
+      </p>
 
-<h3>Shops anzeigen</h3>
-<pre>/shops</pre>
-
-<p>Öffnet eine Übersicht aller verfügbaren Shops inklusive der Anzahl ihrer aktiven Angebote.</p>
-
-<h3>Items wiederherstellen</h3>
-<pre>/shop recover</pre>
-
-<p>Falls ein Shop gelöscht wurde, können mit diesem Befehl alle darin gespeicherten Items zurückgeholt werden.</p>
-
-<ul>
-  <li>Alle Items aus den Shop-Angeboten</li>
-  <li>Alle Items aus dem Shop-Lager</li>
-  <li>Keine Items gehen durch das Löschen eines Shops verloren</li>
-</ul>
-```
+    </div>
 
   </div>
 
-  <hr>
+</section>
 
-  <!-- Mondphasen -->
+  <section class="section">
 
-  <div class="section">
-    <h2>Mondphasen</h2>
+    <div class="vanilla-box">
 
-```
-<p>Bestimmte Mondphasen bringen besondere Ereignisse und verändern die Welt für eine Nacht.</p>
+      <h2>
+        📖 Nicht alles aufgeführt
+      </h2>
 
-<h3>Blood Moon</h3>
-<p>Der Himmel färbt sich rot und riesige Horden von Untoten erscheinen. Während einer Blood Moon Nacht ist die Anzahl der Untoten deutlich erhöht.</p>
-<p>Wenn der Mond besonders groß erscheint, wird die Nacht noch gefährlicher – bleibt besser drinnen!</p>
+      <p>
+        Diese Seite erklärt nur die wichtigsten
+        Neuerungen und Funktionen.
+        Viele weitere Inhalte entdeckst du
+        beim Spielen ganz automatisch.
+      </p>
 
-<h3>Blue Moon</h3>
-<p>Eine besonders glückliche Nacht. Beim Minen besteht eine erhöhte Chance, auf verlassene Minenschächte zu stoßen.</p>
-<p>Auch beim Angeln könnt ihr mehr Glück haben und besondere Fänge machen. Ein besonders großer Mond verstärkt den Effekt.</p>
+    </div>
 
-<h3>Harvest Moon</h3>
-<p>Die perfekte Nacht für eure Farmen. Während einer Harvest Moon fällt eure Ernte besonders großzügig aus.</p>
-<p>Je größer der Mond erscheint, desto größer fällt auch die Ernte aus.</p>
+  </section>
 
-<h3>Super Moon</h3>
-<p>Heute wird es schleimig! Während einer Super Moon wird die Welt von deutlich mehr Slimes bevölkert.</p>
-```
+
+  <section class="section">
+
+    <div class="section-heading">
+
+      <h2>
+        Häufige Fragen
+      </h2>
+
+      <p>
+        Schnell beantwortet.
+      </p>
+
+    </div>
+
+    <div class="features">
+
+      <div class="feature">
+
+        <h3>
+          Wo finde ich weitere Infos?
+        </h3>
+
+        <p>
+          Im Discord und auf dieser Seite,
+          sobald neue Funktionen ergänzt werden.
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <h3>
+          Mod funktioniert nicht?
+        </h3>
+
+        <p>
+          Melde dich im Discord-Support.
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <h3>
+          Fehlende Erklärung?
+        </h3>
+
+        <p>
+          Die Hilfeseite wird während der Season
+          regelmäßig erweitert.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="section">
+
+    <div class="discord">
+
+      <h2>
+        ❓ Weitere Fragen?
+      </h2>
+
+      <p>
+        Wenn du Hilfe benötigst oder eine Funktion
+        nicht verstehst, melde dich einfach im Discord.
+      </p>
+
+      <a
+        class="button button-primary"
+        href="discord.html"
+      >
+        Discord öffnen
+      </a>
+
+    </div>
+
+  </section>
+
+</main>
 
   </div>
 
-  <hr>
 
-  <!-- Backpacks -->
+  <!-- =======================================================
+       FOOTER
+  ======================================================== -->
 
-  <div class="section">
-    <h2>Backpacks</h2>
+  <footer>
 
-```
-<p>Backpacks bieten zusätzlichen Stauraum und können unterwegs oder auf dem Rücken verwendet werden.</p>
+    <div class="footer-links">
 
-<h3>Benutzung</h3>
-<ul>
-  <li>In der Haupthand halten und Rechtsklick drücken, um den Rucksack zu öffnen</li>
-  <li>Über den Button <code>Equip</code> im Backpack-GUI kann der Rucksack auf dem Rücken ausgerüstet werden</li>
-  <li>Ein ausgerüsteter Rucksack kann standardmäßig mit <code>B</code> geöffnet werden</li>
-  <li>Durch die Curios/Trinkets/Accessories-Kompatibilität wird der Rucksack im <code>Back</code>-Slot getragen</li>
-  <li>Backpacks können als Block in der Welt platziert werden</li>
-  <li>Platzierte Backpacks können über Hopper und Pipes automatisiert befüllt und entleert werden</li>
-  <li>Ausgerüstete Backpacks werden sichtbar auf dem Rücken des Spielers dargestellt</li>
-</ul>
+      <a href="help.html">
+        Hilfe & Neuerungen
+      </a>
 
-<h3>Rucksack-Stufen</h3>
-<p>Es gibt insgesamt fünf verschiedene Rucksack-Stufen:</p>
+      ·
 
-<ul>
-  <li>Leather</li>
-  <li>Iron</li>
-  <li>Gold</li>
-  <li>Diamond</li>
-  <li>Netherite</li>
-</ul>
+      <a href="rules.html">
+        Regeln
+      </a>
 
-<p>Mit jeder höheren Stufe erhält der Rucksack mehr Stauraum sowie zusätzliche Upgrade- und Werkzeugplätze.</p>
+      ·
 
-<p>Das Upgrade erfolgt an einem Schmiedetisch:</p>
+      <a href="discord.html">
+        Discord
+      </a>
 
-<pre>Leather Backpack + Tier Upgrade Item → nächsthöhere Backpack-Stufe</pre>
+    </div>
 
-```
-<h3>Funktionale Upgrades</h3>
-<p>Backpacks können mit zahlreichen verschiedenen Upgrades erweitert werden.</p>
 
-<ul>
-  <li>Tank – Flüssigkeiten speichern</li>
-  <li>Crafting – Crafting unterwegs ermöglichen</li>
-  <li>Feeding – automatische bzw. vereinfachte Versorgung mit Nahrung</li>
-  <li>Magnet – Items automatisch aufsammeln</li>
-  <li>Pickup – zusätzliche Möglichkeiten zum Aufnehmen von Items</li>
-  <li>Void – unerwünschte Items automatisch entfernen</li>
-  <li>Furnace – Items direkt im Rucksack verarbeiten</li>
-  <li>und weitere Upgrades</li>
-</ul>
+    <div class="disclaimer">
 
-<h3>Weitere Funktionen</h3>
-<ul>
-  <li>Schlafsack benutzen, ohne den Spawnpunkt zu verändern</li>
-  <li>Praktische Werkzeugplätze für schnellen Zugriff auf Tools</li>
-  <li>Hose-Item zur Verwaltung von Flüssigkeiten im Backpack</li>
-</ul>
-```
+      HalfKnife SMP 2026 ·
+      Hinweis: Teile dieser Website (Grafiken, Texte und Layout)
+      wurden mit Unterstützung von KI erstellt.
 
-  </div>
+    </div>
 
-</div>
+  </footer>
 
-<!-- Footer -->
 
-<div class="footer">
-  <a href="index.html">Zurück zur Startseite</a>
-</div>
+  <!-- =======================================================
+       JAVASCRIPT
+  ======================================================== -->
+
+  <script>
+
+    /* =======================================================
+       COUNTDOWN
+    ======================================================== */
+
+    const startDate =
+      new Date("2026-10-24T14:00:00+02:00");
+
+
+    function updateCountdown() {
+
+      const now = new Date();
+
+      const diff =
+        startDate.getTime() - now.getTime();
+
+
+      const countdown =
+        document.getElementById("countdown");
+
+
+      if (diff <= 0) {
+
+        countdown.innerHTML =
+          "🟢 Der Server ist jetzt ONLINE!";
+
+        return;
+
+      }
+
+
+      const days =
+        Math.floor(
+          diff / (1000 * 60 * 60 * 24)
+        );
+
+
+      const hours =
+        Math.floor(
+          (diff / (1000 * 60 * 60)) % 24
+        );
+
+
+      const minutes =
+        Math.floor(
+          (diff / (1000 * 60)) % 60
+        );
+
+
+      const seconds =
+        Math.floor(
+          (diff / 1000) % 60
+        );
+
+
+      countdown.innerHTML =
+        `${days} Tage · ${hours} Std · ${minutes} Min · ${seconds} Sek`;
+
+    }
+
+
+    updateCountdown();
+
+    setInterval(updateCountdown, 1000);
+
+
+    /* =======================================================
+       SERVER-IP KOPIEREN
+    ======================================================== */
+
+    function copyIP() {
+
+      const ip =
+        document.getElementById("server-ip").innerText;
+
+
+      navigator.clipboard.writeText(ip);
+
+
+      const button =
+        document.querySelector(".copy-button");
+
+
+      button.innerHTML = "✓";
+
+
+      setTimeout(() => {
+
+        button.innerHTML = "📋";
+
+      }, 1500);
+
+    }
+
+  </script>
+
 
 </body>
 </html>

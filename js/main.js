@@ -1,7 +1,6 @@
-// HalfKnife SMP 2026 – gemeinsame Website-Funktionen
-
 document.addEventListener("DOMContentLoaded", () => {
   renderNavigation();
+
   updateCountdown();
 
   if (document.getElementById("countdown")) {
@@ -10,7 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (document.getElementById("live-player-list")) {
     updateMinecraftServerStatus();
-    window.setInterval(updateMinecraftServerStatus, minecraftStatusRefreshMs);
+
+    window.setInterval(
+      updateMinecraftServerStatus,
+      minecraftStatusRefreshMs
+    );
   }
 
   if (document.getElementById("whitelist-player-list")) {
@@ -19,9 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// =========================================================
-// NAVIGATION
-// =========================================================
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
 
 function renderNavigation() {
   const nav = document.getElementById("main-nav");
@@ -30,11 +33,7 @@ function renderNavigation() {
     return;
   }
 
-  const current =
-    (window.location.pathname.split("/").pop() || "index.html")
-      .toLowerCase();
-
-  const items = [
+  const navigationItems = [
     ["index.html", "Startseite"],
     ["mods.html", "Mods"],
     ["install.html", "Installation"],
@@ -44,15 +43,19 @@ function renderNavigation() {
     ["discord.html", "Discord"]
   ];
 
-  nav.innerHTML = items
+  const currentPage =
+    window.location.pathname.split("/").pop() || "index.html";
+
+  nav.innerHTML = navigationItems
     .map(([href, label]) => {
-      const active =
-        current === href
-          ? ' class="active"'
-          : "";
+      const activeClass =
+        currentPage === href ? "active" : "";
 
       return `
-        <a href="${href}"${active}>
+        <a
+          href="${href}"
+          class="${activeClass}"
+        >
           ${label}
         </a>
       `;
@@ -61,493 +64,425 @@ function renderNavigation() {
 }
 
 
-// =========================================================
-// COUNTDOWN
-// =========================================================
+/* =========================================================
+   COUNTDOWN
+   ========================================================= */
 
-const startDate =
+const serverStartDate =
   new Date("2026-10-24T14:00:00+02:00");
 
-
 function updateCountdown() {
-  const countdown =
-    document.getElementById("countdown");
+  const countdown = document.getElementById("countdown");
 
   if (!countdown) {
     return;
   }
 
-  const diff =
-    startDate.getTime() - Date.now();
+  const now = new Date();
+  const distance =
+    serverStartDate.getTime() - now.getTime();
 
-
-  if (diff <= 0) {
-    countdown.innerHTML =
-      "🟢 Der Server ist jetzt ONLINE!";
+  if (distance <= 0) {
+    countdown.textContent =
+      "HalfKnife SMP 2026 ist gestartet!";
 
     return;
   }
 
-
-  const days =
-    Math.floor(
-      diff / (1000 * 60 * 60 * 24)
-    );
-
-
-  const hours =
-    Math.floor(
-      (diff / (1000 * 60 * 60)) % 24
-    );
-
-
-  const minutes =
-    Math.floor(
-      (diff / (1000 * 60)) % 60
-    );
-
-
-  const seconds =
-    Math.floor(
-      (diff / 1000) % 60
-    );
-
-
-  countdown.innerHTML =
-    `${days} Tage · ${hours} Std · ${minutes} Min · ${seconds} Sek`;
-}
-
-
-// =========================================================
-// SERVER-IP KOPIEREN
-// =========================================================
-
-function copyIP() {
-  const ipElement =
-    document.getElementById("server-ip");
-
-  if (!ipElement) {
-    return;
-  }
-
-
-  navigator.clipboard.writeText(
-    ipElement.innerText
+  const days = Math.floor(
+    distance / (1000 * 60 * 60 * 24)
   );
 
+  const hours = Math.floor(
+    (distance % (1000 * 60 * 60 * 24)) /
+    (1000 * 60 * 60)
+  );
 
-  const button =
-    document.querySelector(".copy-button");
+  const minutes = Math.floor(
+    (distance % (1000 * 60 * 60)) /
+    (1000 * 60)
+  );
 
-  if (!button) {
-    return;
-  }
+  const seconds = Math.floor(
+    (distance % (1000 * 60)) /
+    1000
+  );
 
-
-  const oldText =
-    button.innerHTML;
-
-
-  button.innerHTML =
-    "✓";
-
-
-  window.setTimeout(() => {
-    button.innerHTML = oldText;
-  }, 1500);
+  countdown.textContent =
+    `${days} Tage, ` +
+    `${hours} Stunden, ` +
+    `${minutes} Minuten, ` +
+    `${seconds} Sekunden`;
 }
 
 
-// =========================================================
-// LIVE MINECRAFT SERVERSTATUS
-// =========================================================
+/* =========================================================
+   SERVER-IP KOPIEREN
+   ========================================================= */
 
-const minecraftServerAddress =
-  "halfknife2026.serverminer.com";
+function copyIP() {
+  const serverIP =
+    "halfknife2026.serverminer.com";
+
+  navigator.clipboard
+    .writeText(serverIP)
+    .then(() => {
+      const button =
+        document.getElementById("copy-ip-button");
+
+      if (!button) {
+        return;
+      }
+
+      const originalText =
+        button.textContent;
+
+      button.textContent =
+        "IP kopiert!";
+
+      window.setTimeout(() => {
+        button.textContent =
+          originalText;
+      }, 2000);
+    })
+    .catch(error => {
+      console.error(
+        "Server-IP konnte nicht kopiert werden:",
+        error
+      );
+    });
+}
 
 
-const minecraftStatusApi =
-  `https://api.mcsrvstat.us/3/${encodeURIComponent(
-    minecraftServerAddress
-  )}`;
-
+/* =========================================================
+   LIVE SERVERSTATUS
+   ========================================================= */
 
 const minecraftStatusRefreshMs =
   60 * 1000;
 
-
 async function updateMinecraftServerStatus() {
-  const list =
+  const playerList =
     document.getElementById(
       "live-player-list"
     );
 
-
-  if (!list) {
-    return;
-  }
-
-
-  const dot =
+  const statusDot =
     document.getElementById(
       "server-status-dot"
     );
 
-
-  const label =
+  const statusLabel =
     document.getElementById(
       "server-status-label"
     );
 
-
-  const counter =
+  const playerCounter =
     document.getElementById(
       "live-player-counter"
     );
 
-
-  const summary =
+  const statusText =
     document.getElementById(
       "server-status-text"
     );
 
-
-  const countCard =
+  const onlineCount =
     document.getElementById(
       "online-player-count"
     );
 
-
-  const note =
+  const statusNote =
     document.getElementById(
       "live-status-note"
     );
 
+  if (!playerList) {
+    return;
+  }
 
   try {
-    const response =
-      await fetch(
-        minecraftStatusApi,
-        {
-          method: "GET",
-          mode: "cors",
-          cache: "no-store"
-        }
-      );
-
+    const response = await fetch(
+      `data/server-status.json?v=${Date.now()}`,
+      {
+        cache: "no-store"
+      }
+    );
 
     if (!response.ok) {
       throw new Error(
-        `Status-API HTTP ${response.status}`
+        `Serverstatus konnte nicht geladen werden: ${response.status}`
       );
     }
-
 
     const data =
       await response.json();
 
-
-    // -----------------------------------------------------
-    // SERVER OFFLINE
-    // -----------------------------------------------------
-
-    if (!data.online) {
-      dot?.classList.remove(
-        "loading",
-        "online"
-      );
-
-
-      dot?.classList.add(
-        "offline"
-      );
-
-
-      if (label) {
-        label.textContent =
-          "Server offline";
-      }
-
-
-      if (counter) {
-        counter.textContent =
-          "0 / –";
-      }
-
-
-      if (summary) {
-        summary.textContent =
-          "Der Server ist aktuell nicht erreichbar.";
-      }
-
-
-      if (countCard) {
-        countCard.textContent =
-          "0 online";
-      }
-
-
-      list.innerHTML = `
-        <div class="live-player-empty">
-          Aktuell ist niemand auf dem Server.
-        </div>
-      `;
-
-
-      return;
-    }
-
-
-    // -----------------------------------------------------
-    // SERVER ONLINE
-    // -----------------------------------------------------
-
-    const online =
-      Number(
-        data.players?.online ?? 0
-      );
-
-
-    const max =
-      Number(
-        data.players?.max ?? 0
-      );
-
+    const isOnline =
+      Boolean(data.online);
 
     const players =
-      Array.isArray(
-        data.players?.list
-      )
-        ? data.players.list
+      Array.isArray(data.players)
+        ? data.players
         : [];
 
+    const currentPlayers =
+      Number(
+        data.onlineCount ??
+        players.length
+      );
 
-    dot?.classList.remove(
-      "loading",
-      "offline"
-    );
+    const maxPlayers =
+      Number(
+        data.maxPlayers ??
+        25
+      );
 
 
-    dot?.classList.add(
-      "online"
-    );
+    /* -------------------------
+       Statuspunkt
+       ------------------------- */
 
+    if (statusDot) {
+      statusDot.classList.toggle(
+        "online",
+        isOnline
+      );
 
-    if (label) {
-      label.textContent =
-        "Server online";
+      statusDot.classList.toggle(
+        "offline",
+        !isOnline
+      );
     }
 
 
-    if (counter) {
-      counter.textContent =
-        `${online} / ${max || "–"}`;
+    /* -------------------------
+       Statusbeschriftung
+       ------------------------- */
+
+    if (statusLabel) {
+      statusLabel.textContent =
+        isOnline
+          ? "Server online"
+          : "Server offline";
     }
 
 
-    if (summary) {
-      summary.textContent =
-        online === 1
-          ? "Aktuell ist 1 Spieler online."
-          : `Aktuell sind ${online} Spieler online.`;
+    /* -------------------------
+       Spielerzähler
+       ------------------------- */
+
+    if (playerCounter) {
+      playerCounter.textContent =
+        `${currentPlayers} / ${maxPlayers}`;
+    }
+
+    if (onlineCount) {
+      onlineCount.textContent =
+        currentPlayers;
     }
 
 
-    if (countCard) {
-      countCard.textContent =
-        `${online} online`;
+    /* -------------------------
+       Statustext
+       ------------------------- */
+
+    if (statusText) {
+      if (isOnline) {
+        if (currentPlayers === 1) {
+          statusText.textContent =
+            "1 Spieler online";
+        } else {
+          statusText.textContent =
+            `${currentPlayers} Spieler online`;
+        }
+      } else {
+        statusText.textContent =
+          "Server offline";
+      }
     }
 
 
-    // -----------------------------------------------------
-    // KEIN SPIELER ONLINE
-    // -----------------------------------------------------
+    /* -------------------------
+       Letzte Aktualisierung
+       ------------------------- */
 
-    if (online === 0) {
-      list.innerHTML = `
-        <div class="live-player-empty">
-          Aktuell ist niemand auf dem Server.
+    if (statusNote) {
+      if (data.updatedAt) {
+        const updated =
+          new Date(
+            data.updatedAt
+          );
+
+        statusNote.textContent =
+          `Letzte Aktualisierung: ${updated.toLocaleString(
+            "de-DE"
+          )}`;
+      } else {
+        statusNote.textContent =
+          "Serverstatus automatisch aktualisiert";
+      }
+    }
+
+
+    /* -------------------------
+       Server offline
+       ------------------------- */
+
+    if (!isOnline) {
+      playerList.innerHTML = `
+        <div class="feature">
+          <h3>Server offline</h3>
+          <p>
+            Aktuell ist der Minecraft-Server
+            nicht erreichbar.
+          </p>
         </div>
       `;
-
-
-      if (note) {
-        note.textContent = "";
-      }
-
 
       return;
     }
 
 
-    // -----------------------------------------------------
-    // SPIELER ONLINE, ABER KEINE NAMEN
-    // -----------------------------------------------------
+    /* -------------------------
+       Niemand online
+       ------------------------- */
 
     if (players.length === 0) {
-      list.innerHTML = `
-        <div class="live-player-empty">
-          ${online} Spieler online –
-          die Namen werden vom Serverstatus
-          derzeit nicht übertragen.
+      playerList.innerHTML = `
+        <div class="feature">
+          <h3>Niemand online</h3>
+          <p>
+            Aktuell ist kein Spieler
+            auf dem Server.
+          </p>
         </div>
       `;
-
-
-      if (note) {
-        note.textContent =
-          "Die Anzahl der Online-Spieler ist verfügbar, die Namen werden vom Statusdienst momentan jedoch nicht vollständig übertragen.";
-      }
-
 
       return;
     }
 
 
-    // -----------------------------------------------------
-    // SPIELERNAMEN ANZEIGEN
-    // -----------------------------------------------------
+    /* -------------------------
+       Spieler anzeigen
+       ------------------------- */
 
-    list.innerHTML =
+    playerList.innerHTML =
       players
-        .map(player => `
-          <div class="live-player">
-            ${escapeHtml(
-              player.name ||
-              "Unbekannt"
-            )}
-          </div>
-        `)
+        .map(
+          player => `
+            <div class="feature">
+              <h3>
+                ${escapeHtml(player)}
+              </h3>
+            </div>
+          `
+        )
         .join("");
-
-
-    if (
-      players.length < online &&
-      note
-    ) {
-      note.textContent =
-        `${online} Spieler online, aber nur ${players.length} Namen wurden übermittelt.`;
-    } else if (note) {
-      note.textContent =
-        "Der Serverstatus wird automatisch aktualisiert.";
-    }
 
   } catch (error) {
     console.error(
-      "Minecraft-Serverstatus konnte nicht geladen werden:",
+      "Fehler beim Laden des Serverstatus:",
       error
     );
 
+    if (statusDot) {
+      statusDot.classList.remove(
+        "online"
+      );
 
-    dot?.classList.remove(
-      "loading",
-      "online"
-    );
-
-
-    dot?.classList.add(
-      "offline"
-    );
-
-
-    if (label) {
-      label.textContent =
-        "Status nicht verfügbar";
+      statusDot.classList.add(
+        "offline"
+      );
     }
 
-
-    if (counter) {
-      counter.textContent =
-        "– / –";
+    if (statusLabel) {
+      statusLabel.textContent =
+        "Status unbekannt";
     }
 
-
-    if (summary) {
-      summary.textContent =
-        "Der Live-Status konnte gerade nicht geladen werden.";
+    if (statusText) {
+      statusText.textContent =
+        "Serverstatus konnte nicht geladen werden";
     }
 
+    if (statusNote) {
+      statusNote.textContent =
+        "Fehler beim Aktualisieren des Live-Status";
+    }
 
-    if (countCard) {
-      countCard.textContent =
+    if (playerCounter) {
+      playerCounter.textContent =
+        "– / 25";
+    }
+
+    if (onlineCount) {
+      onlineCount.textContent =
         "–";
     }
 
-
-    list.innerHTML = `
-      <div class="live-player-error">
-        Live-Spielerliste momentan nicht verfügbar.
-        Bitte später erneut versuchen.
+    playerList.innerHTML = `
+      <div class="feature">
+        <h3>Status nicht verfügbar</h3>
+        <p>
+          Die Serverdaten konnten
+          gerade nicht geladen werden.
+        </p>
       </div>
     `;
-
-
-    if (note) {
-      note.textContent =
-        "";
-    }
   }
 }
 
 
-// =========================================================
-// WHITELIST / FREIGESCHALTETE SPIELER
-// =========================================================
+/* =========================================================
+   WHITELIST
+   ========================================================= */
 
 async function loadWhitelistPlayers() {
-  const container =
+  const playerList =
     document.getElementById(
       "whitelist-player-list"
     );
 
-
-  if (!container) {
-    return;
-  }
-
-
-  const whitelistCount =
+  const playerCount =
     document.getElementById(
       "whitelist-player-count"
     );
-
 
   const slotsCount =
     document.getElementById(
       "whitelist-slots-count"
     );
 
+  if (!playerList) {
+    return;
+  }
 
   try {
-    const response =
-      await fetch(
-        `data/whitelist.json?v=${Date.now()}`,
-        {
-          method: "GET",
-          cache: "no-store"
-        }
-      );
-
+    const response = await fetch(
+      `data/whitelist.json?v=${Date.now()}`,
+      {
+        cache: "no-store"
+      }
+    );
 
     if (!response.ok) {
       throw new Error(
-        `Whitelist HTTP ${response.status}`
+        `Whitelist konnte nicht geladen werden: ${response.status}`
       );
     }
 
-
-    const data =
+    const whitelist =
       await response.json();
 
-
     const players =
-      Array.isArray(data)
-        ? data
+      Array.isArray(whitelist)
+        ? whitelist
             .filter(
               player =>
                 player &&
-                typeof player.name === "string" &&
-                player.name.trim()
+                typeof player.name ===
+                  "string"
             )
             .sort(
               (a, b) =>
@@ -555,141 +490,127 @@ async function loadWhitelistPlayers() {
                   b.name,
                   "de",
                   {
-                    sensitivity:
-                      "base"
+                    sensitivity: "base"
                   }
                 )
             )
         : [];
 
 
-    const count =
-      players.length;
+    /* -------------------------
+       Spieleranzahl
+       ------------------------- */
 
-
-    // -----------------------------------------------------
-    // ANZAHL FREIGESCHALTETER SPIELER
-    // -----------------------------------------------------
-
-    if (whitelistCount) {
-      whitelistCount.textContent =
-        `${count} freigeschaltet`;
+    if (playerCount) {
+      playerCount.textContent =
+        `${players.length} freigeschaltet`;
     }
 
 
-    // -----------------------------------------------------
-    // SPIELERPLÄTZE
-    // -----------------------------------------------------
+    /* -------------------------
+       Spielerplätze
+       ------------------------- */
 
     if (slotsCount) {
       slotsCount.textContent =
-        `${count} / 25`;
+        `${players.length} / 25`;
     }
 
 
-    // -----------------------------------------------------
-    // KEINE SPIELER
-    // -----------------------------------------------------
+    /* -------------------------
+       Leere Whitelist
+       ------------------------- */
 
-    if (count === 0) {
-      container.innerHTML = `
+    if (players.length === 0) {
+      playerList.innerHTML = `
         <div class="feature">
           <h3>
-            Noch keine Spieler freigeschaltet
+            Noch keine Spieler
           </h3>
-
           <p>
             Die Whitelist ist aktuell leer.
           </p>
         </div>
       `;
 
-
       return;
     }
 
 
-    // -----------------------------------------------------
-    // SPIELERKARTEN ERZEUGEN
-    // -----------------------------------------------------
+    /* -------------------------
+       Spieler anzeigen
+       ------------------------- */
 
-    container.innerHTML =
+    playerList.innerHTML =
       players
-        .map(player => `
-          <div class="feature">
-            <h3>
-              ${escapeHtml(player.name)}
-            </h3>
-          </div>
-        `)
+        .map(
+          player => `
+            <div class="feature">
+              <h3>
+                ${escapeHtml(
+                  player.name
+                )}
+              </h3>
+            </div>
+          `
+        )
         .join("");
 
   } catch (error) {
     console.error(
-      "Whitelist konnte nicht geladen werden:",
+      "Fehler beim Laden der Whitelist:",
       error
     );
 
-
-    if (whitelistCount) {
-      whitelistCount.textContent =
+    if (playerCount) {
+      playerCount.textContent =
         "Nicht verfügbar";
     }
-
 
     if (slotsCount) {
       slotsCount.textContent =
         "– / 25";
     }
 
-
-    container.innerHTML = `
+    playerList.innerHTML = `
       <div class="feature">
-
         <h3>
-          Whitelist momentan nicht verfügbar
+          Whitelist nicht verfügbar
         </h3>
-
         <p>
-          Die Spielerliste konnte gerade
-          nicht geladen werden.
+          Die Spielerliste konnte
+          gerade nicht geladen werden.
         </p>
-
       </div>
     `;
   }
 }
 
 
-// =========================================================
-// HTML SICHER AUSGEBEN
-// =========================================================
+/* =========================================================
+   HTML ESCAPING
+   ========================================================= */
 
 function escapeHtml(value) {
   return String(value)
-
-    .replaceAll(
-      "&",
+    .replace(
+      /&/g,
       "&amp;"
     )
-
-    .replaceAll(
-      "<",
+    .replace(
+      /</g,
       "&lt;"
     )
-
-    .replaceAll(
-      ">",
+    .replace(
+      />/g,
       "&gt;"
     )
-
-    .replaceAll(
-      '"',
+    .replace(
+      /"/g,
       "&quot;"
     )
-
-    .replaceAll(
-      "'",
+    .replace(
+      /'/g,
       "&#039;"
     );
 }

@@ -891,3 +891,126 @@
   .event-card { padding:22px 18px; }
   .requirement-list { grid-template-columns:1fr; }
 }
+
+/* =========================================================
+   LIVE SERVERSTATUS / SPIELER
+========================================================= */
+
+.live-status-card {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 28px;
+  background: linear-gradient(145deg, rgba(10, 22, 31, 0.88), rgba(4, 12, 18, 0.84));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+}
+
+.live-status-topline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 10px;
+  border-radius: 50%;
+  background: #78909c;
+  box-shadow: 0 0 12px rgba(120, 144, 156, 0.35);
+}
+
+.status-dot.online {
+  background: #66bb6a;
+  box-shadow: 0 0 14px rgba(102, 187, 106, 0.55);
+}
+
+.status-dot.offline {
+  background: #ef5350;
+  box-shadow: 0 0 14px rgba(239, 83, 80, 0.45);
+}
+
+.status-dot.loading {
+  background: #4fc3f7;
+  box-shadow: 0 0 14px rgba(79, 195, 247, 0.45);
+}
+
+.live-player-counter {
+  margin-left: auto;
+  color: #81d4fa;
+  font-weight: bold;
+}
+
+.live-player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.live-player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 13px 15px;
+  background: rgba(79, 195, 247, 0.06);
+  border: 1px solid rgba(79, 195, 247, 0.12);
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.live-player::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #66bb6a;
+  box-shadow: 0 0 10px rgba(102, 187, 106, 0.5);
+}
+
+.live-player-placeholder,
+.live-player-empty,
+.live-player-error {
+  grid-column: 1 / -1;
+  padding: 22px;
+  text-align: center;
+  border-radius: 12px;
+  color: #91a7b2;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.live-player-error {
+  color: #ef9a9a;
+}
+
+.live-status-note {
+  margin: 18px 0 0;
+  color: #607d8b;
+  font-size: 12px;
+  line-height: 1.55;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .live-status-card {
+    padding: 20px 16px;
+  }
+
+  .live-status-topline {
+    flex-wrap: wrap;
+  }
+
+  .live-player-counter {
+    width: 100%;
+    margin-left: 20px;
+  }
+}

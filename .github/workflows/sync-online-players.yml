@@ -1,0 +1,231 @@
+name: Minecraft Online-Spieler synchronisieren
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "*/5 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync-online-players:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+
+      - name: Tools installieren
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp curl
+
+      - name: latest.log vom Minecraft-Server laden
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          mkdir -p temp
+          mkdir -p data
+
+          lftp -c "
+          set ftp:ssl-allow no;
+          set xfer:clobber true;
+          set net:max-retries 3;
+          set net:timeout 20;
+          open -p ${FTP_PORT} ftp://${FTP_HOST};
+          user ${FTP_USER} ${FTP_PASSWORD};
+          get logs/latest.log -o temp/latest.log;
+          bye
+          "
+
+      - name: Online-Spieler ermitteln
+        run: |
+          python3 <<'PY'
+          import json
+          import re
+          import urllib.request
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          log_path = Path("temp/latest.log")
+          output_path = Path("data/server-status.json")
+
+          players = set()
+
+          join_pattern = re.compile(
+              r": ([A-Za-z0-9_]{1,16}) joined the game"
+          )
+
+          leave_pattern = re.compile(
+              r": ([A-Za-z0-9_]{1,16}) left the game"
+          )
+
+          if log_path.exists():
+              with log_path.open(
+                  "r",
+                  encoding="utf-8",
+                  errors="ignore"
+              ) as log:
+                  for line in log:
+
+                      join_match = join_pattern.search(line)
+
+                      if join_match:
+                          players.add(
+                              join_match.group(1)
+                          )
+                          continue
+
+                      leave_match = leave_pattern.search(line)
+
+                      if leave_match:
+                          players.discard(
+                              leave_match.group(1)
+                          )
+
+          status = {
+              "online": False,
+              "onlineCount": len(players),
+              "maxPlayers": 25
+          }
+
+          try:
+              url = (
+                  "https://api.mcsrvstat.us/3/"
+                  "halfknife2026.serverminer.com"
+              )
+
+              with urllib.request.urlopen(
+                  url,
+                  timeout=20
+              ) as response:
+                  api = json.load(response)
+
+              status["online"] = bool(
+                  api.get("online", False)
+              )
+
+              player_data = api.get(
+                  "players",
+                  {}
+              )
+
+              status["onlineCount"] = int(
+                  player_data.get(
+                      "online",
+                      len(players)
+                  )
+              )
+
+              status["maxPlayers"] = int(
+                  player_data.get(
+                      "max",
+                      25
+                  )
+              )
+
+          except Exception as error:
+              print(
+                  "Status-API konnte nicht geladen werden:",
+                  error
+              )
+
+              status["online"] = (
+                  True if players else False
+              )
+
+          comparison = {
+              "online": status["online"],
+              "onlineCount": status["onlineCount"],
+              "maxPlayers": status["maxPlayers"],
+              "players": sorted(
+                  players,
+                  key=str.lower
+              )
+          }
+
+          old_data = None
+
+          if output_path.exists():
+              try:
+                  old_data = json.loads(
+                      output_path.read_text(
+                          encoding="utf-8"
+                      )
+                  )
+              except Exception:
+                  old_data = None
+
+          if old_data:
+              old_comparison = {
+                  "online": old_data.get("online"),
+                  "onlineCount": old_data.get(
+                      "onlineCount"
+                  ),
+                  "maxPlayers": old_data.get(
+                      "maxPlayers"
+                  ),
+                  "players": old_data.get(
+                      "players",
+                      []
+                  )
+              }
+
+              if comparison == old_comparison:
+                  result = old_data
+              else:
+                  result = {
+                      **comparison,
+                      "updatedAt": datetime.now(
+                          timezone.utc
+                      ).isoformat()
+                  }
+
+          else:
+              result = {
+                  **comparison,
+                  "updatedAt": datetime.now(
+                      timezone.utc
+                  ).isoformat()
+              }
+
+          output_path.write_text(
+              json.dumps(
+                  result,
+                  ensure_ascii=False,
+                  indent=2
+              ) + "\n",
+              encoding="utf-8"
+          )
+
+          print(
+              json.dumps(
+                  result,
+                  ensure_ascii=False,
+                  indent=2
+              )
+          )
+          PY
+
+      - name: JSON prüfen
+        run: |
+          python3 -m json.tool data/server-status.json > /dev/null
+
+      - name: Änderungen speichern
+        run: |
+          git config user.name "HalfKnife SMP Bot"
+          git config user.email "actions@github.com"
+
+          git add data/server-status.json
+
+          if git diff --cached --quiet; then
+            echo "Keine Änderung am Serverstatus."
+          else
+            git commit -m "Online-Spieler automatisch aktualisiert"
+            git push
+          fi

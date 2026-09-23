@@ -1,0 +1,60 @@
+name: Minecraft Whitelist synchronisieren
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "*/5 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync-whitelist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+
+      - name: lftp installieren
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
+      - name: Whitelist vom Minecraft-Server laden
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          mkdir -p data
+
+          lftp -c "
+          set ftp:ssl-allow no;
+          set net:max-retries 3;
+          set net:timeout 20;
+          open -p ${FTP_PORT} ftp://${FTP_HOST};
+          user ${FTP_USER} ${FTP_PASSWORD};
+          get whitelist.json -o data/whitelist.json;
+          bye
+          "
+
+      - name: JSON prüfen
+        run: |
+          python -m json.tool data/whitelist.json > /dev/null
+
+      - name: Änderungen speichern
+        run: |
+          git config user.name "HalfKnife SMP Bot"
+          git config user.email "actions@github.com"
+
+          git add data/whitelist.json
+
+          if git diff --cached --quiet; then
+            echo "Keine Änderung an der Whitelist."
+          else
+            git commit -m "Whitelist automatisch aktualisiert"
+            git push
+          fi

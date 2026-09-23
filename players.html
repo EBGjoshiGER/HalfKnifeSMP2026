@@ -93,8 +93,8 @@
           Spieler
         </div>
 
-        <div class="value">
-          5
+        <div class="value" id="online-player-count">
+          Lädt…
         </div>
 
       </div>
@@ -149,63 +149,62 @@
   </section>
 
 
+  <section class="section" id="live-players-section">
+
+    <div class="section-heading">
+
+      <h2>
+        Gerade online
+      </h2>
+
+      <p id="server-status-text">
+        Serverstatus wird geladen…
+      </p>
+
+    </div>
+
+    <div class="live-status-card">
+      <div class="live-status-topline">
+        <span class="status-dot loading" id="server-status-dot" aria-hidden="true"></span>
+        <strong id="server-status-label">Status wird geprüft…</strong>
+        <span class="live-player-counter" id="live-player-counter">– / –</span>
+      </div>
+
+      <div class="live-player-grid" id="live-player-list" aria-live="polite">
+        <div class="live-player-placeholder">
+          Spielerliste wird geladen…
+        </div>
+      </div>
+
+      <p class="live-status-note" id="live-status-note">
+        Die Anzeige aktualisiert sich automatisch. Der externe Statusdienst kann Daten zwischenspeichern.
+      </p>
+    </div>
+
+  </section>
+
+
   <section class="section">
 
     <div class="section-heading">
 
       <h2>
-        Aktuelle Spieler
+        Freigeschaltete Spieler
       </h2>
 
       <p>
-        Alle bisher freigeschalteten Mitglieder der Season.
+        Mitglieder, die aktuell für die Season freigeschaltet sind.
       </p>
 
     </div>
 
     <div class="features">
 
-      <div class="feature">
-
-        <h3>
-          EBGjoshiGER
-        </h3>
-
-      </div>
-
-      <div class="feature">
-
-        <h3>
-          Juronimo
-        </h3>
-
-      </div>
-
-      <div class="feature">
-
-        <h3>
-          3b0
-        </h3>
-
-      </div>
-
-
-      <div class="feature">
-
-        <h3>
-          schmxdiii
-        </h3>
-
-      </div>
-
-
-      <div class="feature">
-
-        <h3>
-          zCallMeApple
-        </h3>
-
-      </div>
+      <div class="feature"><h3>EBGjoshiGER</h3></div>
+      <div class="feature"><h3>Juronimo</h3></div>
+      <div class="feature"><h3>3b0</h3></div>
+      <div class="feature"><h3>schmxdiii</h3></div>
+      <div class="feature"><h3>zCallMeApple</h3></div>
 
     </div>
 

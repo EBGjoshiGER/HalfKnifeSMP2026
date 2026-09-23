@@ -52,9 +52,39 @@ jobs:
           bye
           "
 
-      - name: Whitelist prüfen
+      - name: Heruntergeladene Whitelist prüfen
         run: |
           python3 -m json.tool temp/whitelist.json > /dev/null
+
+      - name: Whitelist Debug
+        run: |
+          echo "======================================"
+          echo "HERUNTERGELADENE WHITELIST VOM SERVER"
+          echo "======================================"
+
+          cat temp/whitelist.json
+
+          echo ""
+          echo "======================================"
+          echo "AKTUELLE WHITELIST IM GITHUB REPOSITORY"
+          echo "======================================"
+
+          if [ -f data/whitelist.json ]; then
+            cat data/whitelist.json
+          else
+            echo "data/whitelist.json existiert noch nicht."
+          fi
+
+          echo ""
+          echo "======================================"
+          echo "UNTERSCHIEDE"
+          echo "======================================"
+
+          if [ -f data/whitelist.json ]; then
+            diff -u data/whitelist.json temp/whitelist.json || true
+          else
+            echo "Keine Repository-Datei vorhanden."
+          fi
 
       - name: Serverdaten erzeugen
         run: |
@@ -76,9 +106,9 @@ jobs:
           status_path = Path("data/server-status.json")
 
 
-          # -------------------------------------------------
+          # =================================================
           # WHITELIST
-          # -------------------------------------------------
+          # =================================================
 
           new_whitelist = json.loads(
               temp_whitelist.read_text(
@@ -95,12 +125,39 @@ jobs:
                           encoding="utf-8"
                       )
                   )
-              except Exception:
+              except Exception as error:
+                  print(
+                      "Alte Whitelist konnte nicht gelesen werden:",
+                      error
+                  )
+
                   old_whitelist = None
 
 
+          print("")
+          print("----- Whitelist-Vergleich -----")
+
+          print(
+              "Server:",
+              json.dumps(
+                  new_whitelist,
+                  ensure_ascii=False
+              )
+          )
+
+          print(
+              "Repository:",
+              json.dumps(
+                  old_whitelist,
+                  ensure_ascii=False
+              )
+          )
+
+
           if new_whitelist != old_whitelist:
-              print("Whitelist hat sich geändert.")
+              print(
+                  "Whitelist hat sich geändert."
+              )
 
               shutil.copyfile(
                   temp_whitelist,
@@ -108,12 +165,14 @@ jobs:
               )
 
           else:
-              print("Whitelist unverändert.")
+              print(
+                  "Whitelist unverändert."
+              )
 
 
-          # -------------------------------------------------
-          # SERVER.PROPERTIES EINLESEN
-          # -------------------------------------------------
+          # =================================================
+          # SERVER.PROPERTIES
+          # =================================================
 
           properties = {}
 
@@ -139,7 +198,9 @@ jobs:
                       1
                   )
 
-                  properties[key.strip()] = value.strip()
+                  properties[
+                      key.strip()
+                  ] = value.strip()
 
 
           minecraft_host = properties.get(
@@ -175,6 +236,9 @@ jobs:
               max_players = 25
 
 
+          print("")
+          print("----- Serverdaten -----")
+
           print(
               "Minecraft-Server:",
               minecraft_host,
@@ -187,9 +251,9 @@ jobs:
           )
 
 
-          # -------------------------------------------------
+          # =================================================
           # ONLINE-SPIELER AUS latest.log
-          # -------------------------------------------------
+          # =================================================
 
           players = set()
 
@@ -219,6 +283,7 @@ jobs:
                           players.add(
                               join_match.group(1)
                           )
+
                           continue
 
 
@@ -238,15 +303,15 @@ jobs:
           )
 
 
-          # -------------------------------------------------
+          print(
+              "Online-Spieler:",
+              sorted_players
+          )
+
+
+          # =================================================
           # SERVER ONLINE?
-          #
-          # WICHTIG:
-          # Serverstatus wird NICHT mehr anhand der
-          # Spieleranzahl bestimmt.
-          #
-          # 0 Spieler = Server kann trotzdem online sein.
-          # -------------------------------------------------
+          # =================================================
 
           server_online = False
 
@@ -272,15 +337,10 @@ jobs:
               server_online
           )
 
-          print(
-              "Online-Spieler:",
-              sorted_players
-          )
 
-
-          # -------------------------------------------------
-          # STATUSDATEI
-          # -------------------------------------------------
+          # =================================================
+          # SERVERSTATUS JSON
+          # =================================================
 
           comparison = {
               "online": server_online,
@@ -301,7 +361,13 @@ jobs:
                           encoding="utf-8"
                       )
                   )
-              except Exception:
+
+              except Exception as error:
+                  print(
+                      "Alter Serverstatus konnte nicht gelesen werden:",
+                      error
+                  )
+
                   old_status = None
 
 
@@ -337,8 +403,16 @@ jobs:
                   ).isoformat()
               }
 
+              print(
+                  "Serverstatus hat sich geändert."
+              )
+
           elif old_status:
               result = old_status
+
+              print(
+                  "Serverstatus unverändert."
+              )
 
           else:
               result = {
@@ -359,6 +433,11 @@ jobs:
           )
 
 
+          print("")
+          print(
+              "----- Erzeugter Serverstatus -----"
+          )
+
           print(
               json.dumps(
                   result,
@@ -376,11 +455,25 @@ jobs:
 
       - name: Änderungen anzeigen
         run: |
-          echo "----- Git Status -----"
+          echo "======================================"
+          echo "GIT STATUS"
+          echo "======================================"
+
           git status --short
 
-          echo "----- Änderungen -----"
-          git diff -- data/whitelist.json data/server-status.json || true
+          echo ""
+          echo "======================================"
+          echo "WHITELIST DIFF"
+          echo "======================================"
+
+          git diff -- data/whitelist.json || true
+
+          echo ""
+          echo "======================================"
+          echo "SERVERSTATUS DIFF"
+          echo "======================================"
+
+          git diff -- data/server-status.json || true
 
       - name: Änderungen speichern
         run: |
@@ -390,10 +483,18 @@ jobs:
           git add data/whitelist.json
           git add data/server-status.json
 
+          echo ""
+          echo "======================================"
+          echo "GESTAGTE ÄNDERUNGEN"
+          echo "======================================"
+
+          git diff --cached --stat || true
+
           if git diff --cached --quiet; then
             echo "Keine Änderungen vorhanden."
             exit 0
           fi
 
           git commit -m "Minecraft Serverdaten automatisch aktualisiert"
+
           git push

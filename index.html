@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>HalfKnife SMP 2026</title>
+
+  <link rel="icon" type="image/png" href="favicon_io/favicon-32x32.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+<body>
+
+
+  <!-- =======================================================
+       SPENDENBUTTON
+  ======================================================== -->
+
+  <div class="donate-button">
+    <a
+      href="https://www.paypal.com/ncp/payment/XWKY58K2FBHQC"
+      target="_blank"
+      rel="noopener"
+    >
+      <img
+        src="donation.png"
+        alt="HalfKnife SMP unterstützen"
+      >
+    </a>
+  </div>
+
+
+  <div class="container">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header>
+
+      <div class="logo-container">
+        <img
+          src="logo.png"
+          class="logo"
+          alt="HalfKnife SMP 2026"
+        >
+      </div>
+
+
+      <nav class="nav" id="main-nav" aria-label="Hauptnavigation"></nav>
+
+    </header>
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <main>
+
+      <section class="hero">
+
+        <div class="season-label">
+          ✦ Season 2026
+        </div>
+
+        <h1>
+          HALFKNIFE <span>SMP</span>
+        </h1>
+
+        <p>
+          Eine gemeinsame Minecraft-Welt, jedes Jahr neu.
+          Vanilla-Feeling trifft auf ausgewählte Mods,
+          neue Strukturen, neue Abenteuer und unsere Community.
+        </p>
+
+      </section>
+
+
+      <!-- ===================================================
+           COUNTDOWN
+      ==================================================== -->
+
+      <section class="countdown-box">
+
+        <div class="countdown-title">
+          Seasonstart · 24. Oktober 2026 · 14:00 Uhr
+        </div>
+
+        <div id="countdown">
+          Lädt...
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           BUTTONS
+      ==================================================== -->
+
+      <div class="button-row">
+
+        <a
+          class="button button-primary"
+          href="https://modrinth.com/modpack/halfknifesmp2026"
+        >
+          🧩 Modpack ansehen
+        </a>
+
+        <a
+          class="button button-secondary"
+          href="install.html"
+        >
+          ⚙️ Installation
+        </a>
+
+      </div>
+
+
+      <!-- ===================================================
+           SERVER INFOS
+      ==================================================== -->
+
+      <section class="section">
+
+        <div class="section-heading">
+
+          <h2>Server-Infos</h2>
+
+          <p>
+            Alles, was du zum Beitreten wissen musst.
+          </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+
+          <div class="info-card">
+
+            <div class="info-icon">🌐</div>
+
+            <div class="label">
+              Serveradresse
+            </div>
+
+            <div class="value server-address">
+
+              <span id="server-ip">
+                halfknife2026.serverminer.com
+              </span>
+
+              <button
+                class="copy-button"
+                onclick="copyIP()"
+                title="Serveradresse kopieren"
+              >
+                📋
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <div class="info-icon">⛏️</div>
+
+            <div class="label">
+              Minecraft
+            </div>
+
+            <div class="value">
+              Fabric 1.26.2
+            </div>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <div class="info-icon">🎙️</div>
+
+            <div class="label">
+              Voice Chat
+            </div>
+
+            <div class="value">
+              🟢 Aktiv
+            </div>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <div class="info-icon">🔒</div>
+
+            <div class="label">
+              Whitelist
+            </div>
+
+            <div class="value">
+              Aktiv
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           WAS DICH ERWARTET
+      ==================================================== -->
+
+      <section class="section">
+
+        <div class="section-heading">
+
+          <h2>Was dich erwartet</h2>
+
+          <p>
+            Mehr Minecraft, ohne Minecraft aus den Augen zu verlieren.
+          </p>
+
+        </div>
+
+
+        <div class="features">
+
+
+          <div class="feature">
+
+            <div class="feature-icon">
+              🌍
+            </div>
+
+            <h3>
+              Eine neue Welt
+            </h3>
+
+            <p>
+              Erkunde eine abwechslungsreichere Welt mit
+              neuen Strukturen, Dörfern und Landschaften.
+              Dabei bleibt der Stil bewusst nah an Vanilla Minecraft.
+            </p>
+
+          </div>
+
+
+          <div class="feature">
+
+            <div class="feature-icon">
+              ⚔️
+            </div>
+
+            <h3>
+              Gemeinsam spielen
+            </h3>
+
+            <p>
+              Ob riesiges Bauprojekt, gemeinsames Abenteuer,
+              spontanes Chaos oder geplantes Event –
+              HalfKnife SMP lebt von den Spielern.
+            </p>
+
+          </div>
+
+
+          <div class="feature">
+
+            <div class="feature-icon">
+              🧩
+            </div>
+
+            <h3>
+              Vanilla+
+            </h3>
+
+            <p>
+              Ausgewählte Mods erweitern Minecraft um
+              neue Möglichkeiten, Komfort und Atmosphäre,
+              ohne das Grundgefühl des Spiels komplett zu verändern.
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           VANILLA+
+      ==================================================== -->
+
+      <section class="section">
+
+        <div class="vanilla-box">
+
+          <h2>
+            Unser Modpack: Vanilla+
+          </h2>
+
+          <p>
+            HalfKnife SMP soll sich weiterhin wie Minecraft anfühlen.
+            Die Mods sollen die Welt erweitern, nicht das Spiel ersetzen.
+          </p>
+
+
+          <div class="vanilla-bar"></div>
+
+          <div class="vanilla-labels">
+
+            <span>
+              VANILLA
+            </span>
+
+            <span>
+              HALFKNIFE SMP
+            </span>
+
+            <span>
+              HEAVILY MODDED
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           DISCORD
+      ==================================================== -->
+
+      <section class="section">
+
+        <div class="discord">
+
+          <h2>
+            🗨️ Teil der Community werden
+          </h2>
+
+          <p>
+            Alle wichtigen Informationen, Ankündigungen,
+            Absprachen und der Voice-Chat laufen über unseren Discord.
+          </p>
+
+          <a
+            class="button button-primary"
+            href="https://discord.gg/TK9UQVsz8b"
+            target="_blank"
+            rel="noopener"
+          >
+            Discord beitreten
+          </a>
+
+        </div>
+
+      </section>
+
+
+    </main>
+
+  </div>
+
+
+  <!-- =======================================================
+       FOOTER
+  ======================================================== -->
+
+  <footer>
+
+    <div class="footer-links">
+
+      <a href="help.html">
+        Hilfe & Neuerungen
+      </a>
+
+      ·
+
+      <a href="rules.html">
+        Regeln
+      </a>
+
+      ·
+
+      <a href="events.html">
+        Events
+      </a>
+
+      ·
+
+      <a href="discord.html">
+        Discord
+      </a>
+
+    </div>
+
+
+    <div class="disclaimer">
+
+      HalfKnife SMP 2026 ·
+      Hinweis: Teile dieser Website (Grafiken, Texte und Layout)
+      wurden mit Unterstützung von KI erstellt.
+
+    </div>
+
+  </footer>
+
+
+  <!-- =======================================================
+       JAVASCRIPT
+  ======================================================== -->
+
+
+  <script src="js/main.js"></script>
+
+</body>
+</html>

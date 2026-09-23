@@ -33,6 +33,7 @@ jobs:
 
           lftp -c "
           set ftp:ssl-allow no;
+          set xfer:clobber true;
           set net:max-retries 3;
           set net:timeout 20;
           open -p ${FTP_PORT} ftp://${FTP_HOST};

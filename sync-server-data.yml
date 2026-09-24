@@ -1,0 +1,522 @@
+name: Minecraft Serverdaten synchronisieren
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "2-59/5 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: halfknife-server-data-sync
+  cancel-in-progress: false
+
+jobs:
+  sync-server-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+
+      - name: Tools installieren
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
+      - name: Serverdaten per FTP laden
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          mkdir -p temp
+          mkdir -p data
+
+          lftp -c "
+          set ftp:ssl-allow no;
+          set xfer:clobber true;
+          set net:max-retries 3;
+          set net:timeout 20;
+
+          open -p ${FTP_PORT} ftp://${FTP_HOST};
+          user ${FTP_USER} ${FTP_PASSWORD};
+
+          get whitelist.json -o temp/whitelist.json;
+          get logs/latest.log -o temp/latest.log;
+          get server.properties -o temp/server.properties;
+
+          bye
+          "
+
+      - name: Heruntergeladene Whitelist prüfen
+        run: |
+          python3 -m json.tool temp/whitelist.json > /dev/null
+
+      - name: Whitelist Debug
+        run: |
+          echo "======================================"
+          echo "HERUNTERGELADENE WHITELIST VOM SERVER"
+          echo "======================================"
+
+          cat temp/whitelist.json
+
+          echo ""
+          echo "======================================"
+          echo "AKTUELLE WHITELIST IM GITHUB REPOSITORY"
+          echo "======================================"
+
+          if [ -f data/whitelist.json ]; then
+            cat data/whitelist.json
+          else
+            echo "data/whitelist.json existiert noch nicht."
+          fi
+
+          echo ""
+          echo "======================================"
+          echo "UNTERSCHIEDE"
+          echo "======================================"
+
+          if [ -f data/whitelist.json ]; then
+            diff -u data/whitelist.json temp/whitelist.json || true
+          else
+            echo "Keine Repository-Datei vorhanden."
+          fi
+
+      - name: Serverdaten erzeugen
+        run: |
+          python3 <<'PY'
+          import json
+          import re
+          import socket
+          import shutil
+
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+
+          temp_whitelist = Path("temp/whitelist.json")
+          repo_whitelist = Path("data/whitelist.json")
+
+          log_path = Path("temp/latest.log")
+          properties_path = Path("temp/server.properties")
+          status_path = Path("data/server-status.json")
+
+
+          # =================================================
+          # WHITELIST
+          # =================================================
+
+          new_whitelist = json.loads(
+              temp_whitelist.read_text(
+                  encoding="utf-8"
+              )
+          )
+
+          old_whitelist = None
+
+          if repo_whitelist.exists():
+              try:
+                  old_whitelist = json.loads(
+                      repo_whitelist.read_text(
+                          encoding="utf-8"
+                      )
+                  )
+              except Exception as error:
+                  print(
+                      "Alte Whitelist konnte nicht gelesen werden:",
+                      error
+                  )
+
+                  old_whitelist = None
+
+
+          print("")
+          print("----- Whitelist-Vergleich -----")
+
+          print(
+              "Server:",
+              json.dumps(
+                  new_whitelist,
+                  ensure_ascii=False
+              )
+          )
+
+          print(
+              "Repository:",
+              json.dumps(
+                  old_whitelist,
+                  ensure_ascii=False
+              )
+          )
+
+
+          if new_whitelist != old_whitelist:
+              print(
+                  "Whitelist hat sich geändert."
+              )
+
+              shutil.copyfile(
+                  temp_whitelist,
+                  repo_whitelist
+              )
+
+          else:
+              print(
+                  "Whitelist unverändert."
+              )
+
+
+          # =================================================
+          # SERVER.PROPERTIES
+          # =================================================
+
+          properties = {}
+
+          if properties_path.exists():
+              for line in properties_path.read_text(
+                  encoding="utf-8",
+                  errors="ignore"
+              ).splitlines():
+
+                  line = line.strip()
+
+                  if not line:
+                      continue
+
+                  if line.startswith("#"):
+                      continue
+
+                  if "=" not in line:
+                      continue
+
+                  key, value = line.split(
+                      "=",
+                      1
+                  )
+
+                  properties[
+                      key.strip()
+                  ] = value.strip()
+
+
+          minecraft_host = properties.get(
+              "server-ip",
+              ""
+          )
+
+          if not minecraft_host:
+              minecraft_host = (
+                  "halfknife2026.serverminer.com"
+              )
+
+
+          try:
+              minecraft_port = int(
+                  properties.get(
+                      "server-port",
+                      "27885"
+                  )
+              )
+          except ValueError:
+              minecraft_port = 27885
+
+
+          try:
+              max_players = int(
+                  properties.get(
+                      "max-players",
+                      "25"
+                  )
+              )
+          except ValueError:
+              max_players = 25
+
+
+          print("")
+          print("----- Serverdaten -----")
+
+          print(
+              "Minecraft-Server:",
+              minecraft_host,
+              minecraft_port
+          )
+
+          print(
+              "Maximale Spieler:",
+              max_players
+          )
+
+
+          # =================================================
+          # ONLINE-SPIELER AUS latest.log
+          # =================================================
+
+          players = set()
+
+          join_pattern = re.compile(
+              r": ([A-Za-z0-9_]{1,16}) joined the game"
+          )
+
+          leave_pattern = re.compile(
+              r": ([A-Za-z0-9_]{1,16}) left the game"
+          )
+
+
+          if log_path.exists():
+              with log_path.open(
+                  "r",
+                  encoding="utf-8",
+                  errors="ignore"
+              ) as log:
+
+                  for line in log:
+
+                      join_match = join_pattern.search(
+                          line
+                      )
+
+                      if join_match:
+                          players.add(
+                              join_match.group(1)
+                          )
+
+                          continue
+
+
+                      leave_match = leave_pattern.search(
+                          line
+                      )
+
+                      if leave_match:
+                          players.discard(
+                              leave_match.group(1)
+                          )
+
+
+          sorted_players = sorted(
+              players,
+              key=str.lower
+          )
+
+
+          print(
+              "Online-Spieler:",
+              sorted_players
+          )
+
+
+          # =================================================
+          # SERVER ONLINE?
+          # =================================================
+
+          server_online = False
+
+          try:
+              with socket.create_connection(
+                  (
+                      minecraft_host,
+                      minecraft_port
+                  ),
+                  timeout=8
+              ):
+                  server_online = True
+
+          except Exception as error:
+              print(
+                  "Minecraft-Port nicht erreichbar:",
+                  error
+              )
+
+
+          print(
+              "Server online:",
+              server_online
+          )
+
+
+          # =================================================
+          # SERVERSTATUS JSON
+          # =================================================
+
+          comparison = {
+              "online": server_online,
+              "onlineCount": len(
+                  sorted_players
+              ),
+              "maxPlayers": max_players,
+              "players": sorted_players
+          }
+
+
+          old_status = None
+
+          if status_path.exists():
+              try:
+                  old_status = json.loads(
+                      status_path.read_text(
+                          encoding="utf-8"
+                      )
+                  )
+
+              except Exception as error:
+                  print(
+                      "Alter Serverstatus konnte nicht gelesen werden:",
+                      error
+                  )
+
+                  old_status = None
+
+
+          status_changed = True
+
+          if old_status:
+              old_comparison = {
+                  "online": old_status.get(
+                      "online"
+                  ),
+                  "onlineCount": old_status.get(
+                      "onlineCount"
+                  ),
+                  "maxPlayers": old_status.get(
+                      "maxPlayers"
+                  ),
+                  "players": old_status.get(
+                      "players",
+                      []
+                  )
+              }
+
+              status_changed = (
+                  comparison != old_comparison
+              )
+
+
+          if status_changed:
+              result = {
+                  **comparison,
+                  "updatedAt": datetime.now(
+                      timezone.utc
+                  ).isoformat()
+              }
+
+              print(
+                  "Serverstatus hat sich geändert."
+              )
+
+          elif old_status:
+              result = old_status
+
+              print(
+                  "Serverstatus unverändert."
+              )
+
+          else:
+              result = {
+                  **comparison,
+                  "updatedAt": datetime.now(
+                      timezone.utc
+                  ).isoformat()
+              }
+
+
+          status_path.write_text(
+              json.dumps(
+                  result,
+                  ensure_ascii=False,
+                  indent=2
+              ) + "\n",
+              encoding="utf-8"
+          )
+
+
+          print("")
+          print(
+              "----- Erzeugter Serverstatus -----"
+          )
+
+          print(
+              json.dumps(
+                  result,
+                  ensure_ascii=False,
+                  indent=2
+              )
+          )
+
+          PY
+
+      - name: Erzeugte JSON-Dateien prüfen
+        run: |
+          python3 -m json.tool data/whitelist.json > /dev/null
+          python3 -m json.tool data/server-status.json > /dev/null
+
+      - name: Nether-Projekt synchronisieren
+        id: nether_sync
+        continue-on-error: true
+        timeout-minutes: 3
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          python3 scripts/download_nether_project.py
+          python3 scripts/export_nether_project.py --config temp/netherproject/config.json --progress temp/netherproject/progress.json --output data/nether-project.json
+
+      - name: Änderungen anzeigen
+        run: |
+          echo "======================================"
+          echo "GIT STATUS"
+          echo "======================================"
+
+          git status --short
+
+          echo ""
+          echo "======================================"
+          echo "WHITELIST DIFF"
+          echo "======================================"
+
+          git diff -- data/whitelist.json || true
+
+          echo ""
+          echo "======================================"
+          echo "SERVERSTATUS DIFF"
+          echo "======================================"
+
+          git diff -- data/server-status.json || true
+
+      - name: Änderungen speichern
+        run: |
+          git config user.name "HalfKnife SMP Bot"
+          git config user.email "actions@github.com"
+
+          git add data/whitelist.json
+          git add data/server-status.json
+          if [ -f data/nether-project.json ]; then
+            git add data/nether-project.json
+          fi
+
+          echo ""
+          echo "======================================"
+          echo "GESTAGTE ÄNDERUNGEN"
+          echo "======================================"
+
+          git diff --cached --stat || true
+
+          if git diff --cached --quiet; then
+            echo "Keine Änderungen vorhanden."
+            exit 0
+          fi
+
+          git commit -m "Minecraft Serverdaten automatisch aktualisiert"
+
+          git push
+
+      - name: Fehler beim Nether-Projekt melden
+        if: always() && steps.nether_sync.outcome == 'failure'
+        run: |
+          echo "::error::Nether-Synchronisierung fehlgeschlagen. Der letzte gültige Projektstand bleibt erhalten. FTP-Pfad config/netherproject und JSON-Dateien prüfen."
+          exit 1

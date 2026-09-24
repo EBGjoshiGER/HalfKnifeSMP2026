@@ -1,7 +1,9 @@
 {
   "online": true,
-  "onlineCount": 0,
+  "onlineCount": 1,
   "maxPlayers": 25,
-  "players": [],
-  "updatedAt": "2026-09-23T16:06:09.623951+00:00"
+  "players": [
+    "EBGjoshiGER"
+  ],
+  "updatedAt": "2026-09-24T04:14:26.569153+00:00"
 }

@@ -6,8 +6,9 @@
   <title>Events · HalfKnife SMP 2026</title>
   <link rel="icon" type="image/png" href="favicon_io/favicon-32x32.png">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/nether-project.css?v=1">
 </head>
-<body>
+<body class="events-page">
   <div class="donate-button">
     <a href="https://www.paypal.com/ncp/payment/XWKY58K2FBHQC" target="_blank" rel="noopener">
       <img src="donation.png" alt="HalfKnife SMP unterstützen">
@@ -36,32 +37,29 @@
         </div>
 
         <div class="events-list">
-          <article class="event-card featured">
+          <article class="event-card featured" id="nether-project" data-source="https://raw.githubusercontent.com/EBGjoshiGER/HalfKnifeSMP2026/main/data/nether-project.json">
             <div class="event-header">
               <div class="event-title-wrap">
                 <div class="event-kicker">Erstes Gemeinschaftsziel</div>
                 <h2>🔥 Nether-Projekt</h2>
               </div>
-              <div class="event-status">● Geplant · ab Tag 2</div>
+              <div class="event-status" id="nether-status">Status wird geladen …</div>
             </div>
             <p class="event-description">Der Nether ist zu Beginn der Season gesperrt. Gemeinsam sammelt ihr Ressourcen und zahlt sie in das Serverprojekt ein. Sobald das Ziel zu 100 % erfüllt ist, wird der Nether nach einem kurzen Countdown für alle freigeschaltet.</p>
 
             <div class="event-meta">
               <div class="event-meta-item"><div class="label">Ziel</div><div class="value">Nether freischalten</div></div>
               <div class="event-meta-item"><div class="label">Teilnahme</div><div class="value">Für alle Spieler</div></div>
-              <div class="event-meta-item"><div class="label">Fortschritt</div><div class="value">Gemeinsam serverweit</div></div>
+              <div class="event-meta-item"><div class="label">Fortschritt</div><div class="value" id="nether-goals">Wird geladen …</div></div>
             </div>
+            <p class="nether-sync" id="nether-sync" role="status">Projektstand wird geladen …</p>
+            <noscript><p>Aktiviere JavaScript, um Projektfortschritt und Rangliste zu sehen.</p></noscript>
 
             <div class="event-columns">
               <div class="event-panel">
-                <h3>Benötigte Ressourcen</h3>
-                <div class="requirement-list">
-                  <div class="requirement"><span>Obsidian</span><strong>768</strong></div>
-                  <div class="requirement"><span>Eisenbarren</span><strong>5.120</strong></div>
-                  <div class="requirement"><span>Goldbarren</span><strong>1.280</strong></div>
-                  <div class="requirement"><span>Diamanten</span><strong>400</strong></div>
-                  <div class="requirement"><span>Redstone</span><strong>5.120</strong></div>
-                  <div class="requirement"><span>Lapislazuli</span><strong>2.560</strong></div>
+                <h3>Gemeinsam gesammelt</h3>
+                <div class="nether-resources" id="nether-resources">
+                  <p class="nether-empty">Ressourcenstand wird geladen …</p>
                 </div>
               </div>
               <div class="event-panel command-list">
@@ -72,6 +70,19 @@
                 <div class="event-note">Eingezahlte Items sind endgültig abgegeben. Die Punkte dienen nur dem Spender-Leaderboard.</div>
               </div>
             </div>
+            <div class="event-panel nether-leaderboard">
+              <div class="nether-leaderboard-header">
+                <h3>Spender-Leaderboard</h3>
+                <span class="nether-donors" id="nether-donors"></span>
+              </div>
+              <table id="nether-leaderboard-table" hidden>
+                <caption>Nach den Spendenpunkten aus dem Spiel. Gleiche Punktzahl bedeutet gleicher Rang.</caption>
+                <thead><tr><th scope="col">Platz</th><th scope="col">Spieler</th><th scope="col">Punkte</th></tr></thead>
+                <tbody id="nether-leaderboard-body"></tbody>
+              </table>
+              <p class="nether-empty" id="nether-empty">Rangliste wird geladen …</p>
+            </div>
+            <p class="nether-footnote">Der Serverstand wird regelmäßig übernommen. Neue Einzahlungen erscheinen zeitversetzt. Für den Abschluss müssen alle Ressourcen ihr jeweiliges Ziel erreichen.</p>
           </article>
 
           <article class="event-card">
@@ -129,5 +140,6 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/nether-project.js?v=1"></script>
 </body>
 </html>

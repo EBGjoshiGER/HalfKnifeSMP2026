@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "syncedAt": "2026-09-24T03:45:30.898921+00:00",
+  "status": "not_started",
+  "resources": [
+    {
+      "id": "minecraft:obsidian",
+      "name": "Obsidian",
+      "donated": 0,
+      "required": 768
+    },
+    {
+      "id": "minecraft:iron_ingot",
+      "name": "Eisenbarren",
+      "donated": 0,
+      "required": 5120
+    },
+    {
+      "id": "minecraft:gold_ingot",
+      "name": "Goldbarren",
+      "donated": 0,
+      "required": 1280
+    },
+    {
+      "id": "minecraft:diamond",
+      "name": "Diamanten",
+      "donated": 0,
+      "required": 400
+    },
+    {
+      "id": "minecraft:redstone",
+      "name": "Redstone",
+      "donated": 0,
+      "required": 5120
+    },
+    {
+      "id": "minecraft:lapis_lazuli",
+      "name": "Lapislazuli",
+      "donated": 0,
+      "required": 2560
+    }
+  ],
+  "leaderboard": []
+}

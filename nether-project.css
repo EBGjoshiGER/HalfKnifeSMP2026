@@ -1,0 +1,37 @@
+#nether-project [hidden] { display: none !important; }
+#nether-project .nether-sync { color: #99b0bb; font-size: 12px; line-height: 1.6; margin: 12px 0 24px; }
+#nether-project .nether-sync[data-warning="true"] { color: #ffcc80; }
+#nether-project .event-status[data-state="completed"] { color: #a0e6be; border-color: #47775d; background: #142d23; }
+#nether-project .event-status[data-state="paused"] { color: #d1b3ed; border-color: #68527d; background: #241b30; }
+#nether-project .nether-resources { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+#nether-project .nether-resource { min-width: 0; padding: 16px; border: 1px solid #ffffff13; border-radius: 12px; background: #ffffff05; }
+#nether-project .nether-resource-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; color: #c4d6de; font-size: 14px; }
+#nether-project .nether-resource-heading strong { color: #ffcc80; font-size: 13px; font-variant-numeric: tabular-nums; }
+#nether-project .nether-meter { display: block; appearance: none; width: 100%; height: 8px; margin: 13px 0 9px; border: 0; border-radius: 8px; overflow: hidden; background: #ffffff12; color: #ffb14b; accent-color: #ffb14b; }
+#nether-project .nether-meter::-webkit-progress-bar { background: #ffffff12; border-radius: 8px; }
+#nether-project .nether-meter::-webkit-progress-value { background: linear-gradient(90deg, #ff8a3d, #ffd082); border-radius: 8px; }
+#nether-project .nether-meter::-moz-progress-bar { background: linear-gradient(90deg, #ff8a3d, #ffd082); border-radius: 8px; }
+#nether-project .nether-resource-note { color: #9bb0ba; font-size: 12px; line-height: 1.5; }
+#nether-project .nether-resource[data-complete="true"] .nether-resource-note { color: #a0e6be; }
+#nether-project .nether-leaderboard { margin-top: 18px; }
+#nether-project .nether-leaderboard-header { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+#nether-project .nether-leaderboard-header h3 { margin: 0; }
+#nether-project .nether-donors { color: #91aab6; font-size: 12px; }
+#nether-project table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+#nether-project caption { text-align: left; color: #9bb0ba; font-size: 13px; margin-bottom: 16px; line-height: 1.6; }
+#nether-project th { text-align: left; text-transform: uppercase; letter-spacing: 1px; font-size: 10px; color: #91aab6; padding: 10px 8px; border-bottom: 1px solid #ffffff18; }
+#nether-project td { padding: 13px 8px; border-bottom: 1px solid #ffffff0b; font-size: 14px; }
+#nether-project th:first-child { width: 54px; }
+#nether-project th:last-child { width: 100px; text-align: right; }
+#nether-project .nether-player { overflow-wrap: anywhere; color: #dfebf1; }
+#nether-project .nether-rank { color: #93abb7; font-variant-numeric: tabular-nums; }
+#nether-project .nether-points { text-align: right; font-variant-numeric: tabular-nums; color: #ffcc80; }
+#nether-project tr[data-rank="1"] .nether-rank { color: #ffd082; font-weight: 800; }
+#nether-project .nether-empty { color: #9bb0ba; line-height: 1.7; font-size: 14px; margin: 0; }
+#nether-project .nether-footnote { color: #91aab6; font-size: 12px; line-height: 1.6; margin: 16px 0 0; }
+@media (max-width: 650px) {
+  .events-page .donate-button { position: absolute; }
+  #nether-project .nether-resources { grid-template-columns: 1fr; }
+  #nether-project .event-panel { padding: 16px; }
+  #nether-project .nether-resource { padding: 13px; }
+}

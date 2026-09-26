@@ -119,9 +119,9 @@
             </div>
 
             <p class="event-description">
-              Lust auf eine Runde Wissen, Buzzer-Chaos oder Jeopardy? Die QuizNight kann unabhängig von einem festen Termin gestartet werden.
-              Ein Host eröffnet eine Lobby, Spieler können beitreten oder zuschauen und danach wird direkt im Spiel gespielt – inklusive Voicechat,
-              Punkteanzeigen, Sounds und automatischer Auswertung.
+              Lust auf eine Runde Wissen, Buzzer-Chaos oder Jeopardy? Die QuizNight kann jederzeit spontan gestartet werden.
+              Ein Host eröffnet eine Lobby, Spieler können mitmachen oder zuschauen und danach läuft alles direkt ingame –
+              inklusive Voicechat, Punkteanzeige, Sounds und automatischer Auswertung.
             </p>
 
             <div class="event-meta">
@@ -146,31 +146,39 @@
                   <div class="requirement"><span>1. Lobby</span><strong>Host startet ein Quiz</strong></div>
                   <div class="requirement"><span>2. Beitreten</span><strong>Mitspielen oder zuschauen</strong></div>
                   <div class="requirement"><span>3. Ready</span><strong>Teilnehmer bestätigen</strong></div>
-                  <div class="requirement"><span>4. Spielen</span><strong>Fragen direkt ingame</strong></div>
+                  <div class="requirement"><span>4. Start</span><strong>Fragen direkt ingame</strong></div>
                   <div class="requirement"><span>5. Ergebnis</span><strong>Automatische Auswertung</strong></div>
                 </div>
+              </div>
+
+              <div class="event-panel">
+                <h3>Gut zu wissen</h3>
+                <div class="requirement-list">
+                  <div class="requirement"><span>Chat-Buttons</span><strong>Mitspielen &amp; Zuschauen anklickbar</strong></div>
+                  <div class="requirement"><span>Voicechat</span><strong>Teilnehmer werden automatisch in die Quiz-Gruppe verschoben</strong></div>
+                  <div class="requirement"><span>Keine Störung</span><strong>Unbeteiligte Spieler bekommen vom laufenden Quiz nichts mit</strong></div>
+                  <div class="requirement"><span>Moderation</span><strong>Host steuert Fragen, Auflösung und Tempo</strong></div>
+                </div>
                 <div class="event-note">
-                  Wird eine Quiz-Lobby eröffnet, erscheinen im Chat zusätzlich anklickbare Buttons für <strong>Mitspielen</strong> und <strong>Zuschauen</strong>.
-                  Nicht beteiligte Spieler werden vom laufenden Quiz nicht gestört.
+                  Wird eine Quiz-Lobby eröffnet, erscheinen im Chat zusätzliche Buttons für <strong>Mitspielen</strong> und <strong>Zuschauen</strong>.
+                </div>
+              </div>
+            </div>
+
+            <div class="event-columns">
+              <div class="event-panel">
+                <h3>Die drei Spielmodi</h3>
+                <div class="requirement-list">
+                  <div class="requirement"><span>Buzzer</span><strong>Schnell reagieren und als Erster buzzern.</strong></div>
+                  <div class="requirement"><span>Der Dümmste fliegt</span><strong>Fragen beantworten, abstimmen und Leben behalten.</strong></div>
+                  <div class="requirement"><span>Jeopardy</span><strong>Kategorien wählen und gezielt Punkte sammeln.</strong></div>
                 </div>
               </div>
 
               <div class="event-panel command-list">
-                <h3>Spieler-Commands</h3>
+                <h3>Wichtige Commands</h3>
                 <code>/quiz</code>
-                <div class="event-note">Öffnet das Quiz-Menü und zeigt den aktuell passenden Einstieg.</div>
-
-                <code>/quiz join</code>
-                <div class="event-note">Tritt einer offenen Quiz-Lobby als Teilnehmer bei.</div>
-
-                <code>/quiz ready</code>
-                <div class="event-note">Setzt deinen Ready-Status in der Lobby.</div>
-
-                <code>/quiz spectate</code>
-                <div class="event-note">Tritt der QuizNight als Zuschauer bei.</div>
-
-                <code>/quiz leave</code>
-                <div class="event-note">Verlässt die Lobby beziehungsweise Zuschauerrolle.</div>
+                <div class="event-note">Öffnet das Quiz-Menü und ist der normale Einstieg für Spieler.</div>
 
                 <code>/quiz stats</code>
                 <div class="event-note">Zeigt deine persönlichen Quiz-Statistiken.</div>
@@ -180,28 +188,9 @@
 
                 <code>/quiz leaderboard all</code>
                 <div class="event-note">Zeigt das All-Time-Leaderboard.</div>
-              </div>
-            </div>
 
-            <div class="event-columns">
-              <div class="event-panel">
-                <h3>Die drei Spielmodi</h3>
-                <div class="requirement-list">
-                  <div class="requirement"><span>🔔 Buzzer</span><strong>Schnell reagieren &amp; buzzern</strong></div>
-                  <div class="requirement"><span>💀 Der Dümmste fliegt</span><strong>Fragen, Leben &amp; Abstimmungen</strong></div>
-                  <div class="requirement"><span>🟦 Jeopardy</span><strong>Kategorien wählen &amp; Punkte sammeln</strong></div>
-                </div>
-              </div>
-
-              <div class="event-panel command-list">
-                <h3>Selbst hosten</h3>
                 <code>/quiz host</code>
-                <div class="event-note">
-                  Öffnet die Quiz-Erstellung. Der Host wählt Spielmodus, Fragenkatalog und Einstellungen aus und verwaltet anschließend die Runde.
-                </div>
-                <div class="event-note">
-                  Bei Jeopardy kann der Host außerdem auswählen, wie viele und welche Kategorien gespielt werden.
-                </div>
+                <div class="event-note">Erstellt eine eigene QuizNight und öffnet die Host-Einstellungen.</div>
               </div>
             </div>
           </article>

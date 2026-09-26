@@ -1,10 +1,11 @@
 {
   "online": true,
-  "onlineCount": 2,
+  "onlineCount": 3,
   "maxPlayers": 25,
   "players": [
+    "3b0",
     "404Zukunft",
     "EBGjoshiGER"
   ],
-  "updatedAt": "2026-09-26T09:12:38.070497+00:00"
+  "updatedAt": "2026-09-26T09:29:49.591718+00:00"
 }

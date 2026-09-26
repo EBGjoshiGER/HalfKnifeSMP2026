@@ -322,6 +322,48 @@ header {
 }
 
 
+/* Compact events link on the home page */
+.events-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  max-width: 850px;
+  margin: -28px auto 32px;
+  padding: 10px 16px;
+  color: #b9cbd4;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.events-notice-icon {
+  flex: none;
+  color: #81d4fa;
+  font-size: 18px;
+}
+
+.events-notice a {
+  color: #81d4fa;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.events-notice a:hover,
+.events-notice a:focus-visible {
+  color: #ffffff;
+}
+
+@media (max-width: 650px) {
+  .events-notice {
+    margin-top: -18px;
+    margin-bottom: 24px;
+    padding-inline: 4px;
+  }
+}
+
+
 /* =========================================================
    COUNTDOWN
 ========================================================= */

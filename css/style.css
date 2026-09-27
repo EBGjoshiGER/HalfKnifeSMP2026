@@ -1064,6 +1064,11 @@ header {
   line-height: 1.7;
 }
 
+.vanilla-box .install-note {
+  margin-top: 18px;
+  font-size: 14px;
+}
+
 
 .vanilla-bar {
   max-width: 700px;

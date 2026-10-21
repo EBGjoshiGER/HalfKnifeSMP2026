@@ -462,6 +462,9 @@ function copyIP() {
 // LIVE SERVERSTATUS
 // =========================================================
 
+const maxPlayerSlots = 30;
+
+
 const minecraftStatusRefreshMs =
   60 * 1000;
 
@@ -561,12 +564,7 @@ async function updateMinecraftServerStatus() {
       );
 
 
-    const maxPlayers =
-      Number(
-        data.maxPlayers
-        ??
-        25
-      );
+    const maxPlayers = maxPlayerSlots;
 
 
     // =====================================================
@@ -806,7 +804,7 @@ async function updateMinecraftServerStatus() {
     if (playerCounter) {
 
       playerCounter.textContent =
-        "– / 25";
+        `– / ${maxPlayerSlots}`;
 
     }
 
@@ -934,7 +932,7 @@ async function loadWhitelistPlayers() {
     if (slotsCount) {
 
       slotsCount.textContent =
-        `${players.length} / 25`;
+        `${players.length} / ${maxPlayerSlots}`;
 
     }
 
@@ -1005,7 +1003,7 @@ async function loadWhitelistPlayers() {
     if (slotsCount) {
 
       slotsCount.textContent =
-        "– / 25";
+        `– / ${maxPlayerSlots}`;
 
     }
 

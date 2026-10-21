@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HalfKnife SMP 2026: Bestenlisten, aktive Spielzeit und alle gespeicherten Spielerstatistiken.">
+  <title>Statistiken · HalfKnife SMP 2026</title>
+  <link rel="icon" type="image/png" href="favicon_io/favicon-32x32.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/stats.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+
+      <div class="logo-container">
+
+        <img
+          src="logo.png"
+          class="logo"
+          alt="HalfKnife SMP 2026"
+        >
+
+      </div>
+
+
+      <nav
+        class="nav"
+        id="main-nav"
+      ></nav>
+
+    </header>
+
+
+
+    <main id="stats-main">
+      <section class="hero stats-hero">
+        <div class="season-label">✦ Season 2026 · Statistiken</div>
+        <h1 id="stats-title">HalfKnife in <span>Zahlen.</span></h1>
+        <p id="stats-intro">Jeder Block zählt. Jeder Respawn auch.<br>Die Geschichten eurer Season – in Statistiken.</p>
+        <div class="stats-status"><span class="stats-status-dot" aria-hidden="true"></span><span id="stats-status" role="status">Statistiken werden geladen…</span></div>
+      </section>
+
+      <div id="stats-message" class="stats-notice" role="status">Die Serverstatistiken werden geladen…</div>
+      <button id="stats-retry" class="button button-secondary stats-retry" type="button" hidden>Erneut versuchen</button>
+      <noscript><p class="stats-notice">Für die Statistiken und Spielerprofile wird JavaScript benötigt.</p></noscript>
+
+      <div id="stats-overview" hidden>
+        <section class="section stats-section" aria-labelledby="stats-total-heading">
+          <div class="stats-section-top">
+            <div><span class="stats-kicker">Die ganze Season</span><h2 id="stats-total-heading">Gemeinsam erspielt</h2></div>
+            <span class="stats-pill">Aktive Spielzeit ohne AFK</span>
+          </div>
+          <div id="stats-totals" class="stats-totals"></div>
+        </section>
+
+        <section class="section stats-section" aria-labelledby="stats-leaders-heading">
+          <div class="stats-section-top">
+            <div><span class="stats-kicker">Wer setzt sich an die Spitze?</span><h2 id="stats-leaders-heading">Die Bestenlisten</h2></div>
+            <p>Top 10 · Namen anklicken für alle Stats</p>
+          </div>
+          <div id="stats-leaderboards" class="stats-board-grid"></div>
+        </section>
+
+        <section class="section stats-section" aria-labelledby="stats-players-heading">
+          <div class="stats-section-top">
+            <div><span class="stats-kicker">Die Leute hinter den Zahlen</span><h2 id="stats-players-heading">Alle Spieler</h2></div>
+            <span id="stats-player-count" class="stats-pill"></span>
+          </div>
+          <div class="stats-toolbar">
+            <label class="stats-field stats-search"><span>Spieler suchen</span><input id="stats-player-search" type="search" placeholder="Minecraft-Name …" autocomplete="off"></label>
+            <label class="stats-field"><span>Sortieren nach</span><select id="stats-player-sort"><option value="activeSeconds">Aktive Spielzeit</option><option value="name">Name A–Z</option><option value="blocksMined">Blöcke abgebaut</option><option value="deaths">Tode</option></select></label>
+          </div>
+          <p id="stats-player-result" class="stats-muted" aria-live="polite"></p>
+          <div id="stats-player-grid" class="stats-player-grid"></div>
+        </section>
+      </div>
+
+      <section id="stats-profile" class="stats-section" hidden aria-labelledby="profile-name">
+        <a class="stats-back" href="stats.html">← Zur Statistikübersicht</a>
+        <div id="profile-card" class="stats-profile-card"></div>
+        <div id="profile-totals" class="stats-totals stats-profile-totals"></div>
+        <div class="stats-section-top stats-detail-heading">
+          <div><span class="stats-kicker">Bis ins letzte Detail</span><h2>Alle gespeicherten Statistiken</h2></div>
+          <span id="profile-stat-count" class="stats-pill"></span>
+        </div>
+        <p class="stats-muted">Die aktive Spielzeit wird separat erfasst. Die ursprüngliche Gesamtspielzeit inklusive AFK findest du unter „Allgemein“.</p>
+        <div class="stats-toolbar">
+          <label class="stats-field stats-search"><span>Statistik suchen</span><input id="stats-detail-search" type="search" placeholder="Zum Beispiel Diamant, Zombie oder eine Minecraft-ID …" autocomplete="off"></label>
+          <label class="stats-field"><span>Reihenfolge innerhalb der Kategorien</span><select id="stats-detail-sort"><option value="value">Größter Rohwert zuerst</option><option value="name">Name A–Z</option></select></label>
+        </div>
+        <div id="profile-categories" class="stats-categories" role="group" aria-label="Statistikkategorie"></div>
+        <p id="profile-search-result" class="stats-muted" aria-live="polite"></p>
+        <div id="profile-details"></div>
+      </section>
+
+      <aside id="stats-explanation" class="stats-footnote" hidden>
+        <strong>So werden die Zahlen gezählt</strong>
+        <p>Aktive Spielzeit pausiert nach fünf Minuten ohne Spieleraktion. Die übrigen Werte stammen aus den gespeicherten Minecraft-Statistiken und enthalten gegebenenfalls auch Aktionen an AFK-Farmen. Diamanterz steht für abgebaute Erzblöcke, nicht für den aktuellen Diamantenbesitz. „LP“ bedeutet Lebenspunkte.</p>
+        <p>Der Datenabruf ist etwa alle fünf Minuten vorgesehen. Minecraft speichert laufende Sitzungen zeitversetzt. Es werden nur freigeschaltete Spieler angezeigt.</p>
+        <p id="stats-active-status"></p>
+      </aside>
+    </main>
+  </div>
+  <footer>
+
+    <div class="footer-links">
+
+      <a href="help.html">Hilfe & Neuerungen</a>
+      ·
+      <a href="rules.html">Regeln</a>
+      ·
+      <a href="events.html">Events</a>
+      ·
+      <a href="discord.html">Discord</a>
+      ·
+      <a href="datenschutz.html">Datenschutz</a>
+
+    </div>
+
+    <div class="disclaimer">
+      <strong>NOT AN OFFICIAL MINECRAFT PRODUCT/SERVICE.</strong><br>
+      NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.
+    </div>
+
+    <div class="disclaimer">
+      HalfKnife SMP 2026 ·
+      Hinweis: Teile dieser Website (Grafiken, Texte und Layout)
+      wurden mit Unterstützung von KI erstellt.
+    </div>
+
+  </footer>
+
+
+
+  <script src="js/main.js"></script>
+  <script src="js/stats-core.js"></script>
+  <script src="js/stats.js"></script>
+</body>
+</html>

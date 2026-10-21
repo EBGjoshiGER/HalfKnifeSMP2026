@@ -114,6 +114,11 @@ function renderNavigation() {
     ],
 
     [
+      "stats.html",
+      "Stats"
+    ],
+
+    [
       "rules.html",
       "Regeln"
     ],
@@ -750,7 +755,7 @@ async function updateMinecraftServerStatus() {
         .map(
           player => `
             <div class="live-player">
-              ${escapeHtml(player)}
+              <a class="player-profile-link" href="stats.html?player=${encodeURIComponent(player)}">${escapeHtml(player)}</a>
             </div>
           `
         )
@@ -976,9 +981,9 @@ async function loadWhitelistPlayers() {
             <div class="feature">
 
               <h3>
-                ${escapeHtml(
+                <a class="player-profile-link" href="stats.html?player=${encodeURIComponent(player.uuid || player.name)}">${escapeHtml(
                   player.name
-                )}
+                )}</a>
               </h3>
 
             </div>
@@ -1105,7 +1110,7 @@ async function loadPlaytimeRanking() {
       ? players.map((player, index) => `
         <tr${index < 3 ? ' class="playtime-top-' + (index + 1) + '"' : ""}>
           <td><span class="playtime-rank">${index + 1}</span></td>
-          <th scope="row">${escapeHtml(player.name)}</th>
+          <th scope="row"><a class="player-profile-link" href="stats.html?player=${encodeURIComponent(player.name)}">${escapeHtml(player.name)}</a></th>
           <td>${formatPlaytime(player.seconds)}</td>
         </tr>`).join("")
       : '<tr><td colspan="3">Noch keine Spielzeiten vorhanden. Wer macht den Anfang?</td></tr>';

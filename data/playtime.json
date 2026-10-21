@@ -1,6 +1,11 @@
 {
   "mode": "active",
-  "players": [],
-  "updatedAt": "2026-10-21T06:08:01.059031517Z",
+  "players": [
+    {
+      "name": "EBGjoshiGER",
+      "seconds": 259
+    }
+  ],
+  "updatedAt": "2026-10-21T18:49:21.756834486Z",
   "afkTimeoutSeconds": 300
 }

@@ -7,7 +7,7 @@
   const href = player => `stats.html?player=${encodeURIComponent(player.uuid)}`;
   // UUIDs keep heads associated with the player even after a name change.
   // The initials remain behind the image while loading or if the image fails.
-  const avatar = (player, profile = false) => `<span class="stats-avatar" aria-hidden="true"><span>${escape(player.name.slice(0, 2).toUpperCase())}</span><img src="https://crafatar.com/avatars/${encodeURIComponent(player.uuid)}?size=128&amp;overlay" alt="" width="128" height="128" loading="${profile ? "eager" : "lazy"}" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></span>`;
+  const avatar = (player, profile = false) => `<span class="stats-avatar" aria-hidden="true"><span>${escape(player.name.slice(0, 2).toUpperCase())}</span><img src="https://mc-heads.net/avatar/${encodeURIComponent(player.uuid)}/128" alt="" width="128" height="128" loading="${profile ? "eager" : "lazy"}" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></span>`;
   let data;
   let players = [];
   let online = null;

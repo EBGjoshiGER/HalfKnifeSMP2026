@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "halfknife_active_playtime",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "HalfKnife Active Playtime",
   "description": "Separate active-playtime counter with a five-minute AFK timeout. No kicks or changes to vanilla statistics.",
   "environment": "server",

@@ -2,6 +2,6 @@
   "required": true,
   "package": "de.halfknife.playtime.mixin",
   "compatibilityLevel": "JAVA_25",
-  "mixins": ["ActivityMixin"],
+  "mixins": ["ActivityMixin", "LeaderboardMixin"],
   "injectors": {"defaultRequire": 1}
 }

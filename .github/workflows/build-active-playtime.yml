@@ -7,6 +7,7 @@ on:
       - mods/halfknife-active-playtime/**
       - scripts/install_active_playtime.py
       - scripts/smoke_active_playtime.py
+      - scripts/tab_active_bridge.py
       - .github/workflows/build-active-playtime.yml
 permissions:
   contents: read
@@ -45,5 +46,5 @@ jobs:
         run: python3 scripts/install_active_playtime.py
       - uses: actions/upload-artifact@v4
         with:
-          name: halfknife-active-playtime-1.0.0
+          name: halfknife-active-playtime-1.1.0
           path: mods/halfknife-active-playtime/build/libs/*.jar

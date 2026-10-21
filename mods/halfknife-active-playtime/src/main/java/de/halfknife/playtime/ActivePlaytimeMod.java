@@ -7,10 +7,15 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.*;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.storage.LevelResource;
+import net.minecraft.world.scores.ScoreHolder;
+import net.minecraft.world.scores.criteria.ObjectiveCriteria;
+import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +33,10 @@ public final class ActivePlaytimeMod implements ModInitializer {
     private final Map<UUID, ActiveClock> sessions = new HashMap<>();
     private Path output;
     private long lastSave;
+    public static final String ACTIVE_OBJECTIVE = "hk.active_ticks";
+    private MinecraftServer activeServer;
+    private Map<UUID, String> whitelistNames = Map.of();
+    private long whitelistChecked;
 
     private static final class Totals {
         String uuid;
@@ -66,6 +75,9 @@ public final class ActivePlaytimeMod implements ModInitializer {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             long current = now();
             for (UUID id : sessions.keySet()) flush(id, current);
+            for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+                publishScore(server, player.getScoreboardName(), activeSeconds(player.getUUID()));
+            }
             if (current - lastSave >= 60_000) save();
         });
         UseBlockCallback.EVENT.register((player, world, hand, hit) -> { if (player instanceof ServerPlayer p) activity(p); return InteractionResult.PASS; });
@@ -75,6 +87,7 @@ public final class ActivePlaytimeMod implements ModInitializer {
     }
 
     private void start(MinecraftServer server) {
+        activeServer = server;
         try {
             Class.forName("net.minecraft.server.network.ServerGamePacketListenerImpl", true, getClass().getClassLoader());
         } catch (ClassNotFoundException error) {
@@ -99,7 +112,57 @@ public final class ActivePlaytimeMod implements ModInitializer {
             }
         }
         save();
+        refreshWhitelist();
+        publishScore(server, "#initial", 0);
+        if (Boolean.getBoolean("halfknife.playtime.integration-test")) IntegrationCheck.run(server);
         LOG.info("Active playtime enabled; AFK timeout: 300 seconds. No AFK kicks.");
+    }
+
+    public record ActiveEntry(UUID uuid, String name, long seconds) {}
+
+    public static long activeSeconds(UUID uuid) {
+        if (instance == null) return 0;
+        instance.flush(uuid, now());
+        Totals value = instance.totals.get(uuid);
+        return value == null ? 0 : value.activeMillis / 1000;
+    }
+
+    private void refreshWhitelist() {
+        if (now() - whitelistChecked < 60_000 && !whitelistNames.isEmpty()) return;
+        whitelistChecked = now();
+        try {
+            Map<UUID, String> names = new HashMap<>();
+            Path file = FabricLoader.getInstance().getGameDir().resolve("whitelist.json");
+            for (var element : JsonParser.parseString(Files.readString(file)).getAsJsonArray()) {
+                var entry = element.getAsJsonObject();
+                String name = entry.get("name").getAsString();
+                if (name.matches("[A-Za-z0-9_]{1,16}")) names.put(UUID.fromString(entry.get("uuid").getAsString()), name);
+            }
+            whitelistNames = names;
+        } catch (Exception error) {
+            LOG.error("Could not refresh active-playtime leaderboard whitelist", error);
+        }
+    }
+
+    public static List<ActiveEntry> activeRanking() {
+        if (instance == null || instance.output == null) return List.of();
+        instance.refreshWhitelist();
+        List<ActiveEntry> entries = new ArrayList<>();
+        for (var entry : instance.whitelistNames.entrySet()) {
+            long seconds = activeSeconds(entry.getKey());
+            if (seconds > 0) entries.add(new ActiveEntry(entry.getKey(), entry.getValue(), seconds));
+        }
+        entries.sort(Comparator.comparingLong(ActiveEntry::seconds).reversed().thenComparing(ActiveEntry::name, String.CASE_INSENSITIVE_ORDER));
+        return entries;
+    }
+
+    public static void publishScore(MinecraftServer server, String name, long seconds) {
+        var scoreboard = server.getScoreboard();
+        var objective = scoreboard.getObjective(ACTIVE_OBJECTIVE);
+        if (objective == null) objective = scoreboard.addObjective(ACTIVE_OBJECTIVE, ObjectiveCriteria.DUMMY,
+                Component.literal("Aktive Spielzeit"), ObjectiveCriteria.RenderType.INTEGER, false, null);
+        int ticks = (int) Math.min(Integer.MAX_VALUE, Math.max(0L, seconds) * 20L);
+        scoreboard.getOrCreatePlayerScore(ScoreHolder.forNameOnly(name), objective).set(ticks);
     }
 
     private void flush(UUID id, long current) {

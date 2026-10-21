@@ -117,3 +117,7 @@
   .stats-detail-table thead th:first-child { width: 65%; }
   .stats-detail-table tbody th, .stats-detail-table tbody td { font-size: 12px; }
 }
+
+/* Skin heads sit above the initials, which stay visible if loading fails. */
+.stats-avatar { position: relative; overflow: hidden; }
+.stats-avatar img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; }

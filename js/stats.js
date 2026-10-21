@@ -5,7 +5,9 @@
   const $ = id => document.getElementById(id);
   const escape = value => String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
   const href = player => `stats.html?player=${encodeURIComponent(player.uuid)}`;
-  const avatar = player => `<span class="stats-avatar" aria-hidden="true">${escape(player.name.slice(0, 2).toUpperCase())}</span>`;
+  // UUIDs keep heads associated with the player even after a name change.
+  // The initials remain behind the image while loading or if the image fails.
+  const avatar = (player, profile = false) => `<span class="stats-avatar" aria-hidden="true"><span>${escape(player.name.slice(0, 2).toUpperCase())}</span><img src="https://crafatar.com/avatars/${encodeURIComponent(player.uuid)}?size=128&amp;overlay" alt="" width="128" height="128" loading="${profile ? "eager" : "lazy"}" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></span>`;
   let data;
   let players = [];
   let online = null;
@@ -54,7 +56,7 @@
     $("stats-intro").textContent = "Ein Spieler. Seine ganze Season.";
     document.title = `${player.name} · Statistiken · HalfKnife SMP 2026`;
     const position = C.leaderboard(players, "activeSeconds", players.length).findIndex(entry => entry.uuid === player.uuid);
-    $("profile-card").innerHTML = `${avatar(player)}<div><span class="stats-kicker">Spielerprofil</span><h2 id="profile-name">${escape(player.name)}</h2>${onlineBadge(player)}</div><div class="stats-profile-rank"><span>Aktive Spielzeit</span><strong>${position < 0 ? "Noch ohne Platzierung" : `Platz #${position + 1}`}</strong></div>`;
+    $("profile-card").innerHTML = `${avatar(player, true)}<div><span class="stats-kicker">Spielerprofil</span><h2 id="profile-name">${escape(player.name)}</h2>${onlineBadge(player)}</div><div class="stats-profile-rank"><span>Aktive Spielzeit</span><strong>${position < 0 ? "Noch ohne Platzierung" : `Platz #${position + 1}`}</strong></div>`;
     $("profile-totals").innerHTML = [
       tile("Aktive Spielzeit", C.duration(player.summary.activeSeconds), "Ohne AFK-Zeit"),
       tile("Tode", C.integer.format(player.summary.deaths)),

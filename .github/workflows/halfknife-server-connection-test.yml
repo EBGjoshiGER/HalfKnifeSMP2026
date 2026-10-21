@@ -1,0 +1,65 @@
+name: HalfKnife - Serververbindung testen
+
+on:
+  workflow_dispatch:
+    inputs:
+      protocol:
+        description: "Protokoll laut FileZilla (ftp, ftps oder sftp)"
+        required: true
+        type: choice
+        options:
+          - ftp
+          - ftps
+          - sftp
+
+permissions:
+  contents: read
+
+jobs:
+  connection-test:
+    name: Verbindung pruefen (nur lesend)
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      FTP_HOST: ${{ secrets.FTP_HOST }}
+      FTP_PORT: ${{ secrets.FTP_PORT }}
+      FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+      FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      PROTOCOL: ${{ inputs.protocol }}
+    steps:
+      - name: Secrets kontrollieren
+        shell: bash
+        run: |
+          for name in FTP_HOST FTP_PORT FTP_USERNAME FTP_PASSWORD; do
+            if [[ -z "${!name}" ]]; then
+              echo "::error::Repository Secret $name fehlt."
+              exit 1
+            fi
+          done
+          echo "Alle vier Secrets sind gesetzt."
+
+      - name: Nur Verbindung und Verzeichnisliste testen
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$PROTOCOL" in
+            ftp|ftps|sftp) ;;
+            *) echo "::error::Ungueltiges Protokoll"; exit 1 ;;
+          esac
+          # Keine Dateien schreiben, entfernen oder herunterladen.
+          # Keine Kennwoerter oder Verzeichnisinhalte in Actions-Logs ausgeben.
+          url="${PROTOCOL}://${FTP_HOST}:${FTP_PORT}/"
+          if [[ "$PROTOCOL" == "ftps" ]]; then
+            url="ftp://${FTP_HOST}:${FTP_PORT}/"
+          fi
+          curl_args=(--fail --silent --show-error --connect-timeout 15 --max-time 45
+                     --list-only --output /dev/null --user "${FTP_USERNAME}:${FTP_PASSWORD}")
+          if [[ "$PROTOCOL" == "ftps" ]]; then
+            curl_args+=(--ssl-reqd)
+          fi
+          if [[ "$PROTOCOL" == "sftp" ]]; then
+            echo "::error::SFTP benoetigt eine separate SSH-Hostkey-Pruefung; nicht automatisch ohne Hostkey verwenden."
+            exit 1
+          fi
+          curl "${curl_args[@]}" "$url"
+          echo "Serververbindung erfolgreich (nur lesender Test)."

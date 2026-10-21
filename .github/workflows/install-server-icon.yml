@@ -1,0 +1,27 @@
+name: Server-Icon installieren
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - assets/server-icon.png
+      - scripts/install_server_icon.py
+      - .github/workflows/install-server-icon.yml
+permissions:
+  contents: read
+concurrency:
+  group: halfknife-server-icon
+  cancel-in-progress: false
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Geprüftes Icon sichern und installieren
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: python3 scripts/install_server_icon.py

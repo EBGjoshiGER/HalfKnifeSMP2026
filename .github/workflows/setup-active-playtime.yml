@@ -1,0 +1,26 @@
+name: Aktive Spielzeit vorbereiten
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/setup_active_playtime.py
+      - .github/workflows/setup-active-playtime.yml
+permissions:
+  contents: read
+concurrency:
+  group: halfknife-active-playtime-setup
+  cancel-in-progress: false
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Vorhandene Spielzeit-Mod prüfen
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: python3 scripts/setup_active_playtime.py

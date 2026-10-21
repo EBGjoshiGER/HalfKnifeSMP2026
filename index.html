@@ -24,7 +24,7 @@
 </head>
 
 
-<body>
+<body class="home-page">
 <div class="container">
 
 
@@ -48,186 +48,59 @@
       <nav
         class="nav"
         id="main-nav"
+        aria-label="Hauptnavigation"
       ></nav>
 
     </header>
 
 
     <main>
-
-
-      <!-- ===================================================
-           HERO
-      ==================================================== -->
-
-      <section class="hero">
-
-        <div class="season-label">
-          ✦ Season 2026
-        </div>
-
-
-        <h1>
-          HALFKNIFE <span>SMP</span>
-        </h1>
-
-
-        <p>
-          Eine gemeinsame Minecraft-Welt, jedes Jahr neu.
-          Vanilla-Feeling trifft auf ausgewählte Mods,
-          neue Strukturen, neue Abenteuer und unsere Community.
-        </p>
-
+      <section class="hero home-hero">
+        <div class="season-label">✦ Season 2026</div>
+        <h1>Unsere Welt. <span>Euer Grind.</span></h1>
+        <p>Aktive Spielzeit, gemeinsame Projekte und die Geschichten der Season.</p>
       </section>
 
-      <aside class="events-notice" aria-label="Hinweis auf Server-Events">
-        <span class="events-notice-icon" aria-hidden="true">ⓘ</span>
-        <span>Gemeinsame Projekte und QuizNight: <a href="events.html">Events ansehen <span aria-hidden="true">→</span></a></span>
-      </aside>
-
-
-      <!-- ===================================================
-           COUNTDOWN
-      ==================================================== -->
-
-      <section class="countdown-card">
-
-        <div class="countdown-header">
-
-          <div class="countdown-header-left">
-
-            <span class="countdown-pulse"></span>
-
-            <span>
-              Seasonstart
-            </span>
-
-          </div>
-
-
-          <strong>
-            24. Oktober 2026 · 14:00 Uhr
-          </strong>
-
+      <div class="home-dashboard">
+        <section class="section playtime-section" aria-labelledby="playtime-heading">
+        <div class="section-heading">
+          <h2 id="playtime-heading">Das Spielzeit-Leaderboard</h2>
+          <p>Wer steckt die meiste aktive Zeit in die Season?</p>
         </div>
-
-
-        <div
-          class="countdown-grid"
-          id="countdown"
-        >
-
-
-          <div class="countdown-item">
-
-            <span
-              class="countdown-value"
-              id="countdown-days"
-            >
-              --
-            </span>
-
-            <span class="countdown-label">
-              Tage
-            </span>
-
+        <div class="playtime-card">
+          <div class="playtime-table-wrap">
+            <table class="playtime-table">
+              <caption class="playtime-caption">Spielzeit der freigeschalteten Spieler, absteigend sortiert</caption>
+              <thead><tr><th scope="col">Platz</th><th scope="col">Spieler</th><th scope="col">Spielzeit</th></tr></thead>
+              <tbody id="playtime-ranking">
+                <tr><td colspan="3">Spielzeiten werden geladen…</td></tr>
+              </tbody>
+            </table>
           </div>
-
-
-          <div class="countdown-item">
-
-            <span
-              class="countdown-value"
-              id="countdown-hours"
-            >
-              --
-            </span>
-
-            <span class="countdown-label">
-              Stunden
-            </span>
-
-          </div>
-
-
-          <div class="countdown-item">
-
-            <span
-              class="countdown-value"
-              id="countdown-minutes"
-            >
-              --
-            </span>
-
-            <span class="countdown-label">
-              Minuten
-            </span>
-
-          </div>
-
-
-          <div class="countdown-item countdown-seconds">
-
-            <span
-              class="countdown-value"
-              id="countdown-seconds"
-            >
-              --
-            </span>
-
-            <span class="countdown-label">
-              Sekunden
-            </span>
-
-          </div>
-
+          <p class="playtime-note" id="playtime-updated" role="status">Die Spielzeiten werden regelmäßig aktualisiert.</p>
+          <p class="playtime-note">Nach fünf Minuten ohne Spieleraktion pausiert die Wertung. AFK-Farmen bleiben erlaubt. Die Anzeige kann einige Minuten verzögert sein.</p>
+          <a class="stats-start-link" href="stats.html">Alle Statistiken &amp; Spielerprofile ansehen →</a>
+          <noscript><p class="playtime-note">Aktiviere JavaScript, um das Ranking zu sehen.</p></noscript>
         </div>
-
-
-        <div
-          class="countdown-online"
-          id="countdown-online"
-          hidden
-        >
-
-          <span class="countdown-online-dot"></span>
-
-          HALFKNIFE SMP 2026 IST ONLINE
-
-        </div>
-
       </section>
-
-
-      <!-- ===================================================
-           BUTTONS
-      ==================================================== -->
-
-      <div class="button-row">
-
-        <a
-          class="button button-primary"
-          href="https://modrinth.com/modpack/halfknifesmp2026"
-          target="_blank"
-          rel="noopener"
-        >
-          🧩 Modpack ansehen
-        </a>
-
-
-        <a
-          class="button button-secondary"
-          href="install.html"
-        >
-          ⚙️ Installation
-        </a>
-
+        <aside class="home-live" aria-labelledby="home-live-heading">
+          <h2 id="home-live-heading">Gerade auf dem Server</h2>
+          <div class="live-status-card">
+            <div class="live-status-topline">
+              <span class="status-dot loading" id="server-status-dot" aria-hidden="true"></span>
+              <strong id="server-status-label">Status wird geprüft…</strong>
+              <span class="live-player-counter" id="live-player-counter">– / 30</span>
+            </div>
+            <p id="server-status-text" role="status">Serverstatus wird geladen…</p>
+            <div class="live-player-grid" id="live-player-list" aria-live="polite">
+              <div class="live-player-placeholder">Spielerliste wird geladen…</div>
+            </div>
+            <p class="live-status-note" id="live-status-note">Die Anzeige wird automatisch aktualisiert.</p>
+          </div>
+          <a class="button button-primary home-stats-button" href="stats.html">Alle Stats &amp; Spielerprofile →</a>
+          <a class="home-event-link" href="events.html">Gemeinsame Projekte &amp; Events →</a>
+        </aside>
       </div>
-
-
-      <!-- ===================================================
-           SERVER INFOS
-      ==================================================== -->
 
       <section class="section">
 
@@ -287,7 +160,7 @@
             </div>
 
             <div class="value">
-              Fabric 1.26.2
+              Fabric 26.2
             </div>
 
           </div>
@@ -330,162 +203,6 @@
         </div>
 
       </section>
-
-
-
-      <section class="section playtime-section" aria-labelledby="playtime-heading">
-        <div class="section-heading">
-          <h2 id="playtime-heading">⏱️ Aktive Spielzeit</h2>
-          <p>Nur kurz online. Dann doch wieder ganz oben.</p>
-        </div>
-        <div class="playtime-card">
-          <div class="playtime-table-wrap">
-            <table class="playtime-table">
-              <caption class="playtime-caption">Spielzeit der freigeschalteten Spieler, absteigend sortiert</caption>
-              <thead><tr><th scope="col">Platz</th><th scope="col">Spieler</th><th scope="col">Spielzeit</th></tr></thead>
-              <tbody id="playtime-ranking">
-                <tr><td colspan="3">Spielzeiten werden geladen…</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="playtime-note" id="playtime-updated" role="status">Die Spielzeiten werden regelmäßig aktualisiert.</p>
-          <p class="playtime-note">Nach fünf Minuten ohne Spieleraktion pausiert die Wertung. AFK-Farmen bleiben erlaubt. Die Anzeige kann einige Minuten verzögert sein.</p>
-          <a class="stats-start-link" href="stats.html">Alle Statistiken &amp; Spielerprofile ansehen →</a>
-          <noscript><p class="playtime-note">Aktiviere JavaScript, um das Ranking zu sehen.</p></noscript>
-        </div>
-      </section>
-
-      <!-- ===================================================
-           WAS DICH ERWARTET
-      ==================================================== -->
-
-      <section class="section">
-
-        <div class="section-heading">
-
-          <h2>
-            Was dich erwartet
-          </h2>
-
-          <p>
-            Mehr Minecraft, ohne Minecraft aus den Augen zu verlieren.
-          </p>
-
-        </div>
-
-
-        <div class="features">
-
-
-          <div class="feature">
-
-            <div class="feature-icon">
-              🌍
-            </div>
-
-            <h3>
-              Eine neue Welt
-            </h3>
-
-            <p>
-              Erkunde eine abwechslungsreichere Welt mit
-              neuen Strukturen, Dörfern und Landschaften.
-              Dabei bleibt der Stil bewusst nah an Vanilla Minecraft.
-            </p>
-
-          </div>
-
-
-          <div class="feature">
-
-            <div class="feature-icon">
-              ⚔️
-            </div>
-
-            <h3>
-              Gemeinsam spielen
-            </h3>
-
-            <p>
-              Ob riesiges Bauprojekt, gemeinsames Abenteuer,
-              spontanes Chaos oder geplantes Event –
-              HalfKnife SMP lebt von den Spielern.
-            </p>
-
-          </div>
-
-
-          <div class="feature">
-
-            <div class="feature-icon">
-              🧩
-            </div>
-
-            <h3>
-              Vanilla+
-            </h3>
-
-            <p>
-              Ausgewählte Mods erweitern Minecraft um
-              neue Möglichkeiten, Komfort und Atmosphäre,
-              ohne das Grundgefühl des Spiels komplett zu verändern.
-            </p>
-
-          </div>
-
-
-        </div>
-
-      </section>
-
-
-      <!-- ===================================================
-           VANILLA+
-      ==================================================== -->
-
-      <section class="section">
-
-        <div class="vanilla-box">
-
-          <h2>
-            Unser Modpack: Vanilla+
-          </h2>
-
-
-          <p>
-            HalfKnife SMP soll sich weiterhin wie Minecraft anfühlen.
-            Die Mods sollen die Welt erweitern, nicht das Spiel ersetzen.
-          </p>
-
-
-          <div class="vanilla-bar"></div>
-
-
-          <div class="vanilla-labels">
-
-            <span>
-              VANILLA
-            </span>
-
-            <span>
-              HALFKNIFE SMP
-            </span>
-
-            <span>
-              HEAVILY MODDED
-            </span>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- ===================================================
-           DISCORD
-      ==================================================== -->
-
       <section class="section">
 
         <div class="discord">
@@ -513,8 +230,6 @@
         </div>
 
       </section>
-
-
     </main>
 
   </div>
@@ -526,19 +241,16 @@
 
   <footer>
 
-    <div class="footer-links">
-
-      <a href="help.html">Hilfe & Neuerungen</a>
-      ·
+    <nav class="footer-links" aria-label="Weitere Seiten">
+      <a href="mods.html">Mods</a>
+      <a href="install.html">Installation</a>
+      <a href="players.html">Spieler</a>
+      <a href="help.html">Hilfe &amp; Neuerungen</a>
       <a href="rules.html">Regeln</a>
-      ·
       <a href="events.html">Events</a>
-      ·
       <a href="discord.html">Discord</a>
-      ·
       <a href="datenschutz.html">Datenschutz</a>
-
-    </div>
+    </nav>
 
     <div class="disclaimer">
       <strong>NOT AN OFFICIAL MINECRAFT PRODUCT/SERVICE.</strong><br>
@@ -554,6 +266,18 @@
   </footer>
 
 
+  <aside class="season-widget" aria-label="Seasonstart">
+    <details class="countdown-card countdown-corner" id="season-countdown" open>
+      <summary><span id="season-countdown-title">Seasonstart · 24.10., 14 Uhr</span><span class="countdown-toggle" aria-hidden="true">⌃</span></summary>
+      <div class="countdown-grid" id="countdown" role="timer" aria-label="Verbleibende Zeit bis zum Seasonstart">
+        <div class="countdown-item"><span class="countdown-value" id="countdown-days">--</span><span class="countdown-label">Tage</span></div>
+        <div class="countdown-item"><span class="countdown-value" id="countdown-hours">--</span><span class="countdown-label">Std.</span></div>
+        <div class="countdown-item"><span class="countdown-value" id="countdown-minutes">--</span><span class="countdown-label">Min.</span></div>
+        <div class="countdown-item"><span class="countdown-value" id="countdown-seconds">--</span><span class="countdown-label">Sek.</span></div>
+      </div>
+      <div class="countdown-online" id="countdown-online" hidden>Die Season ist gestartet!</div>
+    </details>
+  </aside>
   <script src="js/main.js"></script>
 
 </body>

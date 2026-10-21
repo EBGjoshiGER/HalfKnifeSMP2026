@@ -9,6 +9,10 @@ document.addEventListener(
   () => {
 
     renderNavigation();
+    const seasonWidget = document.getElementById("season-countdown");
+    if (seasonWidget && window.matchMedia("(max-width: 650px)").matches) {
+      seasonWidget.open = false;
+    }
 
     if (document.getElementById("playtime-ranking")) {
       loadPlaytimeRanking();
@@ -92,47 +96,11 @@ function renderNavigation() {
 
 
   const navigationItems = [
-
-    [
-      "index.html",
-      "Startseite"
-    ],
-
-    [
-      "mods.html",
-      "Mods"
-    ],
-
-    [
-      "install.html",
-      "Installation"
-    ],
-
-    [
-      "players.html",
-      "Spieler"
-    ],
-
-    [
-      "stats.html",
-      "Stats"
-    ],
-
-    [
-      "rules.html",
-      "Regeln"
-    ],
-
-    [
-      "events.html",
-      "Events"
-    ],
-
-    [
-      "discord.html",
-      "Discord"
-    ]
-
+    ["index.html", "Startseite"],
+    ["stats.html", "Stats"],
+    ["rules.html", "Regeln"],
+    ["events.html", "Events"],
+    ["discord.html", "Discord"]
   ];
 
 
@@ -161,6 +129,7 @@ function renderNavigation() {
             <a
               href="${href}"
               class="${activeClass}"
+              ${currentPage === href ? 'aria-current="page"' : ""}
             >
               ${label}
             </a>
@@ -244,6 +213,8 @@ function updateCountdown() {
   if (distance <= 0) {
 
     countdown.hidden = true;
+    const title = document.getElementById("season-countdown-title");
+    if (title) title.textContent = "Season 2026 · Gestartet";
 
 
     if (onlineElement) {
@@ -257,6 +228,8 @@ function updateCountdown() {
 
 
   countdown.hidden = false;
+  const title = document.getElementById("season-countdown-title");
+  if (title) title.textContent = "Seasonstart · 24.10., 14 Uhr";
 
 
   if (onlineElement) {

@@ -2219,3 +2219,58 @@ footer {
 .player-profile-link { color: inherit; text-decoration: none; }
 .player-profile-link:hover, .player-profile-link:focus-visible { color: #81d4fa; text-decoration: underline; text-underline-offset: 3px; }
 .stats-start-link { display: inline-block; margin-top: 18px; color: #81d4fa; font-size: 13px; line-height: 1.6; text-underline-offset: 4px; }
+
+/* Startseite im laufenden Seasonbetrieb */
+.home-page header { padding-top: 24px; }
+.home-page .logo { width: min(260px, 65%); }
+.home-page .logo-container { margin-bottom: 18px; }
+.home-hero { padding: 36px 0 30px; text-align: left; }
+.home-hero .season-label { margin-bottom: 14px; }
+.home-hero h1 { font-size: clamp(30px, 4.5vw, 50px); line-height: 1.1; letter-spacing: -1.5px; }
+.home-hero p { margin: 12px 0 0; font-size: 16px; }
+.home-dashboard { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+.home-dashboard > * { min-width: 0; }
+.home-dashboard .section { margin: 0; }
+.home-dashboard .section-heading { text-align: left; margin-bottom: 18px; }
+.home-dashboard h2 { margin: 0 0 10px; font-size: 24px; line-height: 1.25; }
+.home-dashboard .playtime-card { max-width: none; }
+.home-live { padding-top: 2px; }
+.home-live h2 { font-size: 20px; margin-bottom: 20px; }
+.home-live .live-status-card { padding: 20px; }
+.home-live .live-status-topline { gap: 8px; flex-wrap: wrap; }
+.home-live #server-status-text { color: #b9cbd4; font-size: 13px; line-height: 1.6; }
+.home-live .live-player-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.home-stats-button { display: block; margin-top: 16px; text-align: center; font-size: 13px; padding: 15px 12px; }
+.home-event-link { display: block; margin-top: 18px; color: #81d4fa; font-size: 13px; line-height: 1.6; text-underline-offset: 4px; }
+.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px 20px; }
+.footer-links a { margin: 0; }
+.footer-links a:focus-visible, .nav a:focus-visible, .season-widget summary:focus-visible { outline: 2px solid #81d4fa; outline-offset: 4px; }
+.home-page footer { padding-bottom: calc(190px + env(safe-area-inset-bottom)); }
+
+/* Fixierter, einklappbarer Season-Countdown */
+.season-widget { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 100; width: min(280px, calc(100vw - 32px)); }
+.countdown-corner.countdown-card { margin: 0; padding: 0; border-radius: 16px; width: 100%; }
+.countdown-corner summary { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 15px; cursor: pointer; list-style: none; color: #b9ecff; font-size: 12px; font-weight: 700; }
+.countdown-corner summary::-webkit-details-marker { display: none; }
+.countdown-corner[open] .countdown-toggle { transform: rotate(180deg); }
+.countdown-corner .countdown-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 0 12px 12px; }
+.countdown-corner .countdown-grid[hidden] { display: none; }
+.countdown-corner .countdown-item { padding: 10px 2px 8px; border-radius: 8px; }
+.countdown-corner .countdown-value { font-size: 24px; }
+.countdown-corner .countdown-label { display: block; font-size: 9px; letter-spacing: 0; margin-top: 4px; }
+.countdown-corner .countdown-online { padding: 0 15px 15px; font-size: 13px; letter-spacing: 0; }
+@media (max-width: 850px) {
+  .home-dashboard { grid-template-columns: 1fr; gap: 28px; }
+  .home-live .live-player-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 650px) {
+  .home-page header { padding-top: 20px; }
+  .home-hero { padding: 30px 0 26px; }
+  .home-hero h1 { letter-spacing: -1px; }
+  .home-dashboard h2 { font-size: 22px; }
+  .home-live .live-player-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .season-widget { right: max(10px, env(safe-area-inset-right)); bottom: max(10px, env(safe-area-inset-bottom)); width: min(260px, calc(100vw - 20px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-page *, .home-page *::before { animation: none !important; transition: none !important; }
+}

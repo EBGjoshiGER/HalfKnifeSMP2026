@@ -1088,6 +1088,13 @@ async function loadPlaytimeRanking() {
     if (!response.ok) throw new Error("Spielzeiten nicht verfügbar");
     const data = await response.json();
     if (!Array.isArray(data.players)) throw new Error("Ungültige Spielzeiten");
+    if (data.mode === "pending") {
+      body.innerHTML = '<tr><td colspan="3">Das Ranking wartet auf die Aktivierung der AFK-Erkennung.</td></tr>';
+      note.textContent = "Aktive Spielzeit wird nach dem nächsten Serverstart erfasst.";
+      body.dataset.loaded = "true";
+      return;
+    }
+    if (data.mode !== "active") throw new Error("Aktive Spielzeiten noch nicht verfügbar");
     const players = data.players
       .filter(player => player && typeof player.name === "string"
         && /^[A-Za-z0-9_]{1,16}$/.test(player.name)

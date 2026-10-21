@@ -80,7 +80,7 @@ def main():
                     data = json.loads((root / "smoke-world/config/halfknife-active-playtime/playtime.json").read_text())
                     assert data["mode"] == "active" and data["afkTimeoutSeconds"] == 300
                     assert len(data["players"]) == 3
-                    assert "HALFKNIFE INTEGRATION PASSED" in text
+                    assert "HALFKNIFE INTEGRATION PASSED" in (root / "smoke.log").read_text()
                     if process.returncode != 0:
                         raise RuntimeError("Smoke server failed on shutdown")
                     print("Real lobby and Tab mods tested: active rows, active scoreboard ticks, whitelist filtering, storage preservation and clean shutdown passed.")

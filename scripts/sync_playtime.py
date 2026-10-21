@@ -39,7 +39,9 @@ def read_players(ftp):
             raise
         ftp.cwd(f"{world}/stats")
     available = {PurePosixPath(name).name for name in ftp.nlst()}
+    print(f"Statistics files: {len(available)}; whitelisted players: {len(whitelist)}")
     players = []
+    matched = 0
     seen = set()
     for player in whitelist:
         name = player.get("name", "")
@@ -51,6 +53,7 @@ def read_players(ftp):
         if filename not in available:
             continue
         # A transfer/JSON error aborts the update, retaining the previous file.
+        matched += 1
         stats = json.loads(download(ftp, filename))
         custom = stats.get("stats", {}).get("minecraft:custom", {})
         ticks = custom.get("minecraft:play_time", custom.get("minecraft:play_one_minute", 0))
@@ -58,6 +61,7 @@ def read_players(ftp):
             raise ValueError(f"Invalid play time for {name}")
         if ticks > 0:
             players.append({"name": name, "seconds": ticks // 20})
+    print(f"Matched statistics: {matched}; positive play times: {len(players)}")
     return sorted(players, key=lambda player: (-player["seconds"], player["name"].casefold()))
 
 

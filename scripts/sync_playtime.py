@@ -32,7 +32,12 @@ def read_players(ftp):
 
     # Listing the directory first distinguishes a missing player's stats from
     # an inaccessible world, which must fail instead of erasing the ranking.
-    ftp.cwd(f"{world}/stats")
+    try:
+        ftp.cwd(f"{world}/players/stats")
+    except ftplib.error_perm as error:
+        if not str(error).startswith("550"):
+            raise
+        ftp.cwd(f"{world}/stats")
     available = {PurePosixPath(name).name for name in ftp.nlst()}
     players = []
     seen = set()

@@ -10,6 +10,11 @@ document.addEventListener(
 
     renderNavigation();
 
+    if (document.getElementById("playtime-ranking")) {
+      loadPlaytimeRanking();
+      window.setInterval(loadPlaytimeRanking, 60 * 1000);
+    }
+
 
     // =====================================================
     // COUNTDOWN
@@ -1061,4 +1066,58 @@ function escapeHtml(value) {
       "&#039;"
     );
 
+}
+
+
+// =========================================================
+// PLAYTIME-RANKING
+// =========================================================
+function formatPlaytime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  if (minutes === 0 && seconds > 0) return "< 1 Min.";
+  return `${Math.floor(minutes / 60)} Std. ${minutes % 60} Min.`;
+}
+
+async function loadPlaytimeRanking() {
+  const body = document.getElementById("playtime-ranking");
+  const note = document.getElementById("playtime-updated");
+  if (!body || !note) return;
+
+  try {
+    const response = await fetch(`https://raw.githubusercontent.com/EBGjoshiGER/HalfKnifeSMP2026/main/data/playtime.json?v=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) throw new Error("Spielzeiten nicht verfügbar");
+    const data = await response.json();
+    if (!Array.isArray(data.players)) throw new Error("Ungültige Spielzeiten");
+    const players = data.players
+      .filter(player => player && typeof player.name === "string"
+        && /^[A-Za-z0-9_]{1,16}$/.test(player.name)
+        && Number.isFinite(player.seconds) && player.seconds > 0)
+      .sort((a, b) => b.seconds - a.seconds || a.name.localeCompare(b.name, "de"));
+
+    body.innerHTML = players.length
+      ? players.map((player, index) => `
+        <tr${index < 3 ? ' class="playtime-top-' + (index + 1) + '"' : ""}>
+          <td><span class="playtime-rank">${index + 1}</span></td>
+          <th scope="row">${escapeHtml(player.name)}</th>
+          <td>${formatPlaytime(player.seconds)}</td>
+        </tr>`).join("")
+      : '<tr><td colspan="3">Noch keine Spielzeiten vorhanden. Wer macht den Anfang?</td></tr>';
+
+    const updated = new Date(data.updatedAt);
+    if (data.updatedAt && Number.isFinite(updated.getTime())) {
+      note.textContent = `Datenstand: ${updated.toLocaleString("de-DE", { timeZone: "Europe/Berlin" })} Uhr`;
+      if (Date.now() - updated.getTime() > 30 * 60 * 1000) {
+        note.textContent += " · Aktualisierung verzögert";
+      }
+    } else {
+      note.textContent = "Warte auf die erste Synchronisierung der Spielzeiten.";
+    }
+  } catch (error) {
+    if (body.dataset.loaded !== "true") {
+      body.innerHTML = '<tr><td colspan="3">Das Playtime-Ranking ist gerade nicht verfügbar.</td></tr>';
+    }
+    note.textContent = "Spielzeiten konnten gerade nicht aktualisiert werden.";
+    return;
+  }
+  body.dataset.loaded = "true";
 }

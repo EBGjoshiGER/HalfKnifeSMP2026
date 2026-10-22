@@ -57,8 +57,33 @@ public final class RasUpgradeTest implements ModInitializer {
             // Check player progression round trip in 5.0.0's own NBT codec.
             PlayerVariables restored = new PlayerVariables(); restored.readNBT(vars.writeNBT());
             if (restored.Level != 30 || restored.SparePoints != 2) throw new AssertionError("Progression NBT round trip failed");
+            // Deserialize progression emitted by the actual installed 4.2.5 class, not a guessed schema.
+            String variableClass = "tn.nightbeam.ras.network.PlayerVariables";
+            byte[] legacyBytes;
+            try (var jar = new java.util.jar.JarFile("../ras-upgrade/old-4.2.5.jar")) {
+                legacyBytes = jar.getInputStream(jar.getJarEntry(variableClass.replace('.', '/') + ".class")).readAllBytes();
+            }
+            ClassLoader legacyLoader = new ClassLoader(RasUpgradeTest.class.getClassLoader()) {
+                @Override protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+                    if (!name.equals(variableClass)) return super.loadClass(name, resolve);
+                    Class<?> found = findLoadedClass(name);
+                    if (found == null) found = defineClass(name, legacyBytes, 0, legacyBytes.length);
+                    if (resolve) resolveClass(found);
+                    return found;
+                }
+            };
+            Class<?> oldType = legacyLoader.loadClass(variableClass);
+            Object legacy = oldType.getConstructor().newInstance();
+            oldType.getField("Level").setDouble(legacy, 17);
+            oldType.getField("SparePoints").setDouble(legacy, 8);
+            ((Map<String,Double>)oldType.getField("attributes").get(legacy)).put("attribute_2", 13.5);
+            ((Map<String,Double>)oldType.getField("attributePoints").get(legacy)).put("attribute_2", 7.0);
+            var tag = (net.minecraft.nbt.CompoundTag)oldType.getMethod("writeNBT").invoke(legacy);
+            PlayerVariables migrated = new PlayerVariables(); migrated.readNBT(tag);
+            if (migrated.Level != 17 || migrated.SparePoints != 8 || migrated.attributes.get("attribute_2") != 13.5
+                    || migrated.attributePoints.get("attribute_2") != 7.0) throw new AssertionError("Legacy 4.2.5 player progress was not preserved");
             Class.forName("tn.nightbeam.ras.network.FabricAttributeAllocationPayload");
             System.out.println("HALFKNIFE RAS UPGRADE PASSED: real server, global levels 12/30, attribute-independent item locks, point allocation and progression NBT.");
-        } catch (ReflectiveOperationException error) { throw new AssertionError(error); }
+        } catch (ReflectiveOperationException | java.io.IOException error) { throw new AssertionError(error); }
     }
 }

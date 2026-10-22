@@ -59,7 +59,7 @@ def main():
     (root / "server.properties").write_text("server-port=0\nonline-mode=false\nview-distance=2\nsimulation-distance=2\nlevel-name=smoke-world\nmax-players=1\n")
     ids = ["00000000-0000-0000-0000-000000000001", "00000000-0000-0000-0000-000000000002", "00000000-0000-0000-0000-000000000003"]
     (root / "whitelist.json").write_text(json.dumps([
-        {"uuid": "2f4bd5e2-e184-43af-8ab5-df7670dbc530", "name": "RenamedTestAccount"}, {"uuid": ids[0], "name": "ActiveAlice"}, {"uuid": ids[1], "name": "ActiveBob"}
+        {"uuid": "2f4bd5e2-e184-43af-8ab5-df7670dbc530", "name": "RenamedTester"}, {"uuid": ids[0], "name": "ActiveAlice"}, {"uuid": ids[1], "name": "ActiveBob"}
     ]))
     export = root / "smoke-world/config/halfknife-active-playtime/playtime.json"
     export.parent.mkdir(parents=True, exist_ok=True)
@@ -67,7 +67,7 @@ def main():
         "schema": 1, "mode": "active", "afkTimeoutSeconds": 300,
         "startedAt": "2026-10-21T00:00:00Z", "updatedAt": "2026-10-21T00:00:00Z",
         "players": [
-            {"uuid": "2f4bd5e2-e184-43af-8ab5-df7670dbc530", "name": "RenamedTestAccount", "activeMillis": 999999999, "afkMillis": 0},
+            {"uuid": "2f4bd5e2-e184-43af-8ab5-df7670dbc530", "name": "RenamedTester", "activeMillis": 999999999, "afkMillis": 0},
             {"uuid": ids[0], "name": "ActiveAlice", "activeMillis": 21600000, "afkMillis": 999999999},
             {"uuid": ids[1], "name": "ActiveBob", "activeMillis": 7200000, "afkMillis": 999999999},
             {"uuid": ids[2], "name": "NotWhitelisted", "activeMillis": 999999999, "afkMillis": 0}

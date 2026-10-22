@@ -50,7 +50,10 @@ def prepare():
     ftp = connect()
     try:
         old = read(ftp, TARGET)
-        assert hashlib.sha256(old).hexdigest() == OLD_SHA256, 'Server RAS changed since inspection'
+        if hashlib.sha256(old).hexdigest() != OLD_SHA256:
+            # A repeated validation may run after the first successful installation.
+            old = read(ftp, TARGET + '.before-5.0.0-halfknife.bak')
+        assert hashlib.sha256(old).hexdigest() == OLD_SHA256, 'Original server RAS backup does not match inspection'
         (ROOT / 'old-4.2.5.jar').write_bytes(old)
         snapshot = configs(ftp)
         assert len(snapshot) >= 10, 'Missing RAS config tree'
@@ -100,10 +103,15 @@ def install():
     backup = TARGET + '.before-5.0.0-halfknife.bak'
     moved = False
     try:
-        assert hashlib.sha256(read(ftp, TARGET)).hexdigest() == OLD_SHA256, 'RAS changed during tests'
+        installed = read(ftp, TARGET)
+        if installed != content:
+            assert hashlib.sha256(installed).hexdigest() == OLD_SHA256, 'RAS changed during tests'
         expected = json.loads((ROOT / 'config-hashes.json').read_text())
         current = {p: hashlib.sha256(b).hexdigest() for p, b in configs(ftp).items()}
         assert current == expected, 'Configs changed during tests; test the new values first'
+        if installed == content:
+            print('Already installed: exact tested RAS 5.0.0 HalfKnife JAR, config values verified again; no server files changed.')
+            return
         ftp.storbinary('STOR ' + TARGET + '.upload', io.BytesIO(content))
         assert read(ftp, TARGET + '.upload') == content, 'Upload checksum mismatch'
         config_backup = io.BytesIO()

@@ -1,0 +1,46 @@
+name: Konsolen-Reset isoliert testen (keine Installation)
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/console-stats-reset-ras-safe]
+    paths:
+      - mods/halfknife-active-playtime/**
+      - scripts/install_active_playtime.py
+      - scripts/smoke_active_playtime.py
+      - scripts/tab_active_bridge.py
+      - .github/workflows/test-console-reset.yml
+permissions:
+  contents: read
+concurrency:
+  group: halfknife-console-reset-test
+  cancel-in-progress: false
+jobs:
+  build-and-install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.5.1'
+      - name: Mod kompilieren und AFK-Zähler testen
+        working-directory: mods/halfknife-active-playtime
+        run: gradle build --no-daemon --stacktrace
+      - name: Isolierten Testserver starten
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: python3 scripts/smoke_active_playtime.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: console-reset-test
+          path: |
+            mods/halfknife-active-playtime/build/libs/*.jar
+            temp/active-playtime-smoke/*.log

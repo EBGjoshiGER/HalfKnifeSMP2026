@@ -6,7 +6,8 @@
     "ActivityMixin",
     "LeaderboardMixin",
     "PlayerListAccessor",
-    "StatsCounterAccessor"
+    "StatsCounterAccessor",
+    "CommandSourceAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

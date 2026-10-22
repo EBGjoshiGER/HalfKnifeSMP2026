@@ -28,7 +28,7 @@ final class ConsoleReset {
             var all = Commands.literal("all").executes(ctx -> run(ctx.getSource(), false))
                 .then(Commands.literal("confirm").executes(ctx -> run(ctx.getSource(), true)));
             dispatcher.register(Commands.literal("halfknife")
-                .requires(source -> source.source == source.getServer())
+                .requires(source -> ((de.halfknife.playtime.mixin.CommandSourceAccessor)source).halfknife$getSource() == source.getServer())
                 .then(Commands.literal("reset").then(all)));
         });
     }

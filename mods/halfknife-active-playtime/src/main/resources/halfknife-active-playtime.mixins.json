@@ -6,7 +6,11 @@
     "ActivityMixin",
     "LeaderboardMixin",
     "PlayerListAccessor",
-    "StatsCounterAccessor"
+    "StatsCounterAccessor",
+    "NetherStatsMixin",
+    "EndStatsMixin",
+    "QuizStatsMixin",
+    "RewardsStatsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

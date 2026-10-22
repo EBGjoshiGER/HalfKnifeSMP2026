@@ -62,6 +62,14 @@ class ExportTests(unittest.TestCase):
         self.assertNotIn(OTHER, json.dumps(result))
         self.assertEqual(ftp.directory, "/")
 
+    def test_test_account_is_excluded_by_uuid_after_rename(self):
+        from unittest.mock import patch
+        with patch.dict(globals(), ALICE="2f4bd5e2-e184-43af-8ab5-df7670dbc530"):
+            ftp = FakeFTP()
+            result = exporter.collect(ftp)
+            self.assertEqual([p["name"] for p in result["players"]], ["Bob"])
+            self.assertNotIn(ALICE + ".json", ftp.requested)
+
     def test_pending_never_substitutes_vanilla_time(self):
         ftp = FakeFTP(); ftp.active = None
         result = exporter.collect(ftp)

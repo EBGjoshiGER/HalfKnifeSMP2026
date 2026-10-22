@@ -160,6 +160,7 @@ public final class ActivePlaytimeMod implements ModInitializer {
         instance.refreshWhitelist();
         List<ActiveEntry> entries = new ArrayList<>();
         for (var entry : instance.whitelistNames.entrySet()) {
+            if (StatsExclusions.excluded(entry.getKey())) continue;
             long seconds = activeSeconds(entry.getKey());
             if (seconds > 0) entries.add(new ActiveEntry(entry.getKey(), entry.getValue(), seconds));
         }

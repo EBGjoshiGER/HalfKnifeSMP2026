@@ -58,7 +58,7 @@ def snapshot(config, progress, now=None):
     leaderboard = []
     for player_id, score in points.items():
         integer(score, f"playerPoints.{player_id}")
-        if score == 0:
+        if player_id == "2f4bd5e2-e184-43af-8ab5-df7670dbc530" or score == 0:
             continue
         name = names.get(player_id)
         if name is None or name == "":

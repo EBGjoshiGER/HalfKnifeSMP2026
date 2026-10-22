@@ -32,6 +32,8 @@ def read_ranking(ftp):
     for player in whitelist:
         if isinstance(player, dict) and re.fullmatch(r"[A-Za-z0-9_]{1,16}", player.get("name", "")):
             names[str(UUID(player["uuid"]))] = player["name"]
+    names.pop("2f4bd5e2-e184-43af-8ab5-df7670dbc530", None)  # Test account: exclude before collection and totals.
+
     path = f"{world}/config/halfknife-active-playtime/playtime.json"
     try:
         data = json.loads(download(ftp, path))

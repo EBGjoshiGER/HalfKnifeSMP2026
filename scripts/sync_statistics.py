@@ -108,6 +108,8 @@ def collect(ftp):
             raise ValueError("Invalid whitelist entry")
         names[str(UUID(entry["uuid"]))] = entry["name"]
 
+    names.pop("2f4bd5e2-e184-43af-8ab5-df7670dbc530", None)  # Test account: exclude before collection and totals.
+
     active = None
     active_updated = None
     try:

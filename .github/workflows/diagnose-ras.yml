@@ -1,0 +1,48 @@
+name: Diagnose RAS allocation (read only)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/diagnose-ras.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Read installed RAS and relevant server errors
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import ftplib, io, os, json, zipfile, re
+          ftp=ftplib.FTP(timeout=40)
+          try:
+              ftp.connect(os.environ["FTP_HOST"], int(os.environ.get("FTP_PORT") or "21"))
+              ftp.login(os.environ["FTP_USER"], os.environ["FTP_PASSWORD"])
+              def read(path):
+                  out=io.BytesIO(); ftp.retrbinary("RETR "+path,out.write); return out.getvalue()
+              for path in ftp.nlst("mods"):
+                  name=path.rsplit("/",1)[-1]
+                  if not name.endswith(".jar") or not re.search(r"rpg|attribute|ras[-_]",name,re.I): continue
+                  print("MOD",name)
+                  with zipfile.ZipFile(io.BytesIO(read("mods/"+name))) as z:
+                      if "fabric.mod.json" in z.namelist(): print("METADATA",z.read("fabric.mod.json").decode())
+                      for item in z.namelist():
+                          if item.endswith(".json") and "/lang/" in item and ("en_us" in item):
+                              lang=json.loads(z.read(item))
+                              print("ALLOCATION MESSAGES",json.dumps({k:v for k,v in lang.items() if re.search(r"allocat|apply|server",k+" "+str(v),re.I)}))
+              lines=read("logs/latest.log").decode(errors="replace").splitlines()
+              keep=set()
+              for i,line in enumerate(lines):
+                  if re.search(r"ras|rpg.attribute|allocation|payload|exception",line,re.I):
+                      keep.update(range(max(0,i-1),min(len(lines),i+5)))
+              for i in sorted(keep)[-250:]:
+                  line=re.sub(r"\b(?:\d{1,3}\.){3}\d{1,3}(?::\d+)?\b","[IP]",lines[i])
+                  print(line)
+          finally: ftp.close()
+          PY

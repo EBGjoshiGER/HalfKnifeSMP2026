@@ -24,7 +24,7 @@ jobs:
         run: |
           curl -fsSL https://www.benf.org/other/cfr/cfr-0.152.jar -o /tmp/cfr.jar
           python3 - <<'PY'
-          import ftplib,io,os,zipfile,subprocess,json,pathlib,hashlib
+          import ftplib,io,os,zipfile,subprocess,json,pathlib,hashlib,urllib.request
           ftp=ftplib.FTP(timeout=40)
           try:
               ftp.connect(os.environ["FTP_HOST"],int(os.environ.get("FTP_PORT") or "21"))
@@ -37,6 +37,12 @@ jobs:
                       if name.endswith("FabricRpgAttributeSystemModEvents.class") or name.endswith("ItemLockTooltipHelper.class"):
                           p=pathlib.Path("/tmp")/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(z.read(name))
                           subprocess.run(["java","-jar","/tmp/cfr.jar",str(p),"--silent","true"],check=True)
+              upstream=urllib.request.urlopen("https://cdn.modrinth.com/data/d85UTOuq/versions/1A3XajSX/rpg_attribute_system-fabric-26.2-4.2.5.jar",timeout=45).read()
+              with zipfile.ZipFile(io.BytesIO(upstream)) as clean, zipfile.ZipFile(out) as patched:
+                  differences=[n for n in clean.namelist() if n.endswith(".class") and (n not in patched.namelist() or clean.read(n)!=patched.read(n))]
+                  extra=[n for n in patched.namelist() if n.endswith(".class") and n not in clean.namelist()]
+                  print("CUSTOM_CLASSES_VS_ORIGINAL_4_2_5",json.dumps(differences))
+                  print("EXTRA_CUSTOM_CLASSES",json.dumps(extra))
               roots=["config/ras"]
               for root in roots:
                   try:

@@ -86,6 +86,12 @@ def main():
     quiz_file = root / "smoke-world/data/halfknifequiz/stats.json"
     quiz_file.parent.mkdir(parents=True, exist_ok=True)
     quiz_file.write_text(json.dumps({"schemaVersion": 1, "currentSeason": "2026", "players": {ids[2]: {"lastKnownName": "NotWhitelisted", "all_time": {"gamesPlayed": 5, "wins": 3}, "seasons": {}}}}))
+    project_files = []
+    for mod in ("netherproject", "endproject"):
+        path = root / "config" / mod / "progress.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"donated": {"minecraft:stone": 19}, "playerTotals": {ids[2]: 19}, "playerPoints": {ids[2]: 38}, "playerNames": {ids[2]: "NotWhitelisted"}, "active": False}))
+        project_files.append(path)
     with (root / "smoke.log").open("w") as log:
         process = subprocess.Popen(["java", "-Xmx2G", "-Dhalfknife.playtime.integration-test=true", "-jar", "server.jar", "nogui"], cwd=root, stdin=subprocess.PIPE, stdout=log, stderr=subprocess.STDOUT, text=True)
         try:
@@ -124,6 +130,17 @@ def main():
                     assert "RESET-VORSCHAU" in (root / "smoke.log").read_text(), (root / "smoke.log").read_text()[-8000:]
                     assert json.loads(extra_stats.read_text())["stats"]["minecraft:custom"]["minecraft:play_time"] == 9999
                     assert "oldreward" in rewards.read_text()
+                    bad = extra_stats.with_name("00000000-0000-0000-0000-000000000004.json")
+                    bad.write_text("not JSON")
+                    process.stdin.write("halfknife reset all confirm\n")
+                    process.stdin.flush()
+                    failure_deadline = time.monotonic() + 10
+                    while "RESET ABGEBROCHEN" not in (root / "smoke.log").read_text() and time.monotonic() < failure_deadline:
+                        time.sleep(0.2)
+                    assert "RESET ABGEBROCHEN" in (root / "smoke.log").read_text()
+                    assert "oldreward" in rewards.read_text()
+                    assert json.loads(extra_stats.read_text())["stats"]["minecraft:custom"]["minecraft:play_time"] == 9999
+                    bad.unlink()
                     process.stdin.write("halfknife reset all confirm\n")
                     process.stdin.flush()
                     console_deadline = time.monotonic() + 20
@@ -141,10 +158,20 @@ def main():
                         assert "oldreward" not in rewards.read_text()
                         assert "\t0\t-1\ttrue\t" in rewards.read_text()
                         assert json.loads(quiz_file.read_text())["players"] == {}
+                        for project_file in project_files:
+                            project = json.loads(project_file.read_text())
+                            assert project["playerTotals"] == project["playerPoints"] == project["playerNames"] == {}
+                            assert project["donated"]["minecraft:stone"] == 19
+                        backups = list((export.parent / "reset-backups").glob("console-*"))
+                        assert len(backups) == 1
+                        assert (backups[0] / "status.txt").read_text().startswith("COMPLETED")
+                        manifest = json.loads((backups[0] / "manifest.json").read_text())
+                        saved_rewards = next(v for k, v in manifest.items() if k.endswith("playtime-rewards/players.tsv"))
+                        assert "oldreward" in (backups[0] / saved_rewards).read_text()
                         assert all(p["activeMillis"] == p["afkMillis"] == 0 for p in json.loads(export.read_text())["players"])
                     assert_console_reset()
-                    # Trigger the rewards periodic save and check old counters do not return.
-                    time.sleep(12)
+                    # Keep ticking, then shutdown/restart exercises both mod save paths.
+                    time.sleep(2)
                     assert_console_reset()
                     process.stdin.write("scoreboard players get NotWhitelisted ras_level\nscoreboard players get OldName deaths\nstop\n")
                     process.stdin.flush()
@@ -182,7 +209,7 @@ def main():
                     assert "HALFKNIFE INTEGRATION PASSED" in (root / "smoke.log").read_text()
                     if process.returncode != 0:
                         raise RuntimeError("Smoke server failed on shutdown")
-                    print("Integration passed: lobby, Tab, backups, offline stats reset, duplicate request, unchanged other players and reset persistence after restart.")
+                    print("Integration passed: legacy reset, console preview, malformed-file refusal, all offline players, reward/quiz/project reset, backups, RAS exclusions and restart persistence.")
                     return
                 if process.poll() is not None:
                     raise RuntimeError("Smoke server stopped before startup completed")

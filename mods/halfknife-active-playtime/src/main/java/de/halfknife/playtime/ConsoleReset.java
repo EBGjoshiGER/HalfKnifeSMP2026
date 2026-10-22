@@ -24,13 +24,13 @@ final class ConsoleReset {
     private static boolean busy;
 
     static void register() {
-        CommandRegistrationCallback.EVENT.register((dispatcher, registry, environment) ->
+        CommandRegistrationCallback.EVENT.register((dispatcher, registry, environment) -> {
+            var all = Commands.literal("all").executes(ctx -> run(ctx.getSource(), false))
+                .then(Commands.literal("confirm").executes(ctx -> run(ctx.getSource(), true)));
             dispatcher.register(Commands.literal("halfknife")
-                // Only the dedicated server console, not a player, command block or RCON.
                 .requires(source -> source.source == source.getServer())
-                .then(Commands.literal("reset").then(Commands.literal("all")
-                    .executes(ctx -> run(ctx.getSource(), false))
-                    .then(Commands.literal("confirm").executes(ctx -> run(ctx.getSource(), true))))));
+                .then(Commands.literal("reset").then(all)));
+        });
     }
 
     private static int run(CommandSourceStack source, boolean confirm) {

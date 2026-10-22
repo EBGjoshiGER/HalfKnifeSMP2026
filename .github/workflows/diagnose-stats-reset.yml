@@ -1,0 +1,50 @@
+name: Stats-Reset Diagnose (nur lesend)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/diagnose-stats-reset.yml]
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pause und Reset-Protokoll lesen
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import ftplib, io, json, os, sys
+          sys.path.insert(0, "scripts")
+          from sync_playtime import download
+          ftp = ftplib.FTP(timeout=30)
+          try:
+              ftp.connect(os.environ["FTP_HOST"], int(os.environ.get("FTP_PORT") or "21"))
+              ftp.login(os.environ["FTP_USER"], os.environ["FTP_PASSWORD"])
+              props = dict(line.split("=", 1) for line in download(ftp, "server.properties").splitlines() if "=" in line and not line.lstrip().startswith("#"))
+              for key in ("level-name", "pause-when-empty-seconds"):
+                  print(key + "=" + props.get(key, "<default>"))
+              folder = props.get("level-name", "world").strip() + "/config/halfknife-active-playtime/"
+              for name in ("playtime.json", "reset-request.json", "reset-result.json"):
+                  try:
+                      data = json.loads(download(ftp, folder + name))
+                      if name == "playtime.json":
+                          print(name, {key: data.get(key) for key in ("resetProtocol", "updatedAt", "processedResetIds")})
+                      else:
+                          print(name, data)
+                  except ftplib.error_perm as error:
+                      if not str(error).startswith("550"): raise
+                      print(name, "not present")
+              log = download(ftp, "logs/latest.log")
+              selected = [line for line in log.splitlines() if any(term in line.lower() for term in ("pausing", "empty for", "stats reset", "halfknife active", "reset failed", "cannot acknowledge"))]
+              print("Relevant server log lines:")
+              print("\n".join(selected[-30:]))
+          finally:
+              ftp.close()
+          PY

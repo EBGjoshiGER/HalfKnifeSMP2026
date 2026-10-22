@@ -1,0 +1,60 @@
+name: Server-Mods erfassen (nur lesend)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/inspect-server-mods.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Mod-Metadaten per FTP lesen
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import ftplib, io, json, os, zipfile
+          from pathlib import Path
+          from datetime import datetime, timezone
+          result = {"capturedAt": datetime.now(timezone.utc).isoformat(), "mods": []}
+          ftp = ftplib.FTP(timeout=45)
+          try:
+              ftp.connect(os.environ["FTP_HOST"], int(os.environ.get("FTP_PORT") or "21"))
+              ftp.login(os.environ["FTP_USER"], os.environ["FTP_PASSWORD"])
+              ftp.cwd("mods")
+              names = sorted(ftp.nlst())
+              for remote in names:
+                  if not remote.lower().endswith(".jar"):
+                      continue
+                  entry = {"file": remote.rsplit("/", 1)[-1]}
+                  try:
+                      data = io.BytesIO()
+                      ftp.retrbinary("RETR " + remote, data.write)
+                      entry["bytes"] = data.tell()
+                      with zipfile.ZipFile(data) as jar:
+                          if "fabric.mod.json" in jar.namelist():
+                              meta = json.loads(jar.read("fabric.mod.json"))
+                              for key in ("id", "name", "version", "environment", "depends"):
+                                  entry[key] = meta.get(key)
+                          else:
+                              entry["metadata"] = "No fabric.mod.json"
+                  except Exception as error:
+                      entry["error"] = type(error).__name__
+                  result["mods"].append(entry)
+                  print(json.dumps(entry, ensure_ascii=True))
+          finally:
+              ftp.close()
+          Path("mod-inventory.json").write_text(json.dumps(result, indent=2) + "\n")
+          print("Captured mods:", len(result["mods"]))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: server-mod-inventory
+          path: mod-inventory.json
+          retention-days: 7

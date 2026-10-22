@@ -9,5 +9,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(PlayerList.class)
 public interface PlayerListAccessor {
+    @Accessor("advancements") Map<UUID, ?> halfknife$getAdvancements();
     @Accessor("stats") Map<UUID, ServerStatsCounter> halfknife$getStats();
 }

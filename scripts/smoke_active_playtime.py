@@ -24,6 +24,7 @@ def main():
             "fabric-api-0.160.0+26.2.jar", "tab-info-0.3.0+mod.jar",
             "halfknife-leaderboards-1.2.3.jar", "playtime-rewards-1.7.3.jar",
             "rpg_attribute_reworked.jar", "nether-project-2.3.0.jar", "end-project-1.0.0.jar",
+            "halfknifequiz-1.0.0.jar", "voicechat-fabric-2.6.23+26.2.jar",
             "LuckPerms-Fabric-5.5.57.jar", "cloth-config-26.2.155.jar",
             "architectury-fabric-21.1.9.jar", "placeholder-api-3.1.0-beta.1+26.2.jar",
             "PuzzlesLib-v26.2.3-mc26.2.x-Fabric.jar", "collective-26.2.0-8.40.jar",
@@ -40,7 +41,7 @@ def main():
             (root / "mods" / filename).write_bytes(content)
     finally:
         ftp.close()
-    shutil.copyfile("mods/halfknife-active-playtime/build/libs/halfknife-active-playtime-1.2.0.jar", root / "mods/halfknife-active-playtime.jar")
+    shutil.copyfile("mods/halfknife-active-playtime/build/libs/halfknife-active-playtime-1.3.0.jar", root / "mods/halfknife-active-playtime.jar")
     with urllib.request.urlopen("https://meta.fabricmc.net/v2/versions/installer", timeout=30) as response:
         installer = next(item["version"] for item in json.load(response) if item.get("stable"))
     url = f"https://meta.fabricmc.net/v2/versions/loader/26.2/0.19.5/{installer}/server/jar"
@@ -70,6 +71,21 @@ def main():
         function = tab.read("data/tab_info/function/display/playtime/main.mcfunction").decode()
         assert "= @s hk.active_ticks" in function
         assert "= @s playtime\n" not in function
+    # Additional console reset fixtures: offline, non-whitelisted and RAS-owned values.
+    extra_stats = root / "smoke-world/players/stats" / (ids[2] + ".json")
+    extra_stats.write_text(json.dumps({"stats": {"minecraft:custom": {"minecraft:play_time": 9999}, "minecraft:mined": {"minecraft:grass_block": 12, "rpg_attribute_system:test": 7}}, "DataVersion": 4900}))
+    advancements = root / "smoke-world/players/advancements" / (ids[2] + ".json")
+    advancements.parent.mkdir(parents=True, exist_ok=True)
+    advancements.write_text(json.dumps({"DataVersion": 4900, "minecraft:story/root": {"done": True}, "rpg_attribute_system:root": {"done": True}}))
+    player_nbt = root / "smoke-world/players/data" / (ids[2] + ".dat")
+    player_nbt.parent.mkdir(parents=True, exist_ok=True)
+    player_nbt.write_bytes(b"offline-player-NBT-sentinel-with-RAS-data")
+    rewards = root / "smoke-world/config/playtime-rewards/players.tsv"
+    rewards.parent.mkdir(parents=True, exist_ok=True)
+    rewards.write_text(ids[2] + "\tNotWhitelisted\t99999\t2\ttrue\toldreward\n")
+    quiz_file = root / "smoke-world/data/halfknifequiz/stats.json"
+    quiz_file.parent.mkdir(parents=True, exist_ok=True)
+    quiz_file.write_text(json.dumps({"schemaVersion": 1, "currentSeason": "2026", "players": {ids[2]: {"lastKnownName": "NotWhitelisted", "all_time": {"gamesPlayed": 5, "wins": 3}, "seasons": {}}}}))
     with (root / "smoke.log").open("w") as log:
         process = subprocess.Popen(["java", "-Xmx2G", "-Dhalfknife.playtime.integration-test=true", "-jar", "server.jar", "nogui"], cwd=root, stdin=subprocess.PIPE, stdout=log, stderr=subprocess.STDOUT, text=True)
         try:
@@ -99,7 +115,38 @@ def main():
                     while request_file.exists() and time.monotonic() < duplicate_deadline:
                         time.sleep(0.2)
                     assert "Already applied" in json.loads(result_file.read_text())["message"]
-                    process.stdin.write("stop\n")
+                    # Preview cannot mutate any fixture. Then run the actual console command.
+                    process.stdin.write("scoreboard objectives add ras_level dummy\nscoreboard players set NotWhitelisted ras_level 42\nscoreboard objectives add deaths deathCount\nscoreboard players set OldName deaths 8\nhalfknife reset all\n")
+                    process.stdin.flush()
+                    preview_deadline = time.monotonic() + 15
+                    while "RESET-VORSCHAU" not in (root / "smoke.log").read_text() and time.monotonic() < preview_deadline:
+                        time.sleep(0.2)
+                    assert "RESET-VORSCHAU" in (root / "smoke.log").read_text(), (root / "smoke.log").read_text()[-8000:]
+                    assert json.loads(extra_stats.read_text())["stats"]["minecraft:custom"]["minecraft:play_time"] == 9999
+                    assert "oldreward" in rewards.read_text()
+                    process.stdin.write("halfknife reset all confirm\n")
+                    process.stdin.flush()
+                    console_deadline = time.monotonic() + 20
+                    while "HALFKNIFE RESET OK" not in (root / "smoke.log").read_text() and time.monotonic() < console_deadline:
+                        time.sleep(0.2)
+                    assert "HALFKNIFE RESET OK" in (root / "smoke.log").read_text(), (root / "smoke.log").read_text()[-12000:]
+                    def assert_console_reset():
+                        stats = json.loads(extra_stats.read_text())["stats"]
+                        assert stats["minecraft:custom"]["minecraft:play_time"] == 0
+                        assert stats["minecraft:mined"]["minecraft:grass_block"] == 0
+                        assert stats["minecraft:mined"]["rpg_attribute_system:test"] == 7
+                        assert "minecraft:story/root" not in json.loads(advancements.read_text())
+                        assert json.loads(advancements.read_text())["rpg_attribute_system:root"]["done"] is True
+                        assert player_nbt.read_bytes() == b"offline-player-NBT-sentinel-with-RAS-data"
+                        assert "oldreward" not in rewards.read_text()
+                        assert "\t0\t-1\ttrue\t" in rewards.read_text()
+                        assert json.loads(quiz_file.read_text())["players"] == {}
+                        assert all(p["activeMillis"] == p["afkMillis"] == 0 for p in json.loads(export.read_text())["players"])
+                    assert_console_reset()
+                    # Trigger the rewards periodic save and check old counters do not return.
+                    time.sleep(12)
+                    assert_console_reset()
+                    process.stdin.write("scoreboard players get NotWhitelisted ras_level\nscoreboard players get OldName deaths\nstop\n")
                     process.stdin.flush()
                     process.wait(timeout=40)
                     data = json.loads((root / "smoke-world/config/halfknife-active-playtime/playtime.json").read_text())
@@ -107,7 +154,7 @@ def main():
                     assert len(data["players"]) == 3
                     by_id = {entry["uuid"]: entry for entry in data["players"]}
                     assert by_id[ids[0]]["activeMillis"] == by_id[ids[0]]["afkMillis"] == 0
-                    assert by_id[ids[1]]["activeMillis"] == 7200000
+                    assert by_id[ids[1]]["activeMillis"] == 0
                     assert request["id"] in data["processedResetIds"]
                     # Read the same store after a real second start; old time must stay gone.
                     with (root / "restart.log").open("w") as restart_log:
@@ -128,6 +175,10 @@ def main():
                                 restart.kill(); restart.wait()
                     restarted = json.loads(export.read_text())
                     assert next(p for p in restarted["players"] if p["uuid"] == ids[0])["activeMillis"] == 0
+                    assert_console_reset()
+                    log_text = (root / "smoke.log").read_text()
+                    assert "42 [ras_level]" in log_text, log_text[-4000:]
+                    assert "0 [deaths]" in log_text, log_text[-4000:]
                     assert "HALFKNIFE INTEGRATION PASSED" in (root / "smoke.log").read_text()
                     if process.returncode != 0:
                         raise RuntimeError("Smoke server failed on shutdown")

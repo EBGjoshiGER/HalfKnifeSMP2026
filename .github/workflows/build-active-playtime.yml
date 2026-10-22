@@ -46,5 +46,5 @@ jobs:
         run: python3 scripts/install_active_playtime.py
       - uses: actions/upload-artifact@v4
         with:
-          name: halfknife-active-playtime-1.2.0
+          name: halfknife-active-playtime-1.3.0
           path: mods/halfknife-active-playtime/build/libs/*.jar

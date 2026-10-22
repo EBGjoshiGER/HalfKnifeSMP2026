@@ -15,9 +15,9 @@ def read(ftp, path):
 
 
 def main():
-    mod = Path("mods/halfknife-active-playtime/build/libs/halfknife-active-playtime-1.2.0.jar").read_bytes()
+    mod = Path("mods/halfknife-active-playtime/build/libs/halfknife-active-playtime-1.3.0.jar").read_bytes()
     tested_tab = Path("temp/active-playtime-smoke/mods/tab-info.jar").read_bytes()
-    target_mod = "mods/halfknife-active-playtime-1.2.0.jar"
+    target_mod = "mods/halfknife-active-playtime-1.3.0.jar"
     target_tab = "mods/tab-info-0.3.0+mod.jar"
     ftp = ftplib.FTP(timeout=30)
     committed = []
@@ -26,7 +26,7 @@ def main():
         ftp.login(os.environ["FTP_USER"], os.environ["FTP_PASSWORD"])
         installed = {p.rsplit("/", 1)[-1] for p in ftp.nlst("mods")}
         previous = sorted(name for name in installed if name.startswith("halfknife-active-playtime-") and name.endswith(".jar"))
-        if len(previous) != 1 or previous[0] not in {"halfknife-active-playtime-1.0.0.jar", "halfknife-active-playtime-1.1.0.jar", "halfknife-active-playtime-1.2.0.jar"}:
+        if len(previous) != 1 or previous[0] not in {"halfknife-active-playtime-1.0.0.jar", "halfknife-active-playtime-1.1.0.jar", "halfknife-active-playtime-1.2.0.jar", "halfknife-active-playtime-1.3.0.jar"}:
             raise RuntimeError("Unexpected active-playtime installation; refusing to overwrite")
         old_mod_path = "mods/" + previous[0]
         old_mod = read(ftp, old_mod_path)
@@ -49,7 +49,7 @@ def main():
             ftp.rename(source, backup)
             committed.append((target, source, backup))
             ftp.rename(target + ".upload", target)
-        print("Active-playtime 1.2.0 and Tab Info bridge installed; checksums verified; previous JARs backed up.")
+        print("Active-playtime 1.3.0 and Tab Info bridge installed; checksums verified; previous JARs backed up.")
         print("Restart the server to activate Tab and lobby integration. Player data and reward history were not modified.")
     except Exception:
         for target, source, backup in reversed(committed):

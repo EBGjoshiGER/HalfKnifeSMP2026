@@ -75,7 +75,10 @@ def main():
     }))
     stats_file = root / "smoke-world/players/stats" / (ids[0] + ".json")
     stats_file.parent.mkdir(parents=True, exist_ok=True)
-    stats_file.write_text(json.dumps({"stats": {"minecraft:custom": {"minecraft:deaths": 5}}, "DataVersion": 4900}))
+    stats_file.write_text(json.dumps({"stats": {"minecraft:custom": {"minecraft:deaths": 5, "minecraft:play_time": 72000}}, "DataVersion": 4900}))
+    rewards_file = root / "smoke-world/config/playtime-rewards/players.tsv"
+    rewards_file.parent.mkdir(parents=True, exist_ok=True)
+    rewards_file.write_text(f"{ids[0]}\tActiveAlice\t3600\t2\ttrue\tclaimed-a\n{ids[1]}\tActiveBob\t7200\t3\ttrue\tclaimed-b\n")
     with zipfile.ZipFile(root / "mods/tab-info.jar") as tab:
         function = tab.read("data/tab_info/function/display/playtime/main.mcfunction").decode()
         assert "= @s hk.active_ticks" in function
@@ -87,6 +90,23 @@ def main():
             while time.monotonic() < deadline:
                 text = (root / "smoke.log").read_text()
                 if 'Done (' in text:
+                    def command(value):
+                        process.stdin.write(value + "\n"); process.stdin.flush()
+                        time.sleep(2)
+                    command("hkrewards reset all")
+                    assert "Vorschau: 2" in (root / "smoke.log").read_text()
+                    assert "claimed-a" in rewards_file.read_text(), "Preview changed rewards"
+                    command("hkrewards reset ActiveBob confirm")
+                    rows = [line.split("\t") for line in rewards_file.read_text().splitlines() if not line.startswith("#")]
+                    by_uuid = {row[0]: row for row in rows}
+                    assert by_uuid[ids[0]][2] == "3600", "Single reset touched another player"
+                    assert by_uuid[ids[1]][2:6] == ["0", "-1", "true", ""], by_uuid
+                    command("hkrewards reset all confirm")
+                    rows = [line.split("\t") for line in rewards_file.read_text().splitlines() if not line.startswith("#")]
+                    assert all(row[2:6] == ["0", "-1", "true", ""] for row in rows), rows
+                    assert json.loads(rewards_file.with_name("reset-baselines.json").read_text())[ids[0]] == 3600
+                    assert len(list((rewards_file.parent / "reset-backups").iterdir())) == 2
+                    print("Offline rewards reset passed: preview, single target, all players, claims and backups.")
                     # Verify packet-handler mixins too; class may be lazy-loaded on an empty server.
                     request = {"id": "11111111-1111-4111-8111-111111111111", "target": ids[0], "scope": "all",
                                "expiresAt": (datetime.now(timezone.utc) + timedelta(seconds=60)).isoformat()}
@@ -136,6 +156,7 @@ def main():
                         finally:
                             if restart.poll() is None:
                                 restart.kill(); restart.wait()
+                    assert all(line.split("\t")[2] == "0" for line in rewards_file.read_text().splitlines() if line and not line.startswith("#")), "Rewards reset did not survive restart"
                     restarted = json.loads(export.read_text())
                     assert next(p for p in restarted["players"] if p["uuid"] == ids[0])["activeMillis"] == 0
                     assert "HALFKNIFE INTEGRATION PASSED" in (root / "smoke.log").read_text()

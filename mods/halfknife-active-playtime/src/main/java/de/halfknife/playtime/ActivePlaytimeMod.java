@@ -64,6 +64,7 @@ public final class ActivePlaytimeMod implements ModInitializer {
 
     @Override public void onInitialize() {
         instance = this;
+        RewardsReset.register();
         ServerLifecycleEvents.SERVER_STARTED.register(this::start);
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> save());
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {

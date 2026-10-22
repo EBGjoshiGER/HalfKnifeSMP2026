@@ -1,0 +1,55 @@
+name: Upgrade RAS to 5.0.0 with HalfKnife rules
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - mods/ras-upgrade/**
+      - scripts/ras_upgrade.py
+      - scripts/smoke_ras_upgrade.py
+      - .github/workflows/upgrade-ras.yml
+permissions:
+  contents: read
+concurrency:
+  group: halfknife-ras-upgrade
+  cancel-in-progress: false
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+      FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+      FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+      FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.5.1'
+      - name: Exact client JAR and existing server config snapshot
+        run: python3 scripts/ras_upgrade.py prepare
+      - name: Compile only the adapted server events and isolated test mod
+        working-directory: mods/ras-upgrade
+        run: gradle classes testMod --no-daemon --stacktrace
+      - name: Preserve original 5.0.0 networking and gameplay classes
+        run: python3 scripts/ras_upgrade.py package
+      - name: Compile current HalfKnife integration for compatibility test
+        working-directory: mods/halfknife-active-playtime
+        run: gradle build --no-daemon
+      - name: Start disposable Fabric server with existing config copy and test item rules
+        run: python3 scripts/smoke_ras_upgrade.py
+      - name: Verify retained config values
+        run: |
+          python3 -m pip install json5
+          python3 scripts/ras_upgrade.py verify
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RAS-5.0.0-HalfKnife-server
+          path: temp/ras-upgrade/rpg_attribute_system-fabric-26.2-5.0.0-halfknife.jar
+      - name: Install tested JAR with old JAR and config backups
+        run: python3 scripts/ras_upgrade.py install

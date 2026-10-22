@@ -1,0 +1,17 @@
+plugins { id 'net.fabricmc.fabric-loom' version '1.17-SNAPSHOT' }
+version = '5.0.0-halfknife'
+repositories { mavenCentral() }
+dependencies {
+    minecraft 'com.mojang:minecraft:26.2'
+    implementation 'net.fabricmc:fabric-loader:0.19.3'
+    implementation 'net.fabricmc.fabric-api:fabric-api:0.160.0+26.2'
+    compileOnly files('../../temp/ras-upgrade/original-5.0.0.jar')
+}
+java { toolchain.languageVersion = JavaLanguageVersion.of(25) }
+tasks.withType(JavaCompile).configureEach { options.release = 25; options.encoding = 'UTF-8' }
+tasks.register('testMod', Jar) {
+    dependsOn classes
+    archiveFileName = 'ras-upgrade-test.jar'
+    from(sourceSets.main.output) { include 'de/halfknife/rascheck/**' }
+    from('test-resources')
+}

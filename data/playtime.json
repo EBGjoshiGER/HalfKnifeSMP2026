@@ -1,11 +1,6 @@
 {
   "mode": "active",
-  "players": [
-    {
-      "name": "3b0",
-      "seconds": 87
-    }
-  ],
-  "updatedAt": "2026-10-22T19:12:04.428619079Z",
+  "players": [],
+  "updatedAt": "2026-10-22T19:22:58.330595831Z",
   "afkTimeoutSeconds": 300
 }

@@ -43,7 +43,7 @@ jobs:
                       for name, facts in ftp.mlsd(root):
                           if facts.get("type")=="file" and name.endswith(".json"):
                               data=io.BytesIO();ftp.retrbinary("RETR "+root+"/"+name,data.write)
-                              value=json.loads(data.getvalue());print("CONFIG",root+"/"+name,json.dumps(value))
+                              print("CONFIG",root+"/"+name,data.getvalue().decode(errors="replace"))
                   except ftplib.error_perm as e:print("CONFIG_ROOT_UNAVAILABLE",root,str(e))
           finally:ftp.close()
           PY

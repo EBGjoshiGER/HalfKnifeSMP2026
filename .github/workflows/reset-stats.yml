@@ -1,0 +1,53 @@
+name: Spielerstatistiken zurücksetzen
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Minecraft-Name oder ALL für alle Whitelistspieler'
+        required: true
+        default: EBGjoshiGER
+        type: string
+      scope:
+        description: 'active = nur Aktivzeit; all = Minecraft-Statistiken inklusive Aktivzeit'
+        required: true
+        default: active
+        type: choice
+        options: [active, all]
+permissions:
+  contents: write
+concurrency:
+  group: halfknife-stats-reset
+  cancel-in-progress: false
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+      FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+      FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+      FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reset durch die laufende Server-Mod ausführen
+        env:
+          RESET_TARGET: ${{ inputs.target }}
+          RESET_SCOPE: ${{ inputs.scope }}
+        run: python3 scripts/request_stats_reset.py
+      - name: Beide Website-Exporte vom Server aktualisieren
+        run: |
+          python3 scripts/sync_playtime.py
+          python3 scripts/sync_statistics.py
+      - name: Website-Daten veröffentlichen
+        run: |
+          git config user.name "HalfKnife SMP Bot"
+          git config user.email "actions@github.com"
+          git add data/playtime.json data/statistics.json
+          if [ -f data/stat-labels.json ]; then git add data/stat-labels.json; fi
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Spielerstatistiken nach Administrator-Reset aktualisiert"
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1

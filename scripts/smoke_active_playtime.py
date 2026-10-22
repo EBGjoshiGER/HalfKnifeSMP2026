@@ -9,6 +9,7 @@ import subprocess
 import time
 import urllib.request
 import zipfile
+from datetime import datetime, timedelta, timezone
 from tab_active_bridge import patch_tab_jar
 
 
@@ -39,7 +40,7 @@ def main():
             (root / "mods" / filename).write_bytes(content)
     finally:
         ftp.close()
-    shutil.copyfile("mods/halfknife-active-playtime/build/libs/halfknife-active-playtime-1.1.0.jar", root / "mods/halfknife-active-playtime.jar")
+    shutil.copyfile("mods/halfknife-active-playtime/build/libs/halfknife-active-playtime-1.2.0.jar", root / "mods/halfknife-active-playtime.jar")
     with urllib.request.urlopen("https://meta.fabricmc.net/v2/versions/installer", timeout=30) as response:
         installer = next(item["version"] for item in json.load(response) if item.get("stable"))
     url = f"https://meta.fabricmc.net/v2/versions/loader/26.2/0.19.5/{installer}/server/jar"
@@ -62,6 +63,9 @@ def main():
             {"uuid": ids[2], "name": "NotWhitelisted", "activeMillis": 999999999, "afkMillis": 0}
         ]
     }))
+    stats_file = root / "smoke-world/players/stats" / (ids[0] + ".json")
+    stats_file.parent.mkdir(parents=True, exist_ok=True)
+    stats_file.write_text(json.dumps({"stats": {"minecraft:custom": {"minecraft:deaths": 5}}, "DataVersion": 4900}))
     with zipfile.ZipFile(root / "mods/tab-info.jar") as tab:
         function = tab.read("data/tab_info/function/display/playtime/main.mcfunction").decode()
         assert "= @s hk.active_ticks" in function
@@ -74,16 +78,60 @@ def main():
                 text = (root / "smoke.log").read_text()
                 if 'Done (' in text:
                     # Verify packet-handler mixins too; class may be lazy-loaded on an empty server.
+                    request = {"id": "11111111-1111-4111-8111-111111111111", "target": ids[0], "scope": "all",
+                               "expiresAt": (datetime.now(timezone.utc) + timedelta(seconds=60)).isoformat()}
+                    request_file = export.with_name("reset-request.json")
+                    result_file = export.with_name("reset-result.json")
+                    request_file.write_text(json.dumps(request))
+                    reset_deadline = time.monotonic() + 15
+                    while not result_file.exists() and time.monotonic() < reset_deadline:
+                        time.sleep(0.2)
+                    result = json.loads(result_file.read_text())
+                    assert result["success"] is True, result
+                    assert not stats_file.exists(), "Offline vanilla stats were not reset"
+                    backup = export.parent / "reset-backups" / request["id"]
+                    assert (backup / "playtime.json").exists()
+                    assert (backup / "players/stats" / stats_file.name).exists()
+                    # A repeated upload must be acknowledged without reapplying it.
+                    time.sleep(1)
+                    request_file.write_text(json.dumps(request))
+                    duplicate_deadline = time.monotonic() + 10
+                    while request_file.exists() and time.monotonic() < duplicate_deadline:
+                        time.sleep(0.2)
+                    assert "Already applied" in json.loads(result_file.read_text())["message"]
                     process.stdin.write("stop\n")
                     process.stdin.flush()
                     process.wait(timeout=40)
                     data = json.loads((root / "smoke-world/config/halfknife-active-playtime/playtime.json").read_text())
                     assert data["mode"] == "active" and data["afkTimeoutSeconds"] == 300
                     assert len(data["players"]) == 3
+                    by_id = {entry["uuid"]: entry for entry in data["players"]}
+                    assert by_id[ids[0]]["activeMillis"] == by_id[ids[0]]["afkMillis"] == 0
+                    assert by_id[ids[1]]["activeMillis"] == 7200000
+                    assert request["id"] in data["processedResetIds"]
+                    # Read the same store after a real second start; old time must stay gone.
+                    with (root / "restart.log").open("w") as restart_log:
+                        restart = subprocess.Popen(["java", "-Xmx2G", "-jar", "server.jar", "nogui"], cwd=root,
+                                                   stdin=subprocess.PIPE, stdout=restart_log, stderr=subprocess.STDOUT, text=True)
+                        try:
+                            restart_deadline = time.monotonic() + 120
+                            while time.monotonic() < restart_deadline and restart.poll() is None:
+                                if 'Done (' in (root / "restart.log").read_text():
+                                    break
+                                time.sleep(1)
+                            else:
+                                raise RuntimeError("Restart failed: " + (root / "restart.log").read_text()[-8000:])
+                            restart.stdin.write("stop\n"); restart.stdin.flush(); restart.wait(timeout=40)
+                            assert restart.returncode == 0
+                        finally:
+                            if restart.poll() is None:
+                                restart.kill(); restart.wait()
+                    restarted = json.loads(export.read_text())
+                    assert next(p for p in restarted["players"] if p["uuid"] == ids[0])["activeMillis"] == 0
                     assert "HALFKNIFE INTEGRATION PASSED" in (root / "smoke.log").read_text()
                     if process.returncode != 0:
                         raise RuntimeError("Smoke server failed on shutdown")
-                    print("Real lobby and Tab mods tested: active rows, active scoreboard ticks, whitelist filtering, storage preservation and clean shutdown passed.")
+                    print("Integration passed: lobby, Tab, backups, offline stats reset, duplicate request, unchanged other players and reset persistence after restart.")
                     return
                 if process.poll() is not None:
                     raise RuntimeError("Smoke server stopped before startup completed")

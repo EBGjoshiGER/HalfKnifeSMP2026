@@ -15,6 +15,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.scores.ScoreHolder;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
+import de.halfknife.playtime.mixin.PlayerListAccessor;
+import de.halfknife.playtime.mixin.StatsCounterAccessor;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,8 @@ public final class ActivePlaytimeMod implements ModInitializer {
     private MinecraftServer activeServer;
     private Map<UUID, String> whitelistNames = Map.of();
     private long whitelistChecked;
+    private long resetChecked;
+    private final Set<String> processedResetIds = new LinkedHashSet<>();
 
     private static final class Totals {
         String uuid;
@@ -47,11 +51,13 @@ public final class ActivePlaytimeMod implements ModInitializer {
     }
     private static final class Store {
         int schema = 1;
+        int resetProtocol = 1;
         String mode = "active";
         int afkTimeoutSeconds = 300;
         String startedAt;
         String updatedAt;
         List<Totals> players = new ArrayList<>();
+        Set<String> processedResetIds = new LinkedHashSet<>();
     }
     private String startedAt;
     private static long now() { return System.nanoTime() / 1_000_000L; }
@@ -74,6 +80,10 @@ public final class ActivePlaytimeMod implements ModInitializer {
         });
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             long current = now();
+            if (current - resetChecked >= 1000) {
+                resetChecked = current;
+                processResetRequest();
+            }
             for (UUID id : sessions.keySet()) flush(id, current);
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 publishScore(server, player.getScoreboardName(), activeSeconds(player.getUUID()));
@@ -106,6 +116,7 @@ public final class ActivePlaytimeMod implements ModInitializer {
                     totals.put(UUID.fromString(value.uuid), value);
                 }
                 startedAt = stored.startedAt == null ? startedAt : stored.startedAt;
+                if (stored.processedResetIds != null) processedResetIds.addAll(stored.processedResetIds);
             } catch (Exception error) {
                 output = null; // Never overwrite a damaged save with an empty ranking.
                 throw new IllegalStateException("Cannot load active playtime. Restore its playtime.json.bak before restarting.", error);
@@ -194,14 +205,15 @@ public final class ActivePlaytimeMod implements ModInitializer {
         });
     }
 
-    private void save() {
-        if (output == null) return;
+    private boolean save() {
+        if (output == null) return false;
         long current = now();
         for (UUID id : sessions.keySet()) flush(id, current);
         Store stored = new Store();
         stored.startedAt = startedAt;
         stored.updatedAt = Instant.now().toString();
         stored.players.addAll(totals.values());
+        stored.processedResetIds.addAll(processedResetIds);
         stored.players.sort(Comparator.comparing(value -> value.uuid));
         try {
             Files.createDirectories(output.getParent());
@@ -211,9 +223,108 @@ public final class ActivePlaytimeMod implements ModInitializer {
             try { Files.move(temporary, output, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE); }
             catch (AtomicMoveNotSupportedException error) { Files.move(temporary, output, StandardCopyOption.REPLACE_EXISTING); }
             lastSave = current;
+            return true;
         } catch (IOException error) {
             lastSave = current;
             LOG.error("Could not save active playtime; in-memory counters retained", error);
+            return false;
         }
+    }
+
+    /** Runs on the server thread: disk-only edits cannot reset an in-memory clock. */
+    private void processResetRequest() {
+        if (output == null) return;
+        Path request = output.resolveSibling("reset-request.json");
+        if (!Files.exists(request)) return;
+        String id = null;
+        try {
+            var data = JsonParser.parseString(Files.readString(request)).getAsJsonObject();
+            id = UUID.fromString(data.get("id").getAsString()).toString();
+            if (processedResetIds.contains(id)) {
+                writeResetResult(id, true, "Already applied; counters were not reset again.");
+                Files.deleteIfExists(request);
+                return;
+            }
+            if (!Instant.parse(data.get("expiresAt").getAsString()).isAfter(Instant.now()))
+                throw new IOException("Reset request expired; start a new workflow");
+            String scope = data.get("scope").getAsString();
+            if (!scope.equals("active") && !scope.equals("all")) throw new IOException("Unknown reset scope");
+            String target = data.get("target").getAsString();
+            whitelistChecked = 0;
+            refreshWhitelist();
+            Set<UUID> selected = new LinkedHashSet<>();
+            if (target.equals("ALL")) selected.addAll(whitelistNames.keySet());
+            else {
+                UUID uuid = UUID.fromString(target);
+                if (!whitelistNames.containsKey(uuid)) throw new IOException("Player is not whitelisted");
+                selected.add(uuid);
+            }
+            if (selected.isEmpty()) throw new IOException("No whitelisted players selected");
+            if (!save()) throw new IOException("Cannot save current counters before backup");
+            Path backup = output.getParent().resolve("reset-backups").resolve(id);
+            Files.createDirectories(backup);
+            // Never replace the original backup when a failed request is retried.
+            if (!Files.exists(backup.resolve("playtime.json"))) Files.copy(output, backup.resolve("playtime.json"));
+            Path world = activeServer.getWorldPath(LevelResource.ROOT);
+            if (scope.equals("all")) {
+                for (UUID uuid : selected) {
+                    ServerPlayer online = activeServer.getPlayerList().getPlayer(uuid);
+                    if (online != null) online.getStats().save();
+                    for (String directory : List.of("stats", "players/stats")) {
+                        Path source = world.resolve(directory).resolve(uuid + ".json");
+                        Path destination = backup.resolve(directory).resolve(uuid + ".json");
+                        if (Files.exists(source) && !Files.exists(destination)) {
+                            Files.createDirectories(destination.getParent());
+                            Files.copy(source, destination);
+                        }
+                    }
+                }
+            }
+            for (UUID uuid : selected) {
+                String name = whitelistNames.get(uuid);
+                totals.put(uuid, new Totals(uuid, name));
+                if (sessions.containsKey(uuid)) sessions.put(uuid, new ActiveClock(now()));
+                publishScore(activeServer, name, 0);
+                if (scope.equals("all")) {
+                    ServerPlayer player = activeServer.getPlayerList().getPlayer(uuid);
+                    if (player != null) {
+                        var counter = player.getStats();
+                        for (var stat : new ArrayList<>(((StatsCounterAccessor) counter).halfknife$getStats().keySet()))
+                            counter.setValue(player, stat, 0);
+                        counter.save();
+                    } else {
+                        ((PlayerListAccessor) activeServer.getPlayerList()).halfknife$getStats().remove(uuid);
+                        for (String directory : List.of("stats", "players/stats"))
+                            Files.deleteIfExists(world.resolve(directory).resolve(uuid + ".json"));
+                    }
+                }
+            }
+            processedResetIds.add(id);
+            if (!save()) {
+                processedResetIds.remove(id);
+                throw new IOException("Reset could not be persisted");
+            }
+            writeResetResult(id, true, "Reset " + selected.size() + " player(s); scope=" + scope);
+            Files.deleteIfExists(request);
+            LOG.info("Stats reset {} completed: {} player(s), scope={}", id, selected.size(), scope);
+        } catch (Exception error) {
+            LOG.error("Stats reset failed", error);
+            try {
+                writeResetResult(id, false, error.getClass().getSimpleName() + ": " + error.getMessage());
+                // A failure is explicit; never keep retrying a partially applied reset each tick.
+                Files.deleteIfExists(request);
+            } catch (IOException writeError) { LOG.error("Cannot acknowledge reset failure", writeError); }
+        }
+    }
+
+    private void writeResetResult(String id, boolean success, String message) throws IOException {
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("id", id);
+        result.put("success", success);
+        result.put("message", message);
+        result.put("updatedAt", Instant.now().toString());
+        Path temporary = output.resolveSibling("reset-result.json.tmp");
+        Files.writeString(temporary, JSON.toJson(result) + "\n", StandardCharsets.UTF_8);
+        Files.move(temporary, output.resolveSibling("reset-result.json"), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
     }
 }

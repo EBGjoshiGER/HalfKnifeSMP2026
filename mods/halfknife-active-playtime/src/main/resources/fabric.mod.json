@@ -1,11 +1,22 @@
 {
   "schemaVersion": 1,
   "id": "halfknife_active_playtime",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "name": "HalfKnife Active Playtime",
-  "description": "Separate active-playtime counter with a five-minute AFK timeout. No kicks or changes to vanilla statistics.",
+  "description": "Active playtime with AFK exclusion and authenticated administrator reset requests with backups.",
   "environment": "server",
-  "entrypoints": {"main": ["de.halfknife.playtime.ActivePlaytimeMod"]},
-  "mixins": ["halfknife-active-playtime.mixins.json"],
-  "depends": {"fabricloader": ">=0.19.3", "minecraft": "~26.2", "java": ">=25", "fabric-api": ">=0.160.0"}
+  "entrypoints": {
+    "main": [
+      "de.halfknife.playtime.ActivePlaytimeMod"
+    ]
+  },
+  "mixins": [
+    "halfknife-active-playtime.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~26.2",
+    "java": ">=25",
+    "fabric-api": ">=0.160.0"
+  }
 }

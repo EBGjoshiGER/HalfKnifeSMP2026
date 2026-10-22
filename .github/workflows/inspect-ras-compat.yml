@@ -1,0 +1,49 @@
+name: Inspect RAS compatibility (read only)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/inspect-ras-compat.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - name: Read existing item-lock implementation and config schema
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          curl -fsSL https://www.benf.org/other/cfr/cfr-0.152.jar -o /tmp/cfr.jar
+          python3 - <<'PY'
+          import ftplib,io,os,zipfile,subprocess,json,pathlib,hashlib
+          ftp=ftplib.FTP(timeout=40)
+          try:
+              ftp.connect(os.environ["FTP_HOST"],int(os.environ.get("FTP_PORT") or "21"))
+              ftp.login(os.environ["FTP_USER"],os.environ["FTP_PASSWORD"])
+              out=io.BytesIO();ftp.retrbinary("RETR mods/rpg_attribute_reworked.jar",out.write)
+              pathlib.Path("/tmp/old-ras.jar").write_bytes(out.getvalue())
+              print("OLD_SHA256",hashlib.sha256(out.getvalue()).hexdigest())
+              with zipfile.ZipFile(out) as z:
+                  for name in z.namelist():
+                      if name.endswith("FabricRpgAttributeSystemModEvents.class") or name.endswith("ItemLockTooltipHelper.class"):
+                          p=pathlib.Path("/tmp")/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(z.read(name))
+                          subprocess.run(["java","-jar","/tmp/cfr.jar",str(p),"--silent","true"],check=True)
+              roots=["config/ras"]
+              for root in roots:
+                  try:
+                      for name, facts in ftp.mlsd(root):
+                          if facts.get("type")=="file" and name.endswith(".json"):
+                              data=io.BytesIO();ftp.retrbinary("RETR "+root+"/"+name,data.write)
+                              value=json.loads(data.getvalue());print("CONFIG",root+"/"+name,json.dumps(value))
+                  except ftplib.error_perm as e:print("CONFIG_ROOT_UNAVAILABLE",root,str(e))
+          finally:ftp.close()
+          PY

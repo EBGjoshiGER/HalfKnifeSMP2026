@@ -1,0 +1,74 @@
+name: Leeren Server dauerhaft aktiv halten
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/disable-empty-pause.yml]
+permissions:
+  contents: read
+concurrency:
+  group: halfknife-server-properties
+  cancel-in-progress: false
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Automatische Pause abschalten und Sicherung erstellen
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import ftplib, io, os, re
+          from datetime import datetime, timezone
+          from uuid import uuid4
+          def read(ftp, path):
+              buffer = io.BytesIO()
+              ftp.retrbinary("RETR " + path, buffer.write)
+              return buffer.getvalue()
+          ftp = ftplib.FTP(timeout=30)
+          try:
+              ftp.connect(os.environ["FTP_HOST"], int(os.environ.get("FTP_PORT") or "21"))
+              ftp.login(os.environ["FTP_USER"], os.environ["FTP_PASSWORD"])
+              original = read(ftp, "server.properties")
+              pattern = rb"(?m)^[ \t]*pause-when-empty-seconds[ \t]*=[^\r\n]*"
+              matches = re.findall(pattern, original)
+              if len(matches) > 1:
+                  raise RuntimeError("Duplicate pause setting; refusing ambiguous edit")
+              if matches:
+                  updated = re.sub(pattern, b"pause-when-empty-seconds=0", original)
+              else:
+                  newline = b"\r\n" if b"\r\n" in original else b"\n"
+                  updated = original + (b"" if original.endswith(b"\n") else newline) + b"pause-when-empty-seconds=0" + newline
+              if updated == original:
+                  print("Already configured: pause-when-empty-seconds=0. Restart if not yet applied.")
+              else:
+                  suffix = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid4().hex[:8]
+                  temporary = "server.properties.pause-upload-" + suffix
+                  backup = "server.properties.before-disable-pause-" + suffix + ".bak"
+                  ftp.storbinary("STOR " + temporary, io.BytesIO(updated))
+                  if read(ftp, temporary) != updated:
+                      raise RuntimeError("Uploaded settings failed byte verification")
+                  if read(ftp, "server.properties") != original:
+                      raise RuntimeError("Settings changed concurrently; refusing overwrite")
+                  ftp.rename("server.properties", backup)
+                  try:
+                      ftp.rename(temporary, "server.properties")
+                      if read(ftp, "server.properties") != updated:
+                          raise RuntimeError("Final settings failed verification")
+                  except Exception:
+                      try:
+                          ftp.delete("server.properties")
+                      except ftplib.error_perm:
+                          pass
+                      ftp.rename(backup, "server.properties")
+                      raise
+                  print("Verified: pause-when-empty-seconds=0")
+                  print("Backup:", backup)
+                  print("Restart the Minecraft server once to activate. No player data was changed.")
+          finally:
+              ftp.close()
+          PY

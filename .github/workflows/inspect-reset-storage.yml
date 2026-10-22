@@ -1,0 +1,52 @@
+name: Reset-Mod-Speicher prüfen (nur lesend)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/inspect-reset-storage.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - name: Mod-Code für Reset prüfen
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          curl -fsSL https://www.benf.org/other/cfr/cfr-0.152.jar -o /tmp/cfr.jar
+          python3 - <<'PY'
+          import ftplib, os, subprocess, pathlib, zipfile, json
+          files = ["playtime-rewards-1.7.3.jar", "halfknife-leaderboards-1.2.3.jar", "halfknifequiz-1.0.0.jar", "halfknife-hall-of-fame-0.1.0.jar", "nether-project-2.3.0.jar", "end-project-1.0.0.jar", "tab-info-0.3.0+mod.jar"]
+          ftp = ftplib.FTP(timeout=45)
+          try:
+              ftp.connect(os.environ["FTP_HOST"], int(os.environ.get("FTP_PORT") or "21"))
+              ftp.login(os.environ["FTP_USER"], os.environ["FTP_PASSWORD"])
+              for filename in files:
+                  with open("/tmp/" + filename, "wb") as f:
+                      ftp.retrbinary("RETR mods/" + filename, f.write)
+                  subprocess.run(["java", "-jar", "/tmp/cfr.jar", "/tmp/" + filename, "--outputdir", "sources/" + filename, "--silent", "true"], check=True)
+                  with zipfile.ZipFile("/tmp/" + filename) as z:
+                      for name in z.namelist():
+                          if name.endswith(".mcfunction") and ("playtime" in name or "load" in name):
+                              print("RESOURCE", filename, name, z.read(name).decode())
+          finally:
+              ftp.close()
+          for path in pathlib.Path("sources").rglob("*.java"):
+              print("SOURCE_BEGIN", str(path))
+              print(path.read_text())
+              print("SOURCE_END")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reset-mod-sources
+          path: sources
+          retention-days: 7

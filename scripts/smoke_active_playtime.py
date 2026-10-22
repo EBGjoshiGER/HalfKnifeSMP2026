@@ -3,6 +3,7 @@ import ftplib
 import io
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -22,7 +23,7 @@ def main():
         ftp.login(os.environ["FTP_USER"], os.environ["FTP_PASSWORD"])
         files = [
             "fabric-api-0.160.0+26.2.jar", "tab-info-0.3.0+mod.jar",
-            "halfknifequiz-1.0.0.jar", "halfknife-leaderboards-1.2.3.jar", "playtime-rewards-1.7.3.jar",
+            "halfknifequiz-1.0.0.jar", "voicechat-fabric-2.6.23+26.2.jar", "halfknife-leaderboards-1.2.3.jar", "playtime-rewards-1.7.3.jar",
             "rpg_attribute_reworked.jar", "nether-project-2.3.0.jar", "end-project-1.0.0.jar",
             "LuckPerms-Fabric-5.5.57.jar", "cloth-config-26.2.155.jar",
             "architectury-fabric-21.1.9.jar", "placeholder-api-3.1.0-beta.1+26.2.jar",
@@ -30,7 +31,15 @@ def main():
             "ForgeConfigAPIPort-v26.2.1-mc26.2.x-Fabric.jar",
             "dataanchor-fabric-26.2-5.0.0.3.jar", "fabric-language-kotlin-1.14.1+kotlin.2.4.20.jar"
         ]
+        installed = {p.rsplit("/", 1)[-1] for p in ftp.nlst("mods") if p.endswith(".jar")}
         for filename in files:
+            if filename not in installed:
+                prefix = re.split(r"(?=\d)", filename, maxsplit=1)[0]
+                candidates = [name for name in installed if name.startswith(prefix)]
+                if len(candidates) != 1:
+                    raise RuntimeError(f"Cannot uniquely resolve installed dependency {filename}: {candidates}")
+                filename = candidates[0]
+            print("Testing installed dependency:", filename, flush=True)
             buffer = io.BytesIO()
             ftp.retrbinary("RETR mods/" + filename, buffer.write)
             content = buffer.getvalue()

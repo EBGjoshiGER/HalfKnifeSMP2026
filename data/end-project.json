@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "syncedAt": "2026-10-23T22:19:11.018465+00:00",
+  "status": "not_started",
+  "resources": [
+    {
+      "id": "minecraft:blaze_rod",
+      "name": "Lohenruten",
+      "required": 512,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:ender_pearl",
+      "name": "Enderperlen",
+      "required": 768,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:nether_quartz",
+      "name": "minecraft:nether_quartz",
+      "required": 4096,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:glowstone_dust",
+      "name": "Glowstonestaub",
+      "required": 4096,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:magma_cream",
+      "name": "Magmacreme",
+      "required": 1024,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:ghast_tear",
+      "name": "Ghasttränen",
+      "required": 160,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:crying_obsidian",
+      "name": "Weinender Obsidian",
+      "required": 384,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:ancient_debris",
+      "name": "Antiker Schrott",
+      "required": 96,
+      "donated": 0
+    }
+  ]
+}

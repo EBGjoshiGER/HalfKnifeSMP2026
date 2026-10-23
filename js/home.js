@@ -47,21 +47,35 @@
     $('home-top-three').innerHTML = top.length ? top.map((player, index) => `<li class="podium-player"><a href="stats.html?player=${encodeURIComponent(player.uuid)}">${avatar(player)}<span class="podium-name"><strong>${esc(player.name)}</strong><small>${esc(C.duration(player.summary.activeSeconds))}</small></span><span class="podium-place">#${index + 1}</span></a></li>`).join('')
       : '<li class="world-empty">Noch ist hier alles offen. Wer setzt sich an die Spitze?</li>';
   }
-  function renderGoal(data) {
-    const labels = { not_started: 'Startet gemeinsam mit der Community', active: 'Das Nether-Projekt läuft', paused: 'Das Projekt pausiert', completed: 'Der Nether ist freigeschaltet' };
-    if (!data || data.schemaVersion !== 1 || !Object.hasOwn(labels, data.status)) throw new Error('Ungültiges Projekt');
-    // Only fresh exports can support a progress claim; older files stay a project teaser.
-    const stamp = Date.parse(data.syncedAt);
-    const fresh = Number.isFinite(stamp) && Date.now() - stamp < 30 * 60 * 1000 && stamp <= Date.now() + 60000;
-    $('home-goal-status').textContent = fresh ? labels[data.status] : 'Gemeinsam den Nether freischalten';
-    const resources = data.resources;
-    const valid = fresh && Array.isArray(resources) && resources.length > 0 && resources.every(r => Number.isFinite(r.required) && r.required > 0 && Number.isFinite(r.donated) && r.donated >= 0);
-    $('home-goal-progress').hidden = !valid;
-    if (valid) {
-      const percent = resources.reduce((sum, r) => sum + Math.min(1, r.donated / r.required), 0) / resources.length * 100;
-      $('home-goal-meter').value = percent;
-      $('home-goal-percent').textContent = `${C.number.format(percent)} %`;
-    }
+  const projectLabels = { not_started: 'Noch nicht gestartet', active: 'Projekt läuft', paused: 'Projekt pausiert', completed: 'Abgeschlossen · Dimension freigeschaltet' };
+  function renderProject(key, data) {
+    const resources = data && data.resources;
+    const validCount = n => Number.isSafeInteger(n) && n >= 0;
+    if (!data || data.schemaVersion !== 1 || !Object.hasOwn(projectLabels, data.status) ||
+        !Number.isFinite(Date.parse(data.syncedAt)) || !Array.isArray(resources) || !resources.length ||
+        !resources.every(r => typeof r.name === 'string' && validCount(r.required) && r.required > 0 && validCount(r.donated)))
+      throw new Error('Ungültiger Projektstand');
+    const age = Date.now() - Date.parse(data.syncedAt);
+    if (age > 30 * 60 * 1000 || age < -60000) throw new Error('Projektstand nicht aktuell');
+    const status = $(`${key}-project-status`);
+    status.textContent = projectLabels[data.status];
+    status.dataset.state = data.status;
+    const percent = resources.reduce((sum, r) => sum + Math.min(1, r.donated / r.required), 0) / resources.length * 100;
+    $(`${key}-project-progress`).hidden = false;
+    $(`${key}-project-percent`).textContent = `${C.number.format(Math.floor(percent * 10) / 10)} %`;
+    $(`${key}-project-meter`).value = percent;
+    $(`${key}-project-resources`).innerHTML = resources.map(r => `<div class="dimension-resource"><div><span>${esc(r.name)}</span><strong>${C.integer.format(r.donated)} / ${C.integer.format(r.required)}</strong></div><progress max="${r.required}" value="${Math.min(r.donated, r.required)}" aria-label="${esc(r.name)}: ${r.donated} von ${r.required}"></progress></div>`).join('');
+    $(`${key}-project-message`).textContent = data.status === 'not_started' ? 'Einzahlungen sind nach dem Projektstart möglich.' : data.status === 'paused' ? 'Einzahlungen sind aktuell pausiert.' : data.status === 'completed' ? 'Gemeinsam geschafft!' : `Ressourcen einzahlen: /${key}project`;
+  }
+  function projectUnavailable(key) {
+    $(`${key}-project-status`).textContent = 'Projektstand nicht verfügbar';
+    delete $(`${key}-project-status`).dataset.state;
+    $(`${key}-project-progress`).hidden = true;
+    $(`${key}-project-message`).textContent = 'Der aktuelle Stand konnte nicht geladen werden. Bitte schau später wieder vorbei.';
+  }
+  async function refreshProject(key) {
+    try { renderProject(key, await json(`data/${key}-project.json`)); }
+    catch { projectUnavailable(key); }
   }
   async function refresh() {
     if (busy) return;
@@ -70,7 +84,7 @@
     const results = await Promise.allSettled([
       Promise.all([json('data/statistics.json'), json('data/whitelist.json')]).then(([snapshot, whitelist]) => renderStats(snapshot, whitelist)),
       json('data/server-status.json'),
-      json('nether-project.json').then(renderGoal)
+      Promise.all(['nether', 'end'].map(refreshProject))
     ]);
     if (results[0].status === 'rejected' && !roster.length) $('home-top-three').innerHTML = '<li class="world-empty">Die Statistiken sind gerade nicht verfügbar. Schau gleich noch einmal vorbei.</li>';
     if (results[1].status === 'fulfilled') {
@@ -101,3 +115,4 @@
     document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
   });
 })();
+

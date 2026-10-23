@@ -7,7 +7,7 @@
   <title>HalfKnife SMP 2026 · Unsere Welt</title>
   <link rel="icon" type="image/png" href="favicon_io/favicon-32x32.png">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/home.css?v=20261024-design">
+  <link rel="stylesheet" href="css/home.css?v=20261024-projects">
 </head>
 <body class="launch-home">
   <a class="skip-link" href="#main">Zum Inhalt</a>
@@ -45,9 +45,26 @@
         <div class="world-section-heading"><div><span class="eyebrow">DIE WELT LEBT VON EUCH</span><h2 id="online-title">Gerade auf dem Server</h2></div><span class="home-server-badge" id="home-server-status" role="status">Status wird geladen…</span></div>
         <div class="online-players" id="home-online-list"><p class="world-empty">Spieler werden geladen…</p></div>
       </section>
-      <section class="community-goal" aria-labelledby="goal-title">
-        <div class="portal-scene" aria-hidden="true"><div class="portal-frame"><div class="portal-light"></div></div><span>GEMEINSAM WEITER.</span></div>
-        <div class="goal-content"><span class="eyebrow">UNSER NÄCHSTES GROSSES ZIEL</span><h2 id="goal-title">Das Tor zum Nether.</h2><p>Eine neue Dimension öffnet sich nicht von allein. Sammelt Ressourcen und schaltet den Nether als Community frei.</p><span class="goal-status" id="home-goal-status">Gemeinschaftsprojekt</span><div id="home-goal-progress" hidden><div class="goal-progress-label"><span>Gemeinsamer Fortschritt</span><strong id="home-goal-percent"></strong></div><progress id="home-goal-meter" max="100" value="0" aria-label="Fortschritt der Nether-Freischaltung"></progress></div><a class="world-text-link" href="events.html">Projekt &amp; benötigte Ressourcen ansehen <span aria-hidden="true">↗</span></a></div>
+      <section class="dimension-section" aria-labelledby="projects-title">
+        <div class="world-section-heading"><div><span class="eyebrow">GEMEINSAM WEITER</span><h2 id="projects-title">Neue Dimensionen. Unser Fortschritt.</h2></div></div>
+        <div class="dimension-grid">
+        <article class="dimension-project" data-project="nether" aria-labelledby="nether-project-title">
+          <div class="dimension-heading"><div><span class="eyebrow">GEMEINSCHAFTSPROJEKT</span><h3 id="nether-project-title">Nether freischalten</h3></div><span class="dimension-symbol" aria-hidden="true">⬡</span></div>
+          <p>Sammelt gemeinsam Ressourcen und öffnet das Tor zum Nether.</p>
+          <span class="goal-status" id="nether-project-status" role="status">Projektstand wird geladen…</span>
+          <div class="dimension-progress" id="nether-project-progress" hidden><div class="goal-progress-label"><span>Gesamtfortschritt</span><strong id="nether-project-percent">–</strong></div><progress id="nether-project-meter" max="100" value="0" aria-label="Nether: Gesamtfortschritt"></progress><div class="dimension-resources" id="nether-project-resources"></div></div>
+          <p class="dimension-message" id="nether-project-message"></p>
+          <a class="world-text-link" href="events.html">Alle Projektinfos ↗</a>
+        </article>
+        <article class="dimension-project" data-project="end" aria-labelledby="end-project-title">
+          <div class="dimension-heading"><div><span class="eyebrow">GEMEINSCHAFTSPROJEKT</span><h3 id="end-project-title">End freischalten</h3></div><span class="dimension-symbol" aria-hidden="true">✦</span></div>
+          <p>Nach dem Nether wartet das nächste gemeinsame Ziel: der Weg ins End.</p>
+          <span class="goal-status" id="end-project-status" role="status">Projektstand wird geladen…</span>
+          <div class="dimension-progress" id="end-project-progress" hidden><div class="goal-progress-label"><span>Gesamtfortschritt</span><strong id="end-project-percent">–</strong></div><progress id="end-project-meter" max="100" value="0" aria-label="End: Gesamtfortschritt"></progress><div class="dimension-resources" id="end-project-resources"></div></div>
+          <p class="dimension-message" id="end-project-message"></p>
+          <a class="world-text-link" href="events.html">Alle Projektinfos ↗</a>
+        </article>
+        </div>
       </section>
       <section class="season-numbers" aria-labelledby="numbers-title">
         <div><span class="eyebrow">BLOCK FÜR BLOCK</span><h2 id="numbers-title">Unsere Season.<br>In Zahlen.</h2></div>
@@ -92,6 +109,7 @@
 
   <script src="js/main.js"></script>
   <script src="js/stats-core.js"></script>
-  <script src="js/home.js"></script>
+  <script src="js/home.js?v=20261024-projects"></script>
 </body>
 </html>
+

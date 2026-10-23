@@ -123,3 +123,28 @@ button.world-button { border: 0; }
 @media (prefers-reduced-motion: reduce) {
   .launch-home *, .launch-home *::before { animation: none !important; transition: none !important; }
 }
+
+
+/* Live dimension projects, using the shared dark/cyan card design. */
+.dimension-section { padding: 10px 0 0; }
+.dimension-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.dimension-project { min-width: 0; padding: 30px; border: 1px solid rgba(79,195,247,.18); border-radius: 22px; background: linear-gradient(145deg, rgba(9,21,30,.94), rgba(4,12,19,.92)); box-shadow: 0 22px 60px rgba(0,0,0,.3); }
+.dimension-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.dimension-heading h3 { margin: 9px 0 0; color: #fff; font-size: 25px; }
+.dimension-symbol { display: grid; place-items: center; width: 50px; height: 50px; flex-shrink: 0; border: 1px solid rgba(255,152,0,.22); border-radius: 14px; color: #ffb74d; background: rgba(255,152,0,.08); font-size: 30px; }
+[data-project="end"] .dimension-symbol { color: #ce93d8; border-color: rgba(171,71,188,.22); background: rgba(171,71,188,.09); }
+.dimension-project > p { color: #a9bdc7; font-size: 14px; line-height: 1.7; }
+.dimension-project .goal-status { color: #b9cbd4; background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+.dimension-project .goal-status[data-state="active"], .dimension-project .goal-status[data-state="completed"] { color: #a5d6a7; border-color: rgba(76,175,80,.25); background: rgba(76,175,80,.08); }
+.dimension-project .goal-status[data-state="paused"] { color: #ffcc80; border-color: rgba(255,152,0,.22); background: rgba(255,152,0,.09); }
+.dimension-project progress { display: block; width: 100%; height: 7px; border: 0; appearance: none; border-radius: 999px; background: #162c3a; overflow: hidden; }
+.dimension-project progress::-webkit-progress-bar { background: #162c3a; }
+.dimension-project progress::-webkit-progress-value { background: #4fc3f7; }
+.dimension-project progress::-moz-progress-bar { background: #4fc3f7; }
+.dimension-resources { display: grid; gap: 14px; margin-top: 24px; }
+.dimension-resource > div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 7px; font-size: 12px; color: #a9bdc7; }
+.dimension-resource strong { color: #e8f7ff; white-space: nowrap; font-size: 12px; font-variant-numeric: tabular-nums; }
+.dimension-resource progress { height: 4px; }
+.dimension-project .dimension-message { font-size: 12px; min-height: 20px; margin: 20px 0 14px; }
+@media (max-width: 850px) { .dimension-grid { grid-template-columns: 1fr; } }
+@media (max-width: 650px) { .dimension-project { padding: 24px 20px; } .dimension-heading h3 { font-size: 23px; } }

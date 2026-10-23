@@ -20,7 +20,7 @@ assert.equal(C.statRows(alice, "ras:")[0].key, "ras:levels_gained");
 assert.equal(C.statRows(alice, "", "minecraft:mined").length, 2);
 assert.equal(C.sortPlayers([alice, bob], "BO", "name")[0].name, "Bob");
 
-async function mount(search = "", fail = false) {
+async function mount(search = "", fail = false, whitelist = [alice, bob]) {
   const markup = fs.readFileSync(require.resolve("../stats.html"), "utf8");
   const elements = {};
   for (const match of markup.matchAll(/id="([^"]+)"/g)) elements[match[1]] = {
@@ -33,7 +33,7 @@ async function mount(search = "", fail = false) {
   const snapshot = { schema: 1, updatedAt: new Date().toISOString(), activeMode: "active", activeUpdatedAt: new Date().toISOString(), players: [alice, bob] };
   const window = { HalfKnifeStats: C, location: { search }, setTimeout, clearTimeout, setInterval() {} };
   const context = { window, document, Date, URLSearchParams, AbortController, console,
-    fetch: async url => ({ ok: !fail, status: fail ? 503 : 200, json: async () => url.includes("server-status") ? { online: true, players: ["Alice"] } : snapshot }) };
+    fetch: async url => ({ ok: !fail, status: fail ? 503 : 200, json: async () => url.includes("whitelist") ? whitelist : url.includes("server-status") ? { online: true, players: ["Alice"] } : snapshot }) };
   vm.runInNewContext(fs.readFileSync(require.resolve("../js/stats.js"), "utf8"), context);
   document.ready();
   await new Promise(resolve => setImmediate(resolve));
@@ -58,6 +58,24 @@ async function mount(search = "", fail = false) {
   assert(emptyProfile.elements["profile-details"].innerHTML.includes("noch keine Minecraft-Statistiken"));
   const unknown = await mount("?player=Unknown");
   assert.equal(unknown.elements["stats-title"].textContent, "Spieler nicht gefunden");
+  const added = { uuid: "00000000-0000-0000-0000-000000000003", name: "NewPlayer" };
+  const testAccount = { uuid: "2f4bd5e2-e184-43af-8ab5-df7670dbc530", name: "FuturePending" };
+  const roster = C.reconcileWhitelist([alice, bob], [alice, added, testAccount]);
+  assert.deepEqual(roster.map(p => p.name), ["Alice", "NewPlayer"]);
+  assert.equal(roster[0].stats, alice.stats);
+  assert.equal(roster[1].pendingStats, true);
+  assert.equal(C.totals(roster, "active").activeSeconds, 3600);
+  assert.deepEqual(C.leaderboard(roster, "activeSeconds").map(p => p.name), ["Alice"]);
+  assert.equal(C.reconcileWhitelist([alice], [{ ...alice, name: "Renamed" }])[0].name, "Renamed");
+  assert.throws(() => C.reconcileWhitelist([alice], {}));
+  const newProfile = await mount("?player=NewPlayer", false, [alice, added, testAccount]);
+  assert.equal(newProfile.elements["stats-profile"].hidden, false);
+  assert(newProfile.document.title.startsWith("NewPlayer"));
+  assert(newProfile.elements["profile-details"].innerHTML.includes("noch keine Minecraft-Statistiken"));
+  const fresh = await mount("", false, [alice]);
+  assert(!fresh.elements["stats-player-grid"].innerHTML.includes("Bob"));
+  await fresh.elements["stats-refresh"].handlers.click();
+  assert.equal(fresh.elements["stats-refresh"].disabled, false);
   const failed = await mount("", true);
   assert.equal(failed.elements["stats-retry"].hidden, false);
   assert(failed.elements["stats-message"].textContent.includes("nicht verfügbar"));

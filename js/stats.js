@@ -13,6 +13,7 @@
   let online = null;
   let selected = null;
   let category = "all";
+  let loading = false;
 
   function onlineBadge(player) {
     if (online === null) return "";
@@ -48,7 +49,7 @@
   function renderPlayers() {
     const matches = C.sortPlayers(players, $("stats-player-search").value, $("stats-player-sort").value);
     $("stats-player-result").textContent = `${matches.length} von ${players.length} Spielern`;
-    $("stats-player-grid").innerHTML = matches.length ? matches.map(player => `<a class="stats-player-card" href="${href(player)}">${avatar(player)}<span class="stats-player-info"><strong>${escape(player.name)}</strong><span>${escape(C.duration(player.summary.activeSeconds))} aktiv</span>${onlineBadge(player)}</span><span class="stats-card-arrow" aria-hidden="true">↗</span></a>`).join("")
+    $("stats-player-grid").innerHTML = matches.length ? matches.map(player => `<a class="stats-player-card" href="${href(player)}">${avatar(player)}<span class="stats-player-info"><strong>${escape(player.name)}</strong><span>${player.pendingStats ? "Statistiken folgen" : `${escape(C.duration(player.summary.activeSeconds))} aktiv`}</span>${onlineBadge(player)}</span><span class="stats-card-arrow" aria-hidden="true">↗</span></a>`).join("")
       : '<p class="stats-empty">Kein Spieler passt zu deiner Suche.</p>';
   }
   function renderProfile(player) {
@@ -98,6 +99,10 @@
     } finally { window.clearTimeout(timeout); }
   }
   async function load(background = false) {
+    if (loading) return;
+    loading = true;
+    $("stats-refresh").disabled = true;
+    $("stats-refresh").textContent = "Wird geladen…";
     const silent = background === true && Boolean(data);
     $("stats-retry").hidden = true;
     if (!silent) {
@@ -106,14 +111,15 @@
     }
     try {
       const token = Date.now();
-      const [snapshot, status] = await Promise.all([
+      const [snapshot, status, whitelist] = await Promise.all([
         json(`${BASE}statistics.json?v=${token}`),
-        json(`${BASE}server-status.json?v=${token}`).catch(() => null)
+        json(`${BASE}server-status.json?v=${token}`).catch(() => null),
+        json(`${BASE}whitelist.json?v=${token}`)
       ]);
       if (snapshot.schema !== 1 || !Array.isArray(snapshot.players) || !snapshot.players.every(C.validPlayer)) throw new Error("Ungültige Statistikdaten");
       data = snapshot;
       C.setTranslations(data.labels);
-      players = data.players;
+      players = C.reconcileWhitelist(data.players, whitelist);
       online = status && status.online && Array.isArray(status.players) ? new Set(status.players.filter(p => typeof p === "string").map(p => p.toLowerCase())) : status && status.online === false ? new Set() : null;
       const age = Date.now() - new Date(data.updatedAt).getTime();
       $("stats-status").textContent = `Datenstand: ${timestamp(data.updatedAt)} Uhr${age > 30 * 60 * 1000 ? " · Aktualisierung verzögert" : ""}`;
@@ -143,9 +149,14 @@
       $("stats-message").textContent = "Die Statistiken sind gerade nicht verfügbar. Bitte versuche es gleich noch einmal.";
       $("stats-status").textContent = "Datenabruf gerade nicht möglich";
       $("stats-retry").hidden = false;
+    } finally {
+      loading = false;
+      $("stats-refresh").disabled = false;
+      $("stats-refresh").textContent = "Daten aktualisieren";
     }
   }
   document.addEventListener("DOMContentLoaded", () => {
+    $("stats-refresh").addEventListener("click", () => load(true));
     $("stats-retry").addEventListener("click", load);
     $("stats-player-search").addEventListener("input", renderPlayers);
     $("stats-player-sort").addEventListener("change", renderPlayers);

@@ -101,6 +101,29 @@
     return player && /^[A-Za-z0-9_]{1,16}$/.test(player.name) && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(player.uuid)
       && player.summary && player.stats && typeof player.stats === "object";
   }
+  function reconcileWhitelist(snapshotPlayers, whitelist) {
+    if (!Array.isArray(whitelist) || !whitelist.every(entry => entry &&
+      /^[A-Za-z0-9_]{1,16}$/.test(entry.name) &&
+      /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(entry.uuid)))
+      throw new Error("Ungültige Whitelist");
+    const saved = new Map(snapshotPlayers.map(player => [player.uuid.toLowerCase(), player]));
+    const seen = new Set();
+    return whitelist.filter(entry => {
+      const uuid = entry.uuid.toLowerCase();
+      if (uuid === "2f4bd5e2-e184-43af-8ab5-df7670dbc530" || seen.has(uuid)) return false;
+      seen.add(uuid);
+      return true;
+    }).map(entry => {
+      const uuid = entry.uuid.toLowerCase();
+      const player = saved.get(uuid);
+      if (player) return { ...player, name: entry.name };
+      return { uuid, name: entry.name, hasStats: false, pendingStats: true, stats: {}, summary: {
+        activeSeconds: null, totalSeconds: 0, deaths: 0, blocksMined: 0, mobKills: 0,
+        playerKills: 0, distanceCm: 0, diamondsMined: 0, totemsUsed: 0,
+        damageDealt: 0, itemsCrafted: 0, jumps: 0, elytraCm: 0
+      } };
+    });
+  }
   function leaderboard(players, key, limit = 10) {
     return players.filter(player => Number.isFinite(player.summary[key]) && player.summary[key] > 0)
       .slice().sort((a, b) => b.summary[key] - a.summary[key] || a.name.localeCompare(b.name, "de"))
@@ -132,7 +155,7 @@
       result[key] = key === "activeSeconds" && activeMode !== "active" ? null : players.reduce((sum, p) => sum + (p.summary[key] ?? 0), 0);
     return result;
   }
-  const api = { metrics, categories, categoryName, duration, distance, readable, rawValue, validPlayer, leaderboard, sortPlayers, statRows, totals, integer, number, setTranslations };
+  const api = { reconcileWhitelist, metrics, categories, categoryName, duration, distance, readable, rawValue, validPlayer, leaderboard, sortPlayers, statRows, totals, integer, number, setTranslations };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.HalfKnifeStats = api;
 })(typeof window !== "undefined" ? window : globalThis);

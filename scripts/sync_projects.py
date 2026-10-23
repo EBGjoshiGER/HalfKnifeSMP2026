@@ -11,7 +11,7 @@ NAMES = {
     'minecraft:gold_ingot': 'Goldbarren', 'minecraft:diamond': 'Diamanten',
     'minecraft:redstone': 'Redstone', 'minecraft:lapis_lazuli': 'Lapislazuli',
     'minecraft:blaze_rod': 'Lohenruten', 'minecraft:ender_pearl': 'Enderperlen',
-    'minecraft:quartz': 'Netherquarz', 'minecraft:glowstone_dust': 'Glowstonestaub',
+    'minecraft:quartz': 'Netherquarz', 'minecraft:nether_quartz': 'Netherquarz', 'minecraft:glowstone_dust': 'Glowstonestaub',
     'minecraft:magma_cream': 'Magmacreme', 'minecraft:ghast_tear': 'Ghasttränen',
     'minecraft:crying_obsidian': 'Weinender Obsidian', 'minecraft:ancient_debris': 'Antiker Schrott',
 }

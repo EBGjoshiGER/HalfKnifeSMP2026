@@ -23,10 +23,6 @@
   function tile(label, value, extra = "") {
     return `<div class="stats-total"><span class="stats-total-label">${escape(label)}</span><strong>${escape(value)}</strong>${extra ? `<small>${escape(extra)}</small>` : ""}</div>`;
   }
-  function timestamp(value) {
-    const date = new Date(value);
-    return value && Number.isFinite(date.getTime()) ? date.toLocaleString("de-DE", { timeZone: "Europe/Berlin", dateStyle: "medium", timeStyle: "short" }) : "unbekannt";
-  }
   function renderOverview() {
     const totals = C.totals(players, data.activeMode);
     $("stats-totals").innerHTML = [
@@ -49,7 +45,7 @@
   function renderPlayers() {
     const matches = C.sortPlayers(players, $("stats-player-search").value, $("stats-player-sort").value);
     $("stats-player-result").textContent = `${matches.length} von ${players.length} Spielern`;
-    $("stats-player-grid").innerHTML = matches.length ? matches.map(player => `<a class="stats-player-card" href="${href(player)}">${avatar(player)}<span class="stats-player-info"><strong>${escape(player.name)}</strong><span>${player.pendingStats ? "Statistiken folgen" : `${escape(C.duration(player.summary.activeSeconds))} aktiv`}</span>${onlineBadge(player)}</span><span class="stats-card-arrow" aria-hidden="true">↗</span></a>`).join("")
+    $("stats-player-grid").innerHTML = matches.length ? matches.map(player => `<a class="stats-player-card" href="${href(player)}">${avatar(player)}<span class="stats-player-info"><strong>${escape(player.name)}</strong><span>${player.pendingStats ? "Noch keine Statistiken" : `${escape(C.duration(player.summary.activeSeconds))} aktiv`}</span>${onlineBadge(player)}</span><span class="stats-card-arrow" aria-hidden="true">↗</span></a>`).join("")
       : '<p class="stats-empty">Kein Spieler passt zu deiner Suche.</p>';
   }
   function renderProfile(player) {
@@ -79,7 +75,7 @@
     const rows = C.statRows(selected, query, category, $("stats-detail-sort").value);
     $("profile-search-result").textContent = `${C.integer.format(rows.length)} passende Werte`;
     if (!rows.length) {
-      $("profile-details").innerHTML = `<p class="stats-empty">${C.statRows(selected).length ? "Keine Statistik passt zu diesem Filter." : "Für diesen Spieler sind noch keine Minecraft-Statistiken gespeichert. Neue Werte erscheinen nach dem nächsten Datenabruf."}</p>`;
+      $("profile-details").innerHTML = `<p class="stats-empty">${C.statRows(selected).length ? "Keine Statistik passt zu diesem Filter." : "Für diesen Spieler sind noch keine Minecraft-Statistiken gespeichert."}</p>`;
       return;
     }
     const groups = new Map();
@@ -101,8 +97,6 @@
   async function load(background = false) {
     if (loading) return;
     loading = true;
-    $("stats-refresh").disabled = true;
-    $("stats-refresh").textContent = "Wird geladen…";
     const silent = background === true && Boolean(data);
     $("stats-retry").hidden = true;
     if (!silent) {
@@ -121,11 +115,6 @@
       C.setTranslations(data.labels);
       players = C.reconcileWhitelist(data.players, whitelist);
       online = status && status.online && Array.isArray(status.players) ? new Set(status.players.filter(p => typeof p === "string").map(p => p.toLowerCase())) : status && status.online === false ? new Set() : null;
-      const age = Date.now() - new Date(data.updatedAt).getTime();
-      $("stats-status").textContent = `Datenstand: ${timestamp(data.updatedAt)} Uhr${age > 30 * 60 * 1000 ? " · Aktualisierung verzögert" : ""}`;
-      $("stats-active-status").textContent = data.activeMode === "active"
-        ? `Aktive Spielzeit: Datenstand ${timestamp(data.activeUpdatedAt)} Uhr.`
-        : "Die aktive Spielzeit wartet noch auf den Serverneustart mit der neuen AFK-Erkennung. Bis dahin wird keine Gesamtspielzeit als aktive Zeit ausgegeben.";
       const lookup = new URLSearchParams(window.location.search).get("player");
       selected = lookup ? players.find(p => p.uuid.toLowerCase() === lookup.toLowerCase() || p.name.toLowerCase() === lookup.toLowerCase()) : null;
       if (lookup && !selected) {
@@ -142,21 +131,14 @@
       $("stats-explanation").hidden = false;
       if (selected) renderProfile(selected); else renderOverview();
     } catch (error) {
-      if (silent) {
-        $("stats-status").textContent = `Datenstand: ${timestamp(data.updatedAt)} Uhr · Aktualisierung gerade nicht möglich`;
-        return;
-      }
+      if (silent) return;
       $("stats-message").textContent = "Die Statistiken sind gerade nicht verfügbar. Bitte versuche es gleich noch einmal.";
-      $("stats-status").textContent = "Datenabruf gerade nicht möglich";
       $("stats-retry").hidden = false;
     } finally {
       loading = false;
-      $("stats-refresh").disabled = false;
-      $("stats-refresh").textContent = "Daten aktualisieren";
     }
   }
   document.addEventListener("DOMContentLoaded", () => {
-    $("stats-refresh").addEventListener("click", () => load(true));
     $("stats-retry").addEventListener("click", load);
     $("stats-player-search").addEventListener("input", renderPlayers);
     $("stats-player-sort").addEventListener("change", renderPlayers);

@@ -74,8 +74,6 @@ async function mount(search = "", fail = false, whitelist = [alice, bob]) {
   assert(newProfile.elements["profile-details"].innerHTML.includes("noch keine Minecraft-Statistiken"));
   const fresh = await mount("", false, [alice]);
   assert(!fresh.elements["stats-player-grid"].innerHTML.includes("Bob"));
-  await fresh.elements["stats-refresh"].handlers.click();
-  assert.equal(fresh.elements["stats-refresh"].disabled, false);
   const failed = await mount("", true);
   assert.equal(failed.elements["stats-retry"].hidden, false);
   assert(failed.elements["stats-message"].textContent.includes("nicht verfügbar"));

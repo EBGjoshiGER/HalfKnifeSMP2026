@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "syncedAt": "2026-10-23T22:19:11.018465+00:00",
+  "syncedAt": "2026-10-23T22:20:22.747108+00:00",
   "status": "not_started",
   "resources": [
     {
@@ -17,7 +17,7 @@
     },
     {
       "id": "minecraft:nether_quartz",
-      "name": "minecraft:nether_quartz",
+      "name": "Netherquarz",
       "required": 4096,
       "donated": 0
     },

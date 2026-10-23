@@ -1,244 +1,70 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>HalfKnife SMP 2026</title>
-
-  <link
-    rel="icon"
-    type="image/png"
-    href="favicon_io/favicon-32x32.png"
-  >
-
-  <link
-    rel="stylesheet"
-    href="css/style.css"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HalfKnife SMP 2026 – eine Welt, gemeinsame Projekte und eure Geschichten. Seasonstart am 24. Oktober um 14 Uhr.">
+  <title>HalfKnife SMP 2026 · Unsere Welt</title>
+  <link rel="icon" type="image/png" href="favicon_io/favicon-32x32.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
 </head>
-
-
-<body class="home-page">
-<div class="container">
-
-
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
-
-    <header>
-
-      <div class="logo-container">
-
-        <img
-          src="logo.png"
-          class="logo"
-          alt="HalfKnife SMP 2026"
-        >
-
+<body class="home-page launch-home">
+  <a class="skip-link" href="#main">Zum Inhalt</a>
+  <header class="world-header container">
+    <a class="wordmark" href="index.html" aria-label="HalfKnife SMP Startseite"><img src="assets/server-icon.png" width="38" height="38" alt="">HALFKNIFE <span>SMP / 2026</span></a>
+    <nav class="nav" id="main-nav" aria-label="Hauptnavigation"></nav>
+  </header>
+  <main id="main">
+    <section class="world-hero" aria-labelledby="world-title">
+      <div class="hero-landscape" aria-hidden="true"></div>
+      <div class="container world-hero-content">
+        <div class="world-kicker"><span></span> VANILLA+ · COMMUNITY · SEASON 2026</div>
+        <img class="world-logo" src="logo.png" alt="HalfKnife SMP 2026" fetchpriority="high">
+        <h1 id="world-title">Eine Welt.<br><span>Unsere Geschichten.</span></h1>
+        <p>Der erste Block. Die nächste große Idee.<br>Und die Leute, mit denen alles anfängt.</p>
+        <div class="world-actions">
+          <button class="world-button primary" type="button" id="home-copy">Serveradresse kopieren <span aria-hidden="true">↗</span></button>
+          <a class="world-button secondary" href="https://modrinth.com/modpack/halfknifesmp2026" target="_blank" rel="noopener">Modpack herunterladen</a>
+          <a class="world-discord" href="https://discord.gg/TK9UQVsz8b" target="_blank" rel="noopener">Zum Discord ↗</a>
+        </div>
+        <p id="home-copy-message" class="copy-message" role="status"></p>
+        <div class="launch-strip">
+          <div><span class="eyebrow">DAS ABENTEUER BEGINNT</span><strong id="season-countdown-title">Samstag, 24. Oktober · 14 Uhr</strong></div>
+          <div class="launch-clock" id="countdown" role="timer" aria-label="Zeit bis zum Seasonstart">
+            <div><strong id="countdown-days">--</strong><span>Tage</span></div><b>:</b>
+            <div><strong id="countdown-hours">--</strong><span>Std.</span></div><b>:</b>
+            <div><strong id="countdown-minutes">--</strong><span>Min.</span></div><b>:</b>
+            <div><strong id="countdown-seconds">--</strong><span>Sek.</span></div>
+          </div>
+          <div id="countdown-online" hidden><span class="season-live-dot"></span> Die Season läuft <span id="hero-online-count"></span></div>
+        </div>
       </div>
-
-
-      <nav
-        class="nav"
-        id="main-nav"
-        aria-label="Hauptnavigation"
-      ></nav>
-
-    </header>
-
-
-    <main>
-      <section class="hero home-hero">
-        <div class="season-label">✦ Season 2026</div>
-        <h1>Unsere Welt. <span>Euer Grind.</span></h1>
-        <p>Aktive Spielzeit, gemeinsame Projekte und die Geschichten der Season.</p>
+    </section>
+    <div class="container world-content">
+      <div class="server-strip"><span><i aria-hidden="true"></i> Fabric 26.2</span><span>Voice Chat inklusive</span><span>Whitelist aktiv</span><a href="install.html">So trittst du bei ↗</a></div>
+      <section class="online-section" aria-labelledby="online-title">
+        <div class="world-section-heading"><div><span class="eyebrow">DIE WELT LEBT VON EUCH</span><h2 id="online-title">Gerade auf dem Server</h2></div><span class="home-server-badge" id="home-server-status" role="status">Status wird geladen…</span></div>
+        <div class="online-players" id="home-online-list"><p class="world-empty">Spieler werden geladen…</p></div>
       </section>
-
-      <div class="home-dashboard">
-        <section class="section playtime-section" aria-labelledby="playtime-heading">
-        <div class="section-heading">
-          <h2 id="playtime-heading">Das Spielzeit-Leaderboard</h2>
-          <p>Wer steckt die meiste aktive Zeit in die Season?</p>
-        </div>
-        <div class="playtime-card">
-          <div class="playtime-table-wrap">
-            <table class="playtime-table">
-              <caption class="playtime-caption">Spielzeit der freigeschalteten Spieler, absteigend sortiert</caption>
-              <thead><tr><th scope="col">Platz</th><th scope="col">Spieler</th><th scope="col">Spielzeit</th></tr></thead>
-              <tbody id="playtime-ranking">
-                <tr><td colspan="3">Spielzeiten werden geladen…</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="playtime-note" id="playtime-updated" role="status">Die Spielzeiten werden regelmäßig aktualisiert.</p>
-          <p class="playtime-note">Nach fünf Minuten ohne Spieleraktion pausiert die Wertung. AFK-Farmen bleiben erlaubt. Die Anzeige kann einige Minuten verzögert sein.</p>
-          <a class="stats-start-link" href="stats.html">Alle Statistiken &amp; Spielerprofile ansehen →</a>
-          <noscript><p class="playtime-note">Aktiviere JavaScript, um das Ranking zu sehen.</p></noscript>
-        </div>
+      <section class="community-goal" aria-labelledby="goal-title">
+        <div class="portal-scene" aria-hidden="true"><div class="portal-frame"><div class="portal-light"></div></div><span>GEMEINSAM WEITER.</span></div>
+        <div class="goal-content"><span class="eyebrow">UNSER NÄCHSTES GROSSES ZIEL</span><h2 id="goal-title">Das Tor zum Nether.</h2><p>Eine neue Dimension öffnet sich nicht von allein. Sammelt Ressourcen und schaltet den Nether als Community frei.</p><span class="goal-status" id="home-goal-status">Gemeinschaftsprojekt</span><div id="home-goal-progress" hidden><div class="goal-progress-label"><span>Gemeinsamer Fortschritt</span><strong id="home-goal-percent"></strong></div><progress id="home-goal-meter" max="100" value="0" aria-label="Fortschritt der Nether-Freischaltung"></progress></div><a class="world-text-link" href="events.html">Projekt &amp; benötigte Ressourcen ansehen <span aria-hidden="true">↗</span></a></div>
       </section>
-        <aside class="home-live" aria-labelledby="home-live-heading">
-          <h2 id="home-live-heading">Gerade auf dem Server</h2>
-          <div class="live-status-card">
-            <div class="live-status-topline">
-              <span class="status-dot loading" id="server-status-dot" aria-hidden="true"></span>
-              <strong id="server-status-label">Status wird geprüft…</strong>
-              <span class="live-player-counter" id="live-player-counter">– / 30</span>
-            </div>
-            <p id="server-status-text" role="status">Serverstatus wird geladen…</p>
-            <div class="live-player-grid" id="live-player-list" aria-live="polite">
-              <div class="live-player-placeholder">Spielerliste wird geladen…</div>
-            </div>
-            <p class="live-status-note" id="live-status-note">Die Anzeige wird automatisch aktualisiert.</p>
-          </div>
-          <a class="button button-primary home-stats-button" href="stats.html">Alle Stats &amp; Spielerprofile →</a>
-          <a class="home-event-link" href="events.html">Gemeinsame Projekte &amp; Events →</a>
-        </aside>
-      </div>
-
-      <section class="section">
-
-        <div class="section-heading">
-
-          <h2>
-            Server-Infos
-          </h2>
-
-          <p>
-            Alles, was du zum Beitreten wissen musst.
-          </p>
-
-        </div>
-
-
-        <div class="info-grid">
-
-
-          <div class="info-card">
-
-            <div class="info-icon">
-              🌐
-            </div>
-
-            <div class="label">
-              Serveradresse
-            </div>
-
-            <div class="value server-address">
-
-              <span id="server-ip">
-                halfknife2026.serverminer.com
-              </span>
-
-              <button
-                class="copy-button"
-                onclick="copyIP()"
-                title="Serveradresse kopieren"
-              >
-                📋
-              </button>
-
-            </div>
-
-          </div>
-
-
-          <div class="info-card">
-
-            <div class="info-icon">
-              ⛏️
-            </div>
-
-            <div class="label">
-              Minecraft
-            </div>
-
-            <div class="value">
-              Fabric 26.2
-            </div>
-
-          </div>
-
-
-          <div class="info-card">
-
-            <div class="info-icon">
-              🎙️
-            </div>
-
-            <div class="label">
-              Voice Chat
-            </div>
-
-            <div class="value">
-              🟢 Aktiv
-            </div>
-
-          </div>
-
-
-          <div class="info-card">
-
-            <div class="info-icon">
-              🔒
-            </div>
-
-            <div class="label">
-              Whitelist
-            </div>
-
-            <div class="value">
-              Aktiv
-            </div>
-
-          </div>
-
-
-        </div>
-
+      <section class="season-numbers" aria-labelledby="numbers-title">
+        <div><span class="eyebrow">BLOCK FÜR BLOCK</span><h2 id="numbers-title">Unsere Season.<br>In Zahlen.</h2></div>
+        <div class="season-number"><strong id="home-total-players">–</strong><span>Spieler dabei</span></div>
+        <div class="season-number"><strong id="home-total-time">–</strong><span>Aktive Spielzeit</span></div>
+        <div class="season-number"><strong id="home-total-blocks">–</strong><span>Blöcke abgebaut</span></div>
       </section>
-      <section class="section">
-
-        <div class="discord">
-
-          <h2>
-            🗨️ Teil der Community werden
-          </h2>
-
-
-          <p>
-            Alle wichtigen Informationen, Ankündigungen,
-            Absprachen und der Voice-Chat laufen über unseren Discord.
-          </p>
-
-
-          <a
-            class="button button-primary"
-            href="https://discord.gg/TK9UQVsz8b"
-            target="_blank"
-            rel="noopener"
-          >
-            Discord beitreten
-          </a>
-
-        </div>
-
+      <section class="top-section" aria-labelledby="top-title">
+        <div class="world-section-heading"><div><span class="eyebrow">JEDE MINUTE ZÄHLT</span><h2 id="top-title">Die Dauerzocker.</h2><p>Die meiste aktive Spielzeit · ohne AFK</p></div><a class="world-text-link" href="stats.html">Alle Stats &amp; Spielerprofile ↗</a></div>
+        <ol class="home-podium" id="home-top-three"><li class="world-empty">Die ersten Plätze warten auf euch.</li></ol>
       </section>
-    </main>
-
-  </div>
-
-
-  <!-- =======================================================
-       FOOTER
-  ======================================================== -->
-
+      <section class="world-community"><div><span class="eyebrow">HIER GEHT’S WEITER</span><h2>Gute Geschichten brauchen Mitspieler.</h2><p>Ankündigungen, Absprachen und die nächste gemeinsame Idee.</p></div><a class="world-button primary" href="https://discord.gg/TK9UQVsz8b" target="_blank" rel="noopener">Ab auf den Discord ↗</a></section>
+      <noscript><p class="world-empty">Für Countdown, Online-Spieler und Statistiken bitte JavaScript aktivieren. Die Season startet am 24. Oktober 2026 um 14 Uhr.</p></noscript>
+    </div>
+  </main>
   <footer>
 
     <nav class="footer-links" aria-label="Weitere Seiten">
@@ -266,20 +92,8 @@
   </footer>
 
 
-  <aside class="season-widget" aria-label="Seasonstart">
-    <details class="countdown-card countdown-corner" id="season-countdown" open>
-      <summary><span id="season-countdown-title">Seasonstart · 24.10., 14 Uhr</span><span class="countdown-toggle" aria-hidden="true">⌃</span></summary>
-      <div class="countdown-grid" id="countdown" role="timer" aria-label="Verbleibende Zeit bis zum Seasonstart">
-        <div class="countdown-item"><span class="countdown-value" id="countdown-days">--</span><span class="countdown-label">Tage</span></div>
-        <div class="countdown-item"><span class="countdown-value" id="countdown-hours">--</span><span class="countdown-label">Std.</span></div>
-        <div class="countdown-item"><span class="countdown-value" id="countdown-minutes">--</span><span class="countdown-label">Min.</span></div>
-        <div class="countdown-item"><span class="countdown-value" id="countdown-seconds">--</span><span class="countdown-label">Sek.</span></div>
-      </div>
-      <div class="countdown-online" id="countdown-online" hidden>Die Season ist gestartet!</div>
-    </details>
-  </aside>
   <script src="js/main.js"></script>
-
+  <script src="js/stats-core.js"></script>
+  <script src="js/home.js"></script>
 </body>
-
 </html>

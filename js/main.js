@@ -445,7 +445,7 @@ function copyIP() {
 // LIVE SERVERSTATUS
 // =========================================================
 
-const maxPlayerSlots = 30;
+const maxPlayerSlots = 40;
 
 
 const minecraftStatusRefreshMs =

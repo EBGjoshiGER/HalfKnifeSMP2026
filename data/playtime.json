@@ -3,77 +3,77 @@
   "players": [
     {
       "name": "RedFabi",
-      "seconds": 17131
-    },
-    {
-      "name": "Bambiistda",
-      "seconds": 17101
+      "seconds": 25357
     },
     {
       "name": "EBGjoshiGER",
-      "seconds": 16866
-    },
-    {
-      "name": "Tsingtao05",
-      "seconds": 16744
+      "seconds": 25093
     },
     {
       "name": "3b0",
-      "seconds": 16607
+      "seconds": 24833
     },
     {
-      "name": "Clown132",
-      "seconds": 16492
+      "name": "Bambiistda",
+      "seconds": 24800
     },
     {
       "name": "zCallMeApple",
-      "seconds": 16435
+      "seconds": 24661
     },
     {
       "name": "Zondar67",
-      "seconds": 16399
+      "seconds": 24625
+    },
+    {
+      "name": "Tsingtao05",
+      "seconds": 24317
     },
     {
       "name": "Moeewe",
-      "seconds": 15671
+      "seconds": 23845
     },
     {
       "name": "Juronimo",
-      "seconds": 14281
+      "seconds": 21004
     },
     {
       "name": "n00bbert",
-      "seconds": 14264
+      "seconds": 20122
     },
     {
       "name": "27Flo",
-      "seconds": 13346
+      "seconds": 19966
     },
     {
       "name": "squashninja4422",
-      "seconds": 12598
+      "seconds": 19085
+    },
+    {
+      "name": "Clown132",
+      "seconds": 16841
+    },
+    {
+      "name": "schmxdiii",
+      "seconds": 15880
+    },
+    {
+      "name": "cholimba",
+      "seconds": 13134
+    },
+    {
+      "name": "Leon911isreal",
+      "seconds": 10450
     },
     {
       "name": "SnapdragonHD",
       "seconds": 9318
     },
     {
-      "name": "schmxdiii",
-      "seconds": 7714
-    },
-    {
-      "name": "Leon911isreal",
-      "seconds": 6595
-    },
-    {
-      "name": "cholimba",
-      "seconds": 4908
-    },
-    {
       "name": "StaLKerinoO",
       "seconds": 2313
     }
   ],
-  "updatedAt": "2026-10-24T16:41:54.717362577Z",
+  "updatedAt": "2026-10-24T18:59:01.060133733Z",
   "afkTimeoutSeconds": 300
 }

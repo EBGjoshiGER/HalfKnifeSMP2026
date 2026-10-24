@@ -3,73 +3,77 @@
   "players": [
     {
       "name": "RedFabi",
-      "seconds": 5066
-    },
-    {
-      "name": "27Flo",
-      "seconds": 5058
+      "seconds": 17131
     },
     {
       "name": "Bambiistda",
-      "seconds": 5037
-    },
-    {
-      "name": "zCallMeApple",
-      "seconds": 4998
-    },
-    {
-      "name": "Zondar67",
-      "seconds": 4991
-    },
-    {
-      "name": "SnapdragonHD",
-      "seconds": 4957
-    },
-    {
-      "name": "3b0",
-      "seconds": 4953
+      "seconds": 17101
     },
     {
       "name": "EBGjoshiGER",
-      "seconds": 4801
+      "seconds": 16866
     },
     {
       "name": "Tsingtao05",
-      "seconds": 4679
+      "seconds": 16744
     },
     {
-      "name": "Moeewe",
-      "seconds": 4506
+      "name": "3b0",
+      "seconds": 16607
     },
     {
       "name": "Clown132",
-      "seconds": 4468
+      "seconds": 16492
     },
     {
-      "name": "squashninja4422",
-      "seconds": 3652
+      "name": "zCallMeApple",
+      "seconds": 16435
     },
     {
-      "name": "n00bbert",
-      "seconds": 3439
+      "name": "Zondar67",
+      "seconds": 16399
+    },
+    {
+      "name": "Moeewe",
+      "seconds": 15671
     },
     {
       "name": "Juronimo",
-      "seconds": 2392
+      "seconds": 14281
+    },
+    {
+      "name": "n00bbert",
+      "seconds": 14264
+    },
+    {
+      "name": "27Flo",
+      "seconds": 13346
+    },
+    {
+      "name": "squashninja4422",
+      "seconds": 12598
+    },
+    {
+      "name": "SnapdragonHD",
+      "seconds": 9318
+    },
+    {
+      "name": "schmxdiii",
+      "seconds": 7714
+    },
+    {
+      "name": "Leon911isreal",
+      "seconds": 6595
+    },
+    {
+      "name": "cholimba",
+      "seconds": 4908
     },
     {
       "name": "StaLKerinoO",
       "seconds": 2313
-    },
-    {
-      "name": "Leon911isreal",
-      "seconds": 1861
-    },
-    {
-      "name": "schmxdiii",
-      "seconds": 60
     }
   ],
-  "updatedAt": "2026-10-24T13:20:49.847296741Z",
+  "updatedAt": "2026-10-24T16:41:54.717362577Z",
   "afkTimeoutSeconds": 300
 }

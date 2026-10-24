@@ -1,7 +1,20 @@
 {
   "online": true,
-  "onlineCount": 0,
+  "onlineCount": 12,
   "maxPlayers": 40,
-  "players": [],
-  "updatedAt": "2026-10-23T22:27:14.562723+00:00"
+  "players": [
+    "27Flo",
+    "Bambiistda",
+    "Clown132",
+    "Leon911isreal",
+    "Moeewe",
+    "n00bbert",
+    "RedFabi",
+    "schmxdiii",
+    "SnapdragonHD",
+    "squashninja4422",
+    "zCallMeApple",
+    "Zondar67"
+  ],
+  "updatedAt": "2026-10-24T14:53:26.269573+00:00"
 }

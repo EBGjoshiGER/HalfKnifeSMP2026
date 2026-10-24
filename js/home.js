@@ -47,6 +47,9 @@
     $('home-top-three').innerHTML = top.length ? top.map((player, index) => `<li class="podium-player"><a href="stats.html?player=${encodeURIComponent(player.uuid)}">${avatar(player)}<span class="podium-name"><strong>${esc(player.name)}</strong><small>${esc(C.duration(player.summary.activeSeconds))}</small></span><span class="podium-place">#${index + 1}</span></a></li>`).join('')
       : '<li class="world-empty">Noch ist hier alles offen. Wer setzt sich an die Spitze?</li>';
   }
+  const projectRefreshMs = 30 * 60 * 1000;
+  const projectLastAttempt = new Map();
+  const loadedProjects = new Set();
   const projectLabels = { not_started: 'Noch nicht gestartet', active: 'Projekt läuft', paused: 'Projekt pausiert', completed: 'Abgeschlossen · Dimension freigeschaltet' };
   function renderProject(key, data) {
     const resources = data && data.resources;
@@ -55,8 +58,7 @@
         !Number.isFinite(Date.parse(data.syncedAt)) || !Array.isArray(resources) || !resources.length ||
         !resources.every(r => typeof r.name === 'string' && validCount(r.required) && r.required > 0 && validCount(r.donated)))
       throw new Error('Ungültiger Projektstand');
-    const age = Date.now() - Date.parse(data.syncedAt);
-    if (age > 30 * 60 * 1000 || age < -60000) throw new Error('Projektstand nicht aktuell');
+    loadedProjects.add(key);
     const status = $(`${key}-project-status`);
     status.textContent = projectLabels[data.status];
     status.dataset.state = data.status;
@@ -74,8 +76,15 @@
     $(`${key}-project-message`).textContent = 'Der aktuelle Stand konnte nicht geladen werden. Bitte schau später wieder vorbei.';
   }
   async function refreshProject(key) {
+    const now = Date.now();
+    const lastAttempt = projectLastAttempt.get(key);
+    if (lastAttempt !== undefined && now - lastAttempt < projectRefreshMs) return;
+    projectLastAttempt.set(key, now);
     try { renderProject(key, await json(`data/${key}-project.json`)); }
-    catch { projectUnavailable(key); }
+    catch {
+      // Keep the last valid stand visible during restarts or failed updates.
+      if (!loadedProjects.has(key)) projectUnavailable(key);
+    }
   }
   async function refresh() {
     if (busy) return;

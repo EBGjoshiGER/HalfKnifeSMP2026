@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-25T09:24:02.722785+00:00",
+  "capturedAt": "2026-10-25T09:25:46.376162+00:00",
   "readOnlyServer": true,
   "mods": [
     "BetterTridents-v26.2.0-mc26.2.x-Fabric.jar",
@@ -146,7 +146,16 @@
       "lagEvents": [],
       "exceptionClasses": {},
       "warningModules": {},
-      "versions": []
+      "versions": [],
+      "lagSummary": {
+        "events": 0,
+        "first": null,
+        "last": null,
+        "maxBehindMs": 0
+      },
+      "warningPatterns": {},
+      "warningResources": {},
+      "chunkErrorStackClasses": {}
     },
     {
       "file": "2026-10-24-2.log.gz",
@@ -182,7 +191,64 @@
           "minecraft": "26.2",
           "fabricLoader": "0.19.5"
         }
-      ]
+      ],
+      "lagSummary": {
+        "events": 0,
+        "first": null,
+        "last": null,
+        "maxBehindMs": 0
+      },
+      "warningPatterns": {
+        "missing data for reference * * worldgen * * *": 831,
+        "invalid * in mod resource pack * * * *": 8,
+        "reference map * refmap * for * * * could": 4,
+        "* * * * * * * * * *": 4,
+        "* * * * * * is zero * to": 4,
+        "error loading class * * * * * * *": 3,
+        "error * pack * * * *": 3,
+        "reference map * refmap * for * * * *": 2,
+        "reference map * * refmap * for * * *": 2,
+        "reference map * * * * * refmap * for": 2,
+        "* * * * * * * * to the": 2,
+        "* * found": 1,
+        "mixin target * * * * * * * *": 1,
+        "* * * an * *": 1,
+        "failed to load * *": 1,
+        "failed to load * * *": 1,
+        "* * * * an * *": 1,
+        "unable to read * * * *": 1,
+        "found data map * for non * data map *": 1,
+        "distant horizons * * * detected": 1,
+        "* the * is * * * * is not": 1
+      },
+      "warningResources": {
+        "minecraft:worldgen/placed_feature": 831,
+        "minecraft:worldgen/configured_feature": 831,
+        "minecraft:ore_granite": 277,
+        "minecraft:ore_andesite": 277,
+        "minecraft:ore_diorite": 276,
+        "minecraft:ore_granite_lower": 147,
+        "minecraft:ore_diorite_lower": 147,
+        "minecraft:ore_andesite_lower": 147,
+        "minecraft:ore_andesite_upper": 130,
+        "minecraft:ore_granite_upper": 130,
+        "minecraft:ore_diorite_upper": 129,
+        "sitanywhere:function/settings-": 8,
+        "terralith:shield_clearing": 6,
+        "minecraft:deep_dark": 6,
+        "terralith:alpine_grove": 6,
+        "terralith:fractured_savanna": 6,
+        "terralith:painted_mountains": 6,
+        "terralith:skylands_summer": 6,
+        "minecraft:mushroom_fields": 6,
+        "minecraft:snowy_slopes": 6,
+        "terralith:skylands_winter": 6,
+        "terralith:cloud_forest": 6,
+        "terralith:desert_canyon": 6,
+        "terralith:cave/underground_jungle": 6,
+        "minecraft:deep_frozen_ocean": 6
+      },
+      "chunkErrorStackClasses": {}
     },
     {
       "file": "2026-10-24-3.log.gz",
@@ -720,7 +786,76 @@
           "minecraft": "26.2",
           "fabricLoader": "0.19.5"
         }
-      ]
+      ],
+      "lagSummary": {
+        "events": 145,
+        "first": {
+          "time": "13:07:11",
+          "behindMs": 2025,
+          "behindTicks": 40
+        },
+        "last": {
+          "time": "13:56:26",
+          "behindMs": 5512,
+          "behindTicks": 110
+        },
+        "maxBehindMs": 18919
+      },
+      "warningPatterns": {
+        "missing data for reference * * worldgen * * *": 831,
+        "* * *": 82,
+        "invalid * in mod resource pack * * * *": 8,
+        "reference map * refmap * for * * * could": 4,
+        "* * * * * * * * * *": 4,
+        "* * * * * * is zero * to": 4,
+        "error loading class * * * * * * *": 3,
+        "error * pack * * * *": 3,
+        "reference map * refmap * for * * * *": 2,
+        "reference map * * refmap * for * * *": 2,
+        "reference map * * * * * refmap * for": 2,
+        "* * * * * * * * to the": 2,
+        "* * * * * * *": 2,
+        "* * found": 1,
+        "mixin target * * * * * * * *": 1,
+        "* * * an * *": 1,
+        "failed to load * *": 1,
+        "failed to load * * *": 1,
+        "* * * * an * *": 1,
+        "unable to read * * * *": 1,
+        "found data map * for non * data map *": 1,
+        "distant horizons * * * detected": 1,
+        "* the * is * * * * is not": 1,
+        "* * find * with * *": 1,
+        "* * * * * * * *": 1
+      },
+      "warningResources": {
+        "minecraft:worldgen/placed_feature": 831,
+        "minecraft:worldgen/configured_feature": 831,
+        "minecraft:ore_granite": 277,
+        "minecraft:ore_andesite": 277,
+        "minecraft:ore_diorite": 276,
+        "minecraft:ore_granite_lower": 147,
+        "minecraft:ore_diorite_lower": 147,
+        "minecraft:ore_andesite_lower": 147,
+        "minecraft:ore_granite_upper": 130,
+        "minecraft:ore_andesite_upper": 130,
+        "minecraft:ore_diorite_upper": 129,
+        "sitanywhere:function/settings-": 8,
+        "terralith:ice_marsh": 6,
+        "terralith:lush_desert": 6,
+        "minecraft:ocean": 6,
+        "terralith:savanna_slopes": 6,
+        "terralith:yosemite_cliffs": 6,
+        "terralith:snowy_shield": 6,
+        "terralith:ancient_sands": 6,
+        "minecraft:desert": 6,
+        "terralith:rocky_shrubland": 6,
+        "terralith:blooming_plateau": 6,
+        "terralith:yosemite_lowlands": 6,
+        "minecraft:stony_peaks": 6,
+        "terralith:deep_warm_ocean": 6
+      },
+      "chunkErrorStackClasses": {}
     },
     {
       "file": "2026-10-24-4.log.gz",
@@ -1258,7 +1393,76 @@
           "minecraft": "26.2",
           "fabricLoader": "0.19.5"
         }
-      ]
+      ],
+      "lagSummary": {
+        "events": 1218,
+        "first": {
+          "time": "13:57:14",
+          "behindMs": 3485,
+          "behindTicks": 69
+        },
+        "last": {
+          "time": "22:01:39",
+          "behindMs": 2685,
+          "behindTicks": 53
+        },
+        "maxBehindMs": 16466
+      },
+      "warningPatterns": {
+        "missing data for reference * * worldgen * * *": 831,
+        "detected * * read during worldgen * * chunk while": 57,
+        "empty * non * pool *": 44,
+        "* * * * invalid * * * * *": 29,
+        "* * * * * structure * * * *": 25,
+        "invalid * in mod resource pack * * * *": 16,
+        "* * * of * * * * *": 15,
+        "* * * of * * *": 12,
+        "* * find * pool reference * * * *": 8,
+        "error * pack * * * *": 7,
+        "* * *": 6,
+        "* * * of * * * *": 5,
+        "reference map * refmap * for * * * could": 4,
+        "* * * * * * * * * *": 4,
+        "* * * * * * is zero * to": 4,
+        "* * * *": 4,
+        "error loading class * * * * * * *": 3,
+        "skipping * with * invalid": 3,
+        "failed to * * * * for * * *": 3,
+        "reference map * refmap * for * * * *": 2,
+        "reference map * * refmap * for * * *": 2,
+        "reference map * * * * * refmap * for": 2,
+        "found data map * for non * data map *": 2,
+        "* * * * * * * * to the": 2,
+        "* * * * * * * *": 2
+      },
+      "warningResources": {
+        "minecraft:worldgen/placed_feature": 831,
+        "minecraft:worldgen/configured_feature": 831,
+        "minecraft:ore_andesite": 277,
+        "minecraft:ore_granite": 277,
+        "minecraft:ore_diorite": 276,
+        "minecraft:ore_andesite_lower": 147,
+        "minecraft:ore_granite_lower": 147,
+        "minecraft:ore_diorite_lower": 147,
+        "minecraft:ore_andesite_upper": 130,
+        "minecraft:ore_granite_upper": 130,
+        "minecraft:ore_diorite_upper": 129,
+        "minecraft:structure_starts": 57,
+        "minecraft:worldgen/structure": 57,
+        "explorify:ruins": 45,
+        "sitanywhere:function/settings-": 16,
+        "terralith:fortified_village": 12,
+        "terralith:gravel_beach": 6,
+        "terralith:warm_river": 6,
+        "terralith:blooming_plateau": 6,
+        "terralith:cloud_forest": 6,
+        "minecraft:deep_cold_ocean": 6,
+        "terralith:painted_mountains": 6,
+        "terralith:temperate_highlands": 6,
+        "terralith:ancient_sands": 6,
+        "terralith:fractured_savanna": 6
+      },
+      "chunkErrorStackClasses": {}
     },
     {
       "file": "2026-10-24-5.log.gz",
@@ -1795,7 +1999,76 @@
           "minecraft": "26.2",
           "fabricLoader": "0.19.5"
         }
-      ]
+      ],
+      "lagSummary": {
+        "events": 253,
+        "first": {
+          "time": "22:02:43",
+          "behindMs": 2546,
+          "behindTicks": 50
+        },
+        "last": {
+          "time": "23:57:05",
+          "behindMs": 2139,
+          "behindTicks": 42
+        },
+        "maxBehindMs": 7425
+      },
+      "warningPatterns": {
+        "missing data for reference * * worldgen * * *": 831,
+        "empty * non * pool *": 44,
+        "invalid * in mod resource pack * * * *": 8,
+        "error * pack * * * *": 6,
+        "reference map * refmap * for * * * could": 4,
+        "* * * * * * * * * *": 4,
+        "* * * * * * is zero * to": 4,
+        "error loading class * * * * * * *": 3,
+        "* * * * invalid * * * * *": 3,
+        "reference map * refmap * for * * * *": 2,
+        "reference map * * refmap * for * * *": 2,
+        "reference map * * * * * refmap * for": 2,
+        "* * * * * * * * to the": 2,
+        "* * * *": 2,
+        "* * found": 1,
+        "mixin target * * * * * * * *": 1,
+        "* * * an * *": 1,
+        "failed to load * *": 1,
+        "failed to load * * *": 1,
+        "* * * * an * *": 1,
+        "unable to read * * * *": 1,
+        "found data map * for non * data map *": 1,
+        "distant horizons * * * detected": 1,
+        "* the * is * * * * is not": 1,
+        "unable to * loot * in * * * *": 1
+      },
+      "warningResources": {
+        "minecraft:worldgen/placed_feature": 831,
+        "minecraft:worldgen/configured_feature": 831,
+        "minecraft:ore_granite": 277,
+        "minecraft:ore_andesite": 277,
+        "minecraft:ore_diorite": 276,
+        "minecraft:ore_diorite_lower": 147,
+        "minecraft:ore_granite_lower": 147,
+        "minecraft:ore_andesite_lower": 147,
+        "minecraft:ore_granite_upper": 130,
+        "minecraft:ore_andesite_upper": 130,
+        "minecraft:ore_diorite_upper": 129,
+        "sitanywhere:function/settings-": 8,
+        "terralith:sakura_grove": 6,
+        "terralith:shield": 6,
+        "terralith:orchid_swamp": 6,
+        "minecraft:ocean": 6,
+        "minecraft:old_growth_spruce_taiga": 6,
+        "terralith:caldera": 6,
+        "terralith:cave/fungal_caves": 6,
+        "terralith:cloud_forest": 6,
+        "terralith:savanna_badlands": 6,
+        "terralith:sakura_valley": 6,
+        "terralith:warped_mesa": 6,
+        "minecraft:snowy_taiga": 6,
+        "terralith:alpine_grove": 6
+      },
+      "chunkErrorStackClasses": {}
     },
     {
       "file": "latest.log",
@@ -1837,7 +2110,136 @@
           "minecraft": "26.2",
           "fabricLoader": "0.19.5"
         }
-      ]
+      ],
+      "lagSummary": {
+        "events": 1,
+        "first": {
+          "time": "08:59:47",
+          "behindMs": 2206,
+          "behindTicks": 44
+        },
+        "last": {
+          "time": "08:59:47",
+          "behindMs": 2206,
+          "behindTicks": 44
+        },
+        "maxBehindMs": 2206
+      },
+      "warningPatterns": {
+        "missing data for reference * * worldgen * * *": 831,
+        "invalid * in mod resource pack * * * *": 8,
+        "* * * * of * * *": 8,
+        "error * pack * * * *": 6,
+        "* * * of * * *": 5,
+        "reference map * refmap * for * * * could": 4,
+        "* * * * * * * * * *": 4,
+        "* * * * * * is zero * to": 4,
+        "error loading class * * * * * * *": 3,
+        "reference map * refmap * for * * * *": 2,
+        "reference map * * refmap * for * * *": 2,
+        "reference map * * * * * refmap * for": 2,
+        "* * * * * * * * to the": 2,
+        "* * found": 1,
+        "mixin target * * * * * * * *": 1,
+        "* * * an * *": 1,
+        "failed to load * *": 1,
+        "failed to load * * *": 1,
+        "* * * * an * *": 1,
+        "unable to read * * * *": 1,
+        "found data map * for non * data map *": 1,
+        "distant horizons * * * detected": 1,
+        "* the * is * * * * is not": 1,
+        "unable to * loot * in * * * *": 1,
+        "* was * for * * *": 1
+      },
+      "warningResources": {
+        "minecraft:worldgen/placed_feature": 831,
+        "minecraft:worldgen/configured_feature": 831,
+        "minecraft:ore_andesite": 277,
+        "minecraft:ore_granite": 277,
+        "minecraft:ore_diorite": 276,
+        "minecraft:ore_andesite_lower": 147,
+        "minecraft:ore_granite_lower": 147,
+        "minecraft:ore_diorite_lower": 147,
+        "minecraft:ore_andesite_upper": 130,
+        "minecraft:ore_granite_upper": 130,
+        "minecraft:ore_diorite_upper": 129,
+        "sitanywhere:function/settings-": 8,
+        "terralith:skylands_summer": 6,
+        "minecraft:plains": 6,
+        "terralith:cave/fungal_caves": 6,
+        "minecraft:ocean": 6,
+        "minecraft:snowy_slopes": 6,
+        "minecraft:old_growth_birch_forest": 6,
+        "terralith:brushland": 6,
+        "minecraft:beach": 6,
+        "terralith:cave/tuff_caves": 6,
+        "terralith:cold_shrubland": 6,
+        "terralith:cave/deep_caves": 6,
+        "minecraft:deep_frozen_ocean": 6,
+        "terralith:desert_canyon": 6
+      },
+      "chunkErrorStackClasses": {}
     }
-  ]
+  ],
+  "performanceConfig": {
+    "config/DistantHorizons.toml": [
+      "realTimeUpdateDistanceRadiusInChunks = 256",
+      "maxGenerationRequestDistance = 4096",
+      "generationRequestRateLimit = 20",
+      "syncOnLoadRateLimit = 50",
+      "enableRealTimeUpdates = true",
+      "globalBandwidthLimit = 0",
+      "playerBandwidthLimit = 500",
+      "enableAdaptiveTransferSpeed = false",
+      "[common.lodBuilding]",
+      "worldCompression = \"VISUALLY_EQUAL\"",
+      "dataCompression = \"Z_STD_BLOCK\"",
+      "[common.multiThreading]",
+      "numberOfThreads = 1",
+      "threadRunTimeRatio = \"1.0\"",
+      "threadPriority = 5",
+      "[common.worldGenerator]",
+      "showGenerationProgress = \"DISABLED\"",
+      "generationMaxChunkRadius = 0",
+      "limitIfServerUnhealthy = true",
+      "generationProgressDisplayIntervalInSeconds = 2",
+      "generationProgressIncludeChunksPerSecond = true",
+      "chunkGeneratorMode = \"FEATURES\"",
+      "generatorPlan = \"SURFACE_THEN_CHUNKS\"",
+      "generationProgressDisableMessageDisplayTimeInSeconds = 20",
+      "generationCenterChunkZ = 0",
+      "generationCenterChunkX = 0",
+      "enableAutoUpdater = true",
+      "enableSilentUpdates = false",
+      "lodOnlyMode = false",
+      "enableWhiteWorld = false",
+      "enableDebugKeybindings = false",
+      "enableRendering = false",
+      "showRenderThreadTasks = false",
+      "showThreadPools = true",
+      "positionFinderEnable = false",
+      "enableAntiAliasing = true",
+      "enableSsao = true",
+      "enableCaveCulling = true",
+      "maxTexturedLodDetailLevel = 2",
+      "enableTexturedLods = true",
+      "enableNoiseTexture = true",
+      "dimensionEnabledCloudRenderingCsv = \"minecraft:overworld\"",
+      "enableCloudRendering = true",
+      "expandDistantBeacons = true",
+      "enableBeaconRendering = true",
+      "enableGenericRendering = true",
+      "enableMultiLayerClouds = true",
+      "lodShading = \"AUTO\"",
+      "lodChunkRenderDistanceRadius = 256",
+      "lodBiomeBlending = 3",
+      "enableVanillaFog = false",
+      "enableDhFog = true"
+    ],
+    "config/lithium.properties": [],
+    "config/ferritecore.mixin.properties": [
+      "useSmallThreadingDetector = false"
+    ]
+  }
 }

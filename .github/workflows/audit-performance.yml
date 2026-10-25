@@ -1,9 +1,6 @@
 name: Server-Performance prüfen (nur lesend)
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: [.github/workflows/audit-performance.yml]
 permissions:
   contents: write
 concurrency:

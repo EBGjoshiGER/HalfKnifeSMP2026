@@ -1,12 +1,6 @@
 name: Server-Icon installieren
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - assets/server-icon.png
-      - scripts/install_server_icon.py
-      - .github/workflows/install-server-icon.yml
 permissions:
   contents: read
 concurrency:

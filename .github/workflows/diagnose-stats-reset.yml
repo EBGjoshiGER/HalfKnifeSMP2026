@@ -1,9 +1,6 @@
 name: Stats-Reset Diagnose (nur lesend)
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: [.github/workflows/diagnose-stats-reset.yml]
 permissions:
   contents: read
 jobs:

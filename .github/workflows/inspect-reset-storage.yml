@@ -1,9 +1,6 @@
 name: Reset-Mod-Speicher prüfen (nur lesend)
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: [.github/workflows/inspect-reset-storage.yml]
 permissions:
   contents: read
 jobs:

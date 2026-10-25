@@ -1,9 +1,6 @@
 name: Inspect RAS compatibility (read only)
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: [.github/workflows/inspect-ras-compat.yml]
 permissions:
   contents: read
 jobs:

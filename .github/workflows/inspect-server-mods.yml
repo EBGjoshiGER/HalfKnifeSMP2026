@@ -1,9 +1,6 @@
 name: Server-Mods erfassen (nur lesend)
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: [.github/workflows/inspect-server-mods.yml]
 permissions:
   contents: read
 jobs:

@@ -1,11 +1,6 @@
 name: Server-Icon prüfen
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - scripts/diagnose_server_icon.py
-      - .github/workflows/diagnose-server-icon.yml
 permissions:
   contents: read
 jobs:

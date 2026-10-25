@@ -1,13 +1,6 @@
 name: Upgrade RAS to 5.0.0 with HalfKnife rules
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - mods/ras-upgrade/**
-      - scripts/ras_upgrade.py
-      - scripts/smoke_ras_upgrade.py
-      - .github/workflows/upgrade-ras.yml
 permissions:
   contents: read
 concurrency:

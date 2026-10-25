@@ -1,11 +1,6 @@
 name: Aktive Spielzeit vorbereiten
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - scripts/setup_active_playtime.py
-      - .github/workflows/setup-active-playtime.yml
 permissions:
   contents: read
 concurrency:

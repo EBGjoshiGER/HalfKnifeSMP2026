@@ -1,14 +1,6 @@
 name: HalfKnife aktive Spielzeit bauen und installieren
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - mods/halfknife-active-playtime/**
-      - scripts/install_active_playtime.py
-      - scripts/smoke_active_playtime.py
-      - scripts/tab_active_bridge.py
-      - .github/workflows/build-active-playtime.yml
 permissions:
   contents: read
 concurrency:

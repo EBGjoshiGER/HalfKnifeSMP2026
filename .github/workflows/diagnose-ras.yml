@@ -1,9 +1,6 @@
 name: Diagnose RAS allocation (read only)
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: [.github/workflows/diagnose-ras.yml]
 permissions:
   contents: read
 jobs:

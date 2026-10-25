@@ -1,7 +1,12 @@
 {
   "online": true,
-  "onlineCount": 0,
+  "onlineCount": 4,
   "maxPlayers": 40,
-  "players": [],
-  "updatedAt": "2026-10-25T00:33:53.325023+00:00"
+  "players": [
+    "aseasyas",
+    "DR_Husch",
+    "EscalationAndy",
+    "luxamy"
+  ],
+  "updatedAt": "2026-10-25T09:55:36.761321+00:00"
 }

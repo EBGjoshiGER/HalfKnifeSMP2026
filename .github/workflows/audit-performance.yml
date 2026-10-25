@@ -1,0 +1,115 @@
+name: Server-Performance prüfen (nur lesend)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/audit-performance.yml]
+permissions:
+  contents: write
+concurrency:
+  group: halfknife-performance-audit
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mods, Einstellungen und Log-Warnungen lesen
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import collections, datetime, ftplib, gzip, io, json, os, re
+          from pathlib import Path
+          now = datetime.datetime.now(datetime.timezone.utc)
+          yesterday = (now - datetime.timedelta(days=1)).date().isoformat()
+          report = {'capturedAt': now.isoformat(), 'readOnlyServer': True, 'mods': [], 'settings': {}, 'logs': []}
+          ftp = ftplib.FTP(timeout=30)
+          def read(path, limit=16*1024*1024):
+              out = io.BytesIO()
+              def receive(chunk):
+                  if out.tell() + len(chunk) > limit:
+                      raise ValueError('File exceeds diagnostic size limit')
+                  out.write(chunk)
+              ftp.retrbinary('RETR ' + path, receive)
+              return out.getvalue()
+          try:
+              ftp.connect(os.environ['FTP_HOST'], int(os.environ.get('FTP_PORT') or '21'))
+              ftp.login(os.environ['FTP_USER'], os.environ['FTP_PASSWORD'])
+              report['mods'] = sorted(Path(p).name for p in ftp.nlst('mods') if p.endswith('.jar'))
+              properties = read('server.properties').decode('utf-8-sig', errors='replace')
+              allowed = {'view-distance','simulation-distance','max-players','network-compression-threshold',
+                         'sync-chunk-writes','use-native-transport','entity-broadcast-range-percentage',
+                         'max-tick-time','pause-when-empty-seconds','spawn-protection','level-type'}
+              for line in properties.splitlines():
+                  if '=' in line and not line.lstrip().startswith('#'):
+                      key, value = line.split('=',1)
+                      if key.strip() in allowed: report['settings'][key.strip()] = value.strip()
+              names = sorted(Path(p).name for p in ftp.nlst('logs'))
+              selected = [n for n in names if n.startswith(yesterday) and n.endswith('.log.gz')][-20:]
+              if 'latest.log' in names: selected.append('latest.log')
+              patterns = {
+                'cant_keep_up': r"Can't keep up!",
+                'watchdog': r'(?i)single server tick took|watchdog.*(?:crash|hang)',
+                'out_of_memory': r'OutOfMemoryError|GC overhead limit',
+                'chunk_errors': r'(?i)(?:failed|error|exception).*(?:chunk|region)|(?:chunk|region).*(?:failed|error|exception)',
+                'network_timeout': r'(?i)timed out|keepalive.*timeout',
+                'connection_reset': r'(?i)connection reset|broken pipe',
+                'voicechat_warning': r'(?i)\[voicechat\].*(?:warn|error|failed|timeout)|(?:WARN|ERROR).*\[voicechat\]',
+                'mixin_failure': r'(?i)mixin.*(?:failed|error)|(?:failed|error).*mixin',
+                'save_errors': r'(?i)(?:failed|error).*(?:saving|save player|save world)',
+                'duplicate_entity': r'(?i)duplicate.*(?:entity|uuid)|(?:entity|uuid).*duplicate',
+                'moved_too_quickly': r'moved too quickly|moved wrongly',
+                'server_start': r'Done \([\d.,]+s\)!',
+                'server_stop': r'Stopping server',
+                'thread_starvation': r'(?i)thread starvation|deadlock',
+              }
+              for name in selected:
+                  raw = read('logs/' + name)
+                  if name.endswith('.gz'):
+                      with gzip.GzipFile(fileobj=io.BytesIO(raw)) as z: raw = z.read(32*1024*1024+1)
+                      if len(raw)>32*1024*1024: raise ValueError('Expanded log exceeds limit')
+                  lines = raw.decode('utf-8',errors='replace').splitlines()
+                  counts = {key: sum(bool(re.search(pattern,line)) for line in lines) for key,pattern in patterns.items()}
+                  lag=[]
+                  for line in lines:
+                      if "Can't keep up!" in line:
+                          m=re.search(r'Running (\d+)ms or (\d+) ticks behind',line)
+                          t=re.match(r'\[(\d\d:\d\d:\d\d)\]',line)
+                          if m: lag.append({'time':t.group(1) if t else None,'behindMs':int(m[1]),'behindTicks':int(m[2])})
+                  exceptions=collections.Counter()
+                  for line in lines:
+                      if any(marker in line for marker in ('Exception','Error','Caused by:')):
+                          for cls in re.findall(r'\b((?:[a-zA-Z_$][\w$]*\.)+[A-Za-z_$][\w$]*(?:Exception|Error))\b',line): exceptions[cls]+=1
+                  modules=collections.Counter()
+                  for line in lines:
+                      m=re.match(r'\[[\d:]+\] \[[^\]]+/(?:WARN|ERROR)\](?: \[([A-Za-z0-9_. /-]{1,100})\])?',line)
+                      if m: modules[m[1] or 'unlabelled']+=1
+                  versions=[]
+                  for line in lines:
+                      m=re.search(r'Loading Minecraft ([\w.+-]+) with Fabric Loader ([\w.+-]+)',line)
+                      if m: versions.append({'minecraft':m[1],'fabricLoader':m[2]})
+                  report['logs'].append({'file':name,'lines':len(lines),'counts':counts,'lagEvents':lag[-100:],
+                                         'exceptionClasses':dict(exceptions.most_common(30)),
+                                         'warningModules':dict(modules.most_common(30)),'versions':versions})
+          finally:
+              ftp.close()
+          Path('data/performance-audit.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report,indent=2))
+          PY
+      - name: Anonymisierten Diagnosebericht speichern
+        run: |
+          git config user.name 'HalfKnife SMP Bot'
+          git config user.email 'actions@github.com'
+          git add data/performance-audit.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Server-Performance lesend geprüft'
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1

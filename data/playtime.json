@@ -3,39 +3,39 @@
   "players": [
     {
       "name": "Tsingtao05",
-      "seconds": 89335
+      "seconds": 96652
+    },
+    {
+      "name": "3b0",
+      "seconds": 93294
+    },
+    {
+      "name": "Bambiistda",
+      "seconds": 91216
+    },
+    {
+      "name": "EBGjoshiGER",
+      "seconds": 88372
     },
     {
       "name": "zCallMeApple",
       "seconds": 86317
     },
     {
-      "name": "3b0",
-      "seconds": 85971
-    },
-    {
-      "name": "Bambiistda",
-      "seconds": 83849
-    },
-    {
-      "name": "EBGjoshiGER",
-      "seconds": 81005
-    },
-    {
       "name": "Moeewe",
-      "seconds": 80209
+      "seconds": 84870
     },
     {
       "name": "Zondar67",
-      "seconds": 78671
+      "seconds": 84522
     },
     {
       "name": "RedFabi",
-      "seconds": 74438
+      "seconds": 78884
     },
     {
       "name": "squashninja4422",
-      "seconds": 58258
+      "seconds": 64485
     },
     {
       "name": "cholimba",
@@ -43,7 +43,7 @@
     },
     {
       "name": "schmxdiii",
-      "seconds": 50604
+      "seconds": 53782
     },
     {
       "name": "Juronimo",
@@ -75,11 +75,15 @@
     },
     {
       "name": "Leon911isreal",
-      "seconds": 20498
+      "seconds": 21994
     },
     {
       "name": "StaLKerinoO",
       "seconds": 19071
+    },
+    {
+      "name": "Bananenmeister23",
+      "seconds": 18394
     },
     {
       "name": "SnapdragonHD",
@@ -91,17 +95,13 @@
     },
     {
       "name": "DerTemporini",
-      "seconds": 11303
-    },
-    {
-      "name": "Bananenmeister23",
-      "seconds": 11102
+      "seconds": 11547
     },
     {
       "name": "johahaag54",
-      "seconds": 5386
+      "seconds": 7277
     }
   ],
-  "updatedAt": "2026-10-25T21:10:38.930883894Z",
+  "updatedAt": "2026-10-25T23:13:26.035662291Z",
   "afkTimeoutSeconds": 300
 }

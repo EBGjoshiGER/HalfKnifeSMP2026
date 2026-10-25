@@ -1,0 +1,1843 @@
+{
+  "capturedAt": "2026-10-25T09:24:02.722785+00:00",
+  "readOnlyServer": true,
+  "mods": [
+    "BetterTridents-v26.2.0-mc26.2.x-Fabric.jar",
+    "Chunky-Fabric-1.5.3.jar",
+    "DeathFinder-v26.2.0-mc26.2.x-Fabric.jar",
+    "DiagonalFences-v26.2.0-mc26.2.x-Fabric.jar",
+    "DiagonalWalls-v26.2.0-mc26.2.x-Fabric.jar",
+    "DiagonalWindows-v26.2.0-mc26.2.x-Fabric.jar",
+    "DimensionDaddy-2.0.1-halfknife-26.2.jar",
+    "DistantHorizons-3.3.3-26.2-fabric-neoforge.jar",
+    "Easy_Shop_Mod-9.0.0.jar",
+    "EnchantmentDescriptions-fabric-MC26.2-26.2.0.2.jar",
+    "Enhanced-Celestials-2-Core-Fabric-26.2-4.0.3.3.jar",
+    "Enhanced-Celestials-2-Default-Lunar-Events-Fabric-26.2-4.0.0.6.jar",
+    "Enhanced-Celestials-2-Shaders-Fabric-26.2-4.0.0.4.jar",
+    "Explorify v1.6.5.mod.jar",
+    "ForgeConfigAPIPort-v26.2.1-mc26.2.x-Fabric.jar",
+    "GlitchCore-fabric-26.2-26.2.0.0.0.jar",
+    "IllagerInvasion-v26.2.0-mc26.2.x-Fabric.jar",
+    "Jade-mc26.2-Fabric-26.2.11.jar",
+    "LeavesBeGone-v26.2.0-mc26.2.x-Fabric.jar",
+    "LuckPerms-Fabric-5.5.57.jar",
+    "MoogsStructureLib-fabric-26.2-3.2.0.jar",
+    "MoogsVoyagerStructures-universal-1.21-5.1.1.jar",
+    "PrickleMC-fabric-MC26.2-26.2.0.3.jar",
+    "PuzzlesLib-v26.2.3-mc26.2.x-Fabric.jar",
+    "ResourcefulConfig-5.0.0.jar",
+    "SereneSeasons-fabric-26.2-26.1.2.0.5.jar",
+    "Terralith_26.2_v2.6.4.jar",
+    "TimberReplant-3.4.0.jar",
+    "UniversalEnchantmentInfo-26.2-fabric-1.2.0.jar",
+    "addonslib-fabric-26.2-1.0.jar",
+    "appleskin-fabric-mc26.2-3.0.10.jar",
+    "architectury-fabric-21.1.12.jar",
+    "balm-fabric-26.2-26.2.0.9.jar",
+    "bclib-26.201.4.jar",
+    "better-end-26.201.4.jar",
+    "better-nether-26.201.4.jar",
+    "betterarcheology-fabric-26.2-1.3.9.jar",
+    "betterstats-5.5.6+fn-26.2.jar",
+    "clientsort-fabric-3.103.4+26.2.jar",
+    "cloth-config-26.2.155.jar",
+    "collective-26.2.0-8.40.jar",
+    "cristellib-fabric-26.2-3.1.13.jar",
+    "customname-fabric-0.4.4-26.2.jar",
+    "dataanchor-fabric-26.2-5.0.0.4.jar",
+    "edf-remastered-5.0.2.jar",
+    "end-project-1.0.0.jar",
+    "enhancedgroups-fabric-1.8.0+26.2.jar",
+    "fabric-api-0.161.0+26.2.jar",
+    "fabric-language-kotlin-1.14.2+kotlin.2.4.21.jar",
+    "ferritecore-9.0.0-fabric.jar",
+    "gravestones-1.4.2+26.2+A.jar",
+    "halfknife-active-playtime-1.2.0.jar",
+    "halfknife-hall-of-fame-0.1.0.jar",
+    "halfknife-leaderboards-1.2.3.jar",
+    "halfknifequiz-1.0.0.jar",
+    "healingcampfire-26.2.0-6.3.jar",
+    "jei-26.2-fabric-30.47.0.239.jar",
+    "jeitrades-fabric-26.2-1.2.2.jar",
+    "jeiworldgen-fabric-26.2-1.4.5.jar",
+    "krypton-0.3.1.jar",
+    "ledger-1.3.23.jar",
+    "lib-5555ff-v1.1.5.jar",
+    "lithium-fabric-0.25.3+mc26.2.jar",
+    "lithostitched-1.8.0-fabric-26.2.jar",
+    "littlejoys-fabric-26.2-26.2.0.4.jar",
+    "loading-protection-2.0.0.jar",
+    "lootr-fabric-26.2-1.24.41.124.jar",
+    "mcw-bridges-3.1.2-mc26.2fabric.jar",
+    "mcw-doors-1.1.5-mc26.2fabric.jar",
+    "mcw-fences-1.2.1-mc26.2fabric.jar",
+    "mcw-furniture-3.4.2-mc26.2fabric.jar",
+    "mcw-holidays-1.1.2-mc26.2fabric.jar",
+    "mcw-lights-1.1.5-mc26.2fabric.jar",
+    "mcw-paths-1.1.1-mc26.2fabric.jar",
+    "mcw-roofs-2.3.3-mc26.2fabric.jar",
+    "mcw-stairs-1.0.2-mc26.2fabric.jar",
+    "mcw-trapdoors-1.1.5-mc26.2fabric.jar",
+    "mcw-windows-2.4.2-mc26.2fabric.jar",
+    "mcwbetters-fabric-26.2-1.6.jar",
+    "minimotd-fabric-mc26.2-2.2.4.jar",
+    "mob-heads-v5.1.1.jar",
+    "modtools-fabric-26.2-2.0.jar",
+    "nether-project-2.3.0.jar",
+    "placeholder-api-3.1.0-beta.1+26.2.jar",
+    "players-drop-heads-107.1.jar",
+    "playtime-rewards-1.7.3.jar",
+    "pneumonocore-1.3.1+26.2+A.jar",
+    "rpg_attribute_reworked.jar",
+    "season-lock-1.0.3.jar",
+    "shulkerboxtooltip-fabric-5.4.0+26.2.jar",
+    "simple-hud-enhanced+26.2-4.7.5-beta14.jar",
+    "simplechestlocker-2.2.0+26.2.jar",
+    "simplehammers-fabric-26.2-1.0.5.jar",
+    "sit-anywhere!-3.1.0.jar",
+    "sound-physics-remastered-fabric-1.5.1+26.2.jar",
+    "styled-chat-2.13.0+26.2.jar",
+    "t_and_t-fabric-neoforge-1.13.11.jar",
+    "tab-info-0.3.0+mod.jar",
+    "tcdcommons-5.5.6+fn-26.2.jar",
+    "travelersbackpack-fabric-26.2-11.3.2.jar",
+    "uncraft-quartz-blocks-1.0.jar",
+    "voicechat-fabric-2.6.23+26.2.jar",
+    "worldweaver-26.201.4.jar",
+    "xaeroworldmap-fabric-26.2-1.46.0.jar",
+    "yet_another_config_lib_v3-3.9.6+26.2-fabric.jar",
+    "zconfig-1.0.0+26.x.jar",
+    "zfastnoise-1.1.0-beta.6+26.2.jar"
+  ],
+  "settings": {
+    "entity-broadcast-range-percentage": "100",
+    "level-type": "",
+    "max-players": "40",
+    "max-tick-time": "-1",
+    "network-compression-threshold": "256",
+    "pause-when-empty-seconds": "0",
+    "simulation-distance": "5",
+    "spawn-protection": "0",
+    "sync-chunk-writes": "true",
+    "use-native-transport": "true",
+    "view-distance": "8"
+  },
+  "logs": [
+    {
+      "file": "2026-10-24-1.log.gz",
+      "lines": 84,
+      "counts": {
+        "cant_keep_up": 0,
+        "watchdog": 0,
+        "out_of_memory": 0,
+        "chunk_errors": 0,
+        "network_timeout": 0,
+        "connection_reset": 0,
+        "voicechat_warning": 0,
+        "mixin_failure": 0,
+        "save_errors": 0,
+        "duplicate_entity": 0,
+        "moved_too_quickly": 0,
+        "server_start": 0,
+        "server_stop": 1,
+        "thread_starvation": 0
+      },
+      "lagEvents": [],
+      "exceptionClasses": {},
+      "warningModules": {},
+      "versions": []
+    },
+    {
+      "file": "2026-10-24-2.log.gz",
+      "lines": 3300,
+      "counts": {
+        "cant_keep_up": 0,
+        "watchdog": 0,
+        "out_of_memory": 0,
+        "chunk_errors": 0,
+        "network_timeout": 0,
+        "connection_reset": 0,
+        "voicechat_warning": 0,
+        "mixin_failure": 0,
+        "save_errors": 0,
+        "duplicate_entity": 0,
+        "moved_too_quickly": 0,
+        "server_start": 1,
+        "server_stop": 1,
+        "thread_starvation": 0
+      },
+      "lagEvents": [],
+      "exceptionClasses": {
+        "com.mojang.serialization.DataResult$Error": 4,
+        "java.lang.ClassNotFoundException": 3,
+        "com.google.gson.JsonParseException": 3,
+        "io.netty.handler.codec.DecoderException": 1
+      },
+      "warningModules": {
+        "unlabelled": 875
+      },
+      "versions": [
+        {
+          "minecraft": "26.2",
+          "fabricLoader": "0.19.5"
+        }
+      ]
+    },
+    {
+      "file": "2026-10-24-3.log.gz",
+      "lines": 5792,
+      "counts": {
+        "cant_keep_up": 145,
+        "watchdog": 0,
+        "out_of_memory": 0,
+        "chunk_errors": 0,
+        "network_timeout": 0,
+        "connection_reset": 0,
+        "voicechat_warning": 0,
+        "mixin_failure": 0,
+        "save_errors": 0,
+        "duplicate_entity": 0,
+        "moved_too_quickly": 0,
+        "server_start": 1,
+        "server_stop": 1,
+        "thread_starvation": 0
+      },
+      "lagEvents": [
+        {
+          "time": "13:20:57",
+          "behindMs": 2832,
+          "behindTicks": 56
+        },
+        {
+          "time": "13:21:15",
+          "behindMs": 3466,
+          "behindTicks": 69
+        },
+        {
+          "time": "13:21:34",
+          "behindMs": 3904,
+          "behindTicks": 78
+        },
+        {
+          "time": "13:21:53",
+          "behindMs": 3508,
+          "behindTicks": 70
+        },
+        {
+          "time": "13:22:11",
+          "behindMs": 3021,
+          "behindTicks": 60
+        },
+        {
+          "time": "13:22:28",
+          "behindMs": 2594,
+          "behindTicks": 51
+        },
+        {
+          "time": "13:22:47",
+          "behindMs": 3590,
+          "behindTicks": 71
+        },
+        {
+          "time": "13:23:06",
+          "behindMs": 3899,
+          "behindTicks": 77
+        },
+        {
+          "time": "13:23:25",
+          "behindMs": 4021,
+          "behindTicks": 80
+        },
+        {
+          "time": "13:23:45",
+          "behindMs": 4926,
+          "behindTicks": 98
+        },
+        {
+          "time": "13:24:04",
+          "behindMs": 4910,
+          "behindTicks": 98
+        },
+        {
+          "time": "13:24:25",
+          "behindMs": 5155,
+          "behindTicks": 103
+        },
+        {
+          "time": "13:24:44",
+          "behindMs": 4398,
+          "behindTicks": 87
+        },
+        {
+          "time": "13:25:03",
+          "behindMs": 4478,
+          "behindTicks": 89
+        },
+        {
+          "time": "13:25:22",
+          "behindMs": 4067,
+          "behindTicks": 81
+        },
+        {
+          "time": "13:25:43",
+          "behindMs": 5783,
+          "behindTicks": 115
+        },
+        {
+          "time": "13:26:02",
+          "behindMs": 3793,
+          "behindTicks": 75
+        },
+        {
+          "time": "13:26:21",
+          "behindMs": 3851,
+          "behindTicks": 77
+        },
+        {
+          "time": "13:26:39",
+          "behindMs": 3074,
+          "behindTicks": 61
+        },
+        {
+          "time": "13:26:56",
+          "behindMs": 2498,
+          "behindTicks": 49
+        },
+        {
+          "time": "13:27:14",
+          "behindMs": 2743,
+          "behindTicks": 54
+        },
+        {
+          "time": "13:27:32",
+          "behindMs": 3463,
+          "behindTicks": 69
+        },
+        {
+          "time": "13:27:51",
+          "behindMs": 3990,
+          "behindTicks": 79
+        },
+        {
+          "time": "13:28:09",
+          "behindMs": 2776,
+          "behindTicks": 55
+        },
+        {
+          "time": "13:28:27",
+          "behindMs": 3389,
+          "behindTicks": 67
+        },
+        {
+          "time": "13:28:46",
+          "behindMs": 3447,
+          "behindTicks": 68
+        },
+        {
+          "time": "13:29:04",
+          "behindMs": 3320,
+          "behindTicks": 66
+        },
+        {
+          "time": "13:29:24",
+          "behindMs": 4666,
+          "behindTicks": 93
+        },
+        {
+          "time": "13:29:43",
+          "behindMs": 4574,
+          "behindTicks": 91
+        },
+        {
+          "time": "13:30:04",
+          "behindMs": 5233,
+          "behindTicks": 104
+        },
+        {
+          "time": "13:30:25",
+          "behindMs": 6799,
+          "behindTicks": 135
+        },
+        {
+          "time": "13:30:47",
+          "behindMs": 6478,
+          "behindTicks": 129
+        },
+        {
+          "time": "13:31:08",
+          "behindMs": 6556,
+          "behindTicks": 131
+        },
+        {
+          "time": "13:31:31",
+          "behindMs": 8019,
+          "behindTicks": 160
+        },
+        {
+          "time": "13:31:55",
+          "behindMs": 8737,
+          "behindTicks": 174
+        },
+        {
+          "time": "13:32:16",
+          "behindMs": 5740,
+          "behindTicks": 114
+        },
+        {
+          "time": "13:32:36",
+          "behindMs": 5577,
+          "behindTicks": 111
+        },
+        {
+          "time": "13:32:59",
+          "behindMs": 7629,
+          "behindTicks": 152
+        },
+        {
+          "time": "13:33:22",
+          "behindMs": 7688,
+          "behindTicks": 153
+        },
+        {
+          "time": "13:33:45",
+          "behindMs": 8712,
+          "behindTicks": 174
+        },
+        {
+          "time": "13:34:07",
+          "behindMs": 6771,
+          "behindTicks": 135
+        },
+        {
+          "time": "13:34:29",
+          "behindMs": 6885,
+          "behindTicks": 137
+        },
+        {
+          "time": "13:34:50",
+          "behindMs": 5724,
+          "behindTicks": 114
+        },
+        {
+          "time": "13:35:10",
+          "behindMs": 5612,
+          "behindTicks": 112
+        },
+        {
+          "time": "13:35:31",
+          "behindMs": 5702,
+          "behindTicks": 114
+        },
+        {
+          "time": "13:35:51",
+          "behindMs": 4876,
+          "behindTicks": 97
+        },
+        {
+          "time": "13:36:11",
+          "behindMs": 5190,
+          "behindTicks": 103
+        },
+        {
+          "time": "13:36:31",
+          "behindMs": 5023,
+          "behindTicks": 100
+        },
+        {
+          "time": "13:36:51",
+          "behindMs": 5287,
+          "behindTicks": 105
+        },
+        {
+          "time": "13:37:12",
+          "behindMs": 5473,
+          "behindTicks": 109
+        },
+        {
+          "time": "13:37:33",
+          "behindMs": 6020,
+          "behindTicks": 120
+        },
+        {
+          "time": "13:37:53",
+          "behindMs": 5587,
+          "behindTicks": 111
+        },
+        {
+          "time": "13:38:13",
+          "behindMs": 5263,
+          "behindTicks": 105
+        },
+        {
+          "time": "13:38:33",
+          "behindMs": 4983,
+          "behindTicks": 99
+        },
+        {
+          "time": "13:38:54",
+          "behindMs": 5419,
+          "behindTicks": 108
+        },
+        {
+          "time": "13:39:13",
+          "behindMs": 4797,
+          "behindTicks": 95
+        },
+        {
+          "time": "13:39:33",
+          "behindMs": 5002,
+          "behindTicks": 100
+        },
+        {
+          "time": "13:39:53",
+          "behindMs": 4256,
+          "behindTicks": 85
+        },
+        {
+          "time": "13:40:12",
+          "behindMs": 4463,
+          "behindTicks": 89
+        },
+        {
+          "time": "13:40:32",
+          "behindMs": 4706,
+          "behindTicks": 94
+        },
+        {
+          "time": "13:40:52",
+          "behindMs": 4933,
+          "behindTicks": 98
+        },
+        {
+          "time": "13:41:12",
+          "behindMs": 5738,
+          "behindTicks": 114
+        },
+        {
+          "time": "13:41:34",
+          "behindMs": 6515,
+          "behindTicks": 130
+        },
+        {
+          "time": "13:41:54",
+          "behindMs": 5333,
+          "behindTicks": 106
+        },
+        {
+          "time": "13:42:14",
+          "behindMs": 5094,
+          "behindTicks": 101
+        },
+        {
+          "time": "13:42:35",
+          "behindMs": 5351,
+          "behindTicks": 107
+        },
+        {
+          "time": "13:42:55",
+          "behindMs": 5322,
+          "behindTicks": 106
+        },
+        {
+          "time": "13:43:15",
+          "behindMs": 5458,
+          "behindTicks": 109
+        },
+        {
+          "time": "13:43:39",
+          "behindMs": 8464,
+          "behindTicks": 169
+        },
+        {
+          "time": "13:44:01",
+          "behindMs": 7175,
+          "behindTicks": 143
+        },
+        {
+          "time": "13:44:22",
+          "behindMs": 5793,
+          "behindTicks": 115
+        },
+        {
+          "time": "13:44:44",
+          "behindMs": 7112,
+          "behindTicks": 142
+        },
+        {
+          "time": "13:45:05",
+          "behindMs": 6565,
+          "behindTicks": 131
+        },
+        {
+          "time": "13:45:29",
+          "behindMs": 9062,
+          "behindTicks": 181
+        },
+        {
+          "time": "13:45:54",
+          "behindMs": 9128,
+          "behindTicks": 182
+        },
+        {
+          "time": "13:46:22",
+          "behindMs": 13695,
+          "behindTicks": 273
+        },
+        {
+          "time": "13:46:54",
+          "behindMs": 17243,
+          "behindTicks": 344
+        },
+        {
+          "time": "13:47:24",
+          "behindMs": 15124,
+          "behindTicks": 302
+        },
+        {
+          "time": "13:47:58",
+          "behindMs": 18919,
+          "behindTicks": 378
+        },
+        {
+          "time": "13:48:31",
+          "behindMs": 17543,
+          "behindTicks": 350
+        },
+        {
+          "time": "13:49:00",
+          "behindMs": 13867,
+          "behindTicks": 277
+        },
+        {
+          "time": "13:49:26",
+          "behindMs": 11639,
+          "behindTicks": 232
+        },
+        {
+          "time": "13:49:54",
+          "behindMs": 13148,
+          "behindTicks": 262
+        },
+        {
+          "time": "13:50:22",
+          "behindMs": 12948,
+          "behindTicks": 258
+        },
+        {
+          "time": "13:50:45",
+          "behindMs": 7442,
+          "behindTicks": 148
+        },
+        {
+          "time": "13:51:07",
+          "behindMs": 7664,
+          "behindTicks": 153
+        },
+        {
+          "time": "13:51:31",
+          "behindMs": 8930,
+          "behindTicks": 178
+        },
+        {
+          "time": "13:51:53",
+          "behindMs": 7230,
+          "behindTicks": 144
+        },
+        {
+          "time": "13:52:16",
+          "behindMs": 7515,
+          "behindTicks": 150
+        },
+        {
+          "time": "13:52:39",
+          "behindMs": 7574,
+          "behindTicks": 151
+        },
+        {
+          "time": "13:53:01",
+          "behindMs": 7218,
+          "behindTicks": 144
+        },
+        {
+          "time": "13:53:23",
+          "behindMs": 7744,
+          "behindTicks": 154
+        },
+        {
+          "time": "13:53:46",
+          "behindMs": 7676,
+          "behindTicks": 153
+        },
+        {
+          "time": "13:54:09",
+          "behindMs": 7494,
+          "behindTicks": 149
+        },
+        {
+          "time": "13:54:31",
+          "behindMs": 7949,
+          "behindTicks": 158
+        },
+        {
+          "time": "13:54:55",
+          "behindMs": 8099,
+          "behindTicks": 161
+        },
+        {
+          "time": "13:55:18",
+          "behindMs": 8521,
+          "behindTicks": 170
+        },
+        {
+          "time": "13:55:43",
+          "behindMs": 9615,
+          "behindTicks": 192
+        },
+        {
+          "time": "13:56:05",
+          "behindMs": 7536,
+          "behindTicks": 150
+        },
+        {
+          "time": "13:56:26",
+          "behindMs": 5512,
+          "behindTicks": 110
+        }
+      ],
+      "exceptionClasses": {
+        "com.mojang.serialization.DataResult$Error": 4,
+        "java.lang.ClassNotFoundException": 3,
+        "com.google.gson.JsonParseException": 3,
+        "io.netty.handler.codec.DecoderException": 1,
+        "com.mojang.authlib.minecraft.client.MinecraftClient.buildHttpException": 1
+      },
+      "warningModules": {
+        "unlabelled": 1106
+      },
+      "versions": [
+        {
+          "minecraft": "26.2",
+          "fabricLoader": "0.19.5"
+        }
+      ]
+    },
+    {
+      "file": "2026-10-24-4.log.gz",
+      "lines": 11182,
+      "counts": {
+        "cant_keep_up": 1218,
+        "watchdog": 0,
+        "out_of_memory": 0,
+        "chunk_errors": 57,
+        "network_timeout": 6,
+        "connection_reset": 0,
+        "voicechat_warning": 0,
+        "mixin_failure": 0,
+        "save_errors": 0,
+        "duplicate_entity": 0,
+        "moved_too_quickly": 43,
+        "server_start": 1,
+        "server_stop": 1,
+        "thread_starvation": 0
+      },
+      "lagEvents": [
+        {
+          "time": "21:28:29",
+          "behindMs": 3571,
+          "behindTicks": 71
+        },
+        {
+          "time": "21:28:47",
+          "behindMs": 2907,
+          "behindTicks": 58
+        },
+        {
+          "time": "21:29:05",
+          "behindMs": 3125,
+          "behindTicks": 62
+        },
+        {
+          "time": "21:29:23",
+          "behindMs": 2395,
+          "behindTicks": 47
+        },
+        {
+          "time": "21:29:40",
+          "behindMs": 2134,
+          "behindTicks": 42
+        },
+        {
+          "time": "21:29:59",
+          "behindMs": 3912,
+          "behindTicks": 78
+        },
+        {
+          "time": "21:30:18",
+          "behindMs": 4040,
+          "behindTicks": 80
+        },
+        {
+          "time": "21:30:36",
+          "behindMs": 3725,
+          "behindTicks": 74
+        },
+        {
+          "time": "21:30:54",
+          "behindMs": 2933,
+          "behindTicks": 58
+        },
+        {
+          "time": "21:31:13",
+          "behindMs": 3888,
+          "behindTicks": 77
+        },
+        {
+          "time": "21:31:32",
+          "behindMs": 3472,
+          "behindTicks": 69
+        },
+        {
+          "time": "21:31:51",
+          "behindMs": 4203,
+          "behindTicks": 84
+        },
+        {
+          "time": "21:32:10",
+          "behindMs": 3862,
+          "behindTicks": 77
+        },
+        {
+          "time": "21:32:29",
+          "behindMs": 4237,
+          "behindTicks": 84
+        },
+        {
+          "time": "21:32:47",
+          "behindMs": 3015,
+          "behindTicks": 60
+        },
+        {
+          "time": "21:33:05",
+          "behindMs": 2808,
+          "behindTicks": 56
+        },
+        {
+          "time": "21:33:23",
+          "behindMs": 2865,
+          "behindTicks": 57
+        },
+        {
+          "time": "21:33:40",
+          "behindMs": 2589,
+          "behindTicks": 51
+        },
+        {
+          "time": "21:33:58",
+          "behindMs": 3012,
+          "behindTicks": 60
+        },
+        {
+          "time": "21:34:17",
+          "behindMs": 3734,
+          "behindTicks": 74
+        },
+        {
+          "time": "21:34:35",
+          "behindMs": 3479,
+          "behindTicks": 69
+        },
+        {
+          "time": "21:34:53",
+          "behindMs": 3175,
+          "behindTicks": 63
+        },
+        {
+          "time": "21:35:14",
+          "behindMs": 5644,
+          "behindTicks": 112
+        },
+        {
+          "time": "21:35:32",
+          "behindMs": 2703,
+          "behindTicks": 54
+        },
+        {
+          "time": "21:35:50",
+          "behindMs": 3499,
+          "behindTicks": 69
+        },
+        {
+          "time": "21:36:10",
+          "behindMs": 5105,
+          "behindTicks": 102
+        },
+        {
+          "time": "21:36:29",
+          "behindMs": 3773,
+          "behindTicks": 75
+        },
+        {
+          "time": "21:36:48",
+          "behindMs": 3957,
+          "behindTicks": 79
+        },
+        {
+          "time": "21:37:06",
+          "behindMs": 3451,
+          "behindTicks": 69
+        },
+        {
+          "time": "21:37:25",
+          "behindMs": 3258,
+          "behindTicks": 65
+        },
+        {
+          "time": "21:37:43",
+          "behindMs": 3572,
+          "behindTicks": 71
+        },
+        {
+          "time": "21:38:01",
+          "behindMs": 3217,
+          "behindTicks": 64
+        },
+        {
+          "time": "21:38:19",
+          "behindMs": 2852,
+          "behindTicks": 57
+        },
+        {
+          "time": "21:38:38",
+          "behindMs": 3502,
+          "behindTicks": 70
+        },
+        {
+          "time": "21:38:56",
+          "behindMs": 3122,
+          "behindTicks": 62
+        },
+        {
+          "time": "21:39:14",
+          "behindMs": 3475,
+          "behindTicks": 69
+        },
+        {
+          "time": "21:39:33",
+          "behindMs": 3449,
+          "behindTicks": 68
+        },
+        {
+          "time": "21:39:51",
+          "behindMs": 3245,
+          "behindTicks": 64
+        },
+        {
+          "time": "21:40:09",
+          "behindMs": 2749,
+          "behindTicks": 54
+        },
+        {
+          "time": "21:40:26",
+          "behindMs": 2552,
+          "behindTicks": 51
+        },
+        {
+          "time": "21:40:44",
+          "behindMs": 2767,
+          "behindTicks": 55
+        },
+        {
+          "time": "21:41:02",
+          "behindMs": 2796,
+          "behindTicks": 55
+        },
+        {
+          "time": "21:41:19",
+          "behindMs": 2877,
+          "behindTicks": 57
+        },
+        {
+          "time": "21:41:38",
+          "behindMs": 3675,
+          "behindTicks": 73
+        },
+        {
+          "time": "21:41:58",
+          "behindMs": 4501,
+          "behindTicks": 90
+        },
+        {
+          "time": "21:42:17",
+          "behindMs": 4494,
+          "behindTicks": 89
+        },
+        {
+          "time": "21:42:36",
+          "behindMs": 4139,
+          "behindTicks": 82
+        },
+        {
+          "time": "21:42:54",
+          "behindMs": 3282,
+          "behindTicks": 65
+        },
+        {
+          "time": "21:43:12",
+          "behindMs": 2223,
+          "behindTicks": 44
+        },
+        {
+          "time": "21:43:32",
+          "behindMs": 2005,
+          "behindTicks": 40
+        },
+        {
+          "time": "21:43:51",
+          "behindMs": 2108,
+          "behindTicks": 42
+        },
+        {
+          "time": "21:44:09",
+          "behindMs": 2006,
+          "behindTicks": 40
+        },
+        {
+          "time": "21:44:26",
+          "behindMs": 2194,
+          "behindTicks": 43
+        },
+        {
+          "time": "21:44:44",
+          "behindMs": 2867,
+          "behindTicks": 57
+        },
+        {
+          "time": "21:45:01",
+          "behindMs": 2345,
+          "behindTicks": 46
+        },
+        {
+          "time": "21:45:19",
+          "behindMs": 2507,
+          "behindTicks": 50
+        },
+        {
+          "time": "21:45:37",
+          "behindMs": 2820,
+          "behindTicks": 56
+        },
+        {
+          "time": "21:45:55",
+          "behindMs": 2931,
+          "behindTicks": 58
+        },
+        {
+          "time": "21:46:14",
+          "behindMs": 3929,
+          "behindTicks": 78
+        },
+        {
+          "time": "21:46:36",
+          "behindMs": 7381,
+          "behindTicks": 147
+        },
+        {
+          "time": "21:46:59",
+          "behindMs": 8061,
+          "behindTicks": 161
+        },
+        {
+          "time": "21:47:22",
+          "behindMs": 8481,
+          "behindTicks": 169
+        },
+        {
+          "time": "21:47:45",
+          "behindMs": 7924,
+          "behindTicks": 158
+        },
+        {
+          "time": "21:48:11",
+          "behindMs": 10660,
+          "behindTicks": 213
+        },
+        {
+          "time": "21:48:37",
+          "behindMs": 10716,
+          "behindTicks": 214
+        },
+        {
+          "time": "21:49:02",
+          "behindMs": 10451,
+          "behindTicks": 209
+        },
+        {
+          "time": "21:49:24",
+          "behindMs": 7436,
+          "behindTicks": 148
+        },
+        {
+          "time": "21:49:46",
+          "behindMs": 6997,
+          "behindTicks": 139
+        },
+        {
+          "time": "21:50:09",
+          "behindMs": 7248,
+          "behindTicks": 144
+        },
+        {
+          "time": "21:50:30",
+          "behindMs": 6127,
+          "behindTicks": 122
+        },
+        {
+          "time": "21:50:52",
+          "behindMs": 7345,
+          "behindTicks": 146
+        },
+        {
+          "time": "21:51:14",
+          "behindMs": 7399,
+          "behindTicks": 147
+        },
+        {
+          "time": "21:51:38",
+          "behindMs": 8493,
+          "behindTicks": 169
+        },
+        {
+          "time": "21:52:04",
+          "behindMs": 10878,
+          "behindTicks": 217
+        },
+        {
+          "time": "21:52:28",
+          "behindMs": 9495,
+          "behindTicks": 189
+        },
+        {
+          "time": "21:52:51",
+          "behindMs": 7676,
+          "behindTicks": 153
+        },
+        {
+          "time": "21:53:14",
+          "behindMs": 8035,
+          "behindTicks": 160
+        },
+        {
+          "time": "21:53:36",
+          "behindMs": 7559,
+          "behindTicks": 151
+        },
+        {
+          "time": "21:53:59",
+          "behindMs": 8103,
+          "behindTicks": 162
+        },
+        {
+          "time": "21:54:24",
+          "behindMs": 9318,
+          "behindTicks": 186
+        },
+        {
+          "time": "21:54:48",
+          "behindMs": 8930,
+          "behindTicks": 178
+        },
+        {
+          "time": "21:55:12",
+          "behindMs": 9310,
+          "behindTicks": 186
+        },
+        {
+          "time": "21:55:38",
+          "behindMs": 10733,
+          "behindTicks": 214
+        },
+        {
+          "time": "21:56:03",
+          "behindMs": 10497,
+          "behindTicks": 209
+        },
+        {
+          "time": "21:56:29",
+          "behindMs": 11217,
+          "behindTicks": 224
+        },
+        {
+          "time": "21:56:56",
+          "behindMs": 12013,
+          "behindTicks": 240
+        },
+        {
+          "time": "21:57:23",
+          "behindMs": 11370,
+          "behindTicks": 227
+        },
+        {
+          "time": "21:57:49",
+          "behindMs": 11586,
+          "behindTicks": 231
+        },
+        {
+          "time": "21:58:13",
+          "behindMs": 9295,
+          "behindTicks": 185
+        },
+        {
+          "time": "21:58:36",
+          "behindMs": 7653,
+          "behindTicks": 153
+        },
+        {
+          "time": "21:58:55",
+          "behindMs": 4385,
+          "behindTicks": 87
+        },
+        {
+          "time": "21:59:14",
+          "behindMs": 3758,
+          "behindTicks": 75
+        },
+        {
+          "time": "21:59:32",
+          "behindMs": 2712,
+          "behindTicks": 54
+        },
+        {
+          "time": "21:59:50",
+          "behindMs": 3090,
+          "behindTicks": 61
+        },
+        {
+          "time": "22:00:09",
+          "behindMs": 4357,
+          "behindTicks": 87
+        },
+        {
+          "time": "22:00:28",
+          "behindMs": 3891,
+          "behindTicks": 77
+        },
+        {
+          "time": "22:00:46",
+          "behindMs": 2887,
+          "behindTicks": 57
+        },
+        {
+          "time": "22:01:04",
+          "behindMs": 2635,
+          "behindTicks": 52
+        },
+        {
+          "time": "22:01:22",
+          "behindMs": 3046,
+          "behindTicks": 60
+        },
+        {
+          "time": "22:01:39",
+          "behindMs": 2685,
+          "behindTicks": 53
+        }
+      ],
+      "exceptionClasses": {
+        "com.mojang.serialization.DataResult$Error": 8,
+        "com.google.gson.JsonParseException": 7,
+        "java.lang.ClassNotFoundException": 3,
+        "io.netty.handler.codec.DecoderException": 1,
+        "io.netty.channel.StacklessClosedChannelException": 1
+      },
+      "warningModules": {
+        "unlabelled": 2172
+      },
+      "versions": [
+        {
+          "minecraft": "26.2",
+          "fabricLoader": "0.19.5"
+        }
+      ]
+    },
+    {
+      "file": "2026-10-24-5.log.gz",
+      "lines": 6959,
+      "counts": {
+        "cant_keep_up": 253,
+        "watchdog": 0,
+        "out_of_memory": 0,
+        "chunk_errors": 0,
+        "network_timeout": 2,
+        "connection_reset": 0,
+        "voicechat_warning": 0,
+        "mixin_failure": 0,
+        "save_errors": 0,
+        "duplicate_entity": 0,
+        "moved_too_quickly": 2,
+        "server_start": 1,
+        "server_stop": 0,
+        "thread_starvation": 0
+      },
+      "lagEvents": [
+        {
+          "time": "23:17:11",
+          "behindMs": 2004,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:17:28",
+          "behindMs": 2296,
+          "behindTicks": 45
+        },
+        {
+          "time": "23:17:46",
+          "behindMs": 2558,
+          "behindTicks": 51
+        },
+        {
+          "time": "23:18:04",
+          "behindMs": 2785,
+          "behindTicks": 55
+        },
+        {
+          "time": "23:18:22",
+          "behindMs": 3084,
+          "behindTicks": 61
+        },
+        {
+          "time": "23:18:41",
+          "behindMs": 4091,
+          "behindTicks": 81
+        },
+        {
+          "time": "23:18:58",
+          "behindMs": 2068,
+          "behindTicks": 41
+        },
+        {
+          "time": "23:19:18",
+          "behindMs": 2008,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:19:35",
+          "behindMs": 2515,
+          "behindTicks": 50
+        },
+        {
+          "time": "23:19:52",
+          "behindMs": 2049,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:20:10",
+          "behindMs": 2992,
+          "behindTicks": 59
+        },
+        {
+          "time": "23:20:28",
+          "behindMs": 2474,
+          "behindTicks": 49
+        },
+        {
+          "time": "23:20:45",
+          "behindMs": 2250,
+          "behindTicks": 45
+        },
+        {
+          "time": "23:21:02",
+          "behindMs": 2479,
+          "behindTicks": 49
+        },
+        {
+          "time": "23:21:19",
+          "behindMs": 2091,
+          "behindTicks": 41
+        },
+        {
+          "time": "23:21:42",
+          "behindMs": 2002,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:22:15",
+          "behindMs": 2003,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:22:45",
+          "behindMs": 3469,
+          "behindTicks": 69
+        },
+        {
+          "time": "23:23:22",
+          "behindMs": 2004,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:23:48",
+          "behindMs": 2003,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:24:14",
+          "behindMs": 2001,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:24:41",
+          "behindMs": 2012,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:25:05",
+          "behindMs": 2003,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:25:31",
+          "behindMs": 2007,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:25:48",
+          "behindMs": 2089,
+          "behindTicks": 41
+        },
+        {
+          "time": "23:26:11",
+          "behindMs": 2006,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:26:29",
+          "behindMs": 2002,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:26:49",
+          "behindMs": 2000,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:27:09",
+          "behindMs": 2007,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:28:43",
+          "behindMs": 2001,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:29:01",
+          "behindMs": 2000,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:29:19",
+          "behindMs": 2740,
+          "behindTicks": 54
+        },
+        {
+          "time": "23:29:37",
+          "behindMs": 3019,
+          "behindTicks": 60
+        },
+        {
+          "time": "23:29:57",
+          "behindMs": 5133,
+          "behindTicks": 102
+        },
+        {
+          "time": "23:30:16",
+          "behindMs": 3887,
+          "behindTicks": 77
+        },
+        {
+          "time": "23:30:35",
+          "behindMs": 3684,
+          "behindTicks": 73
+        },
+        {
+          "time": "23:30:53",
+          "behindMs": 3581,
+          "behindTicks": 71
+        },
+        {
+          "time": "23:31:12",
+          "behindMs": 3713,
+          "behindTicks": 74
+        },
+        {
+          "time": "23:31:33",
+          "behindMs": 6031,
+          "behindTicks": 120
+        },
+        {
+          "time": "23:31:53",
+          "behindMs": 4549,
+          "behindTicks": 90
+        },
+        {
+          "time": "23:32:11",
+          "behindMs": 3466,
+          "behindTicks": 69
+        },
+        {
+          "time": "23:32:30",
+          "behindMs": 3878,
+          "behindTicks": 77
+        },
+        {
+          "time": "23:32:48",
+          "behindMs": 3395,
+          "behindTicks": 67
+        },
+        {
+          "time": "23:33:07",
+          "behindMs": 3458,
+          "behindTicks": 69
+        },
+        {
+          "time": "23:33:25",
+          "behindMs": 3501,
+          "behindTicks": 70
+        },
+        {
+          "time": "23:33:43",
+          "behindMs": 3205,
+          "behindTicks": 64
+        },
+        {
+          "time": "23:34:02",
+          "behindMs": 4094,
+          "behindTicks": 81
+        },
+        {
+          "time": "23:34:23",
+          "behindMs": 5128,
+          "behindTicks": 102
+        },
+        {
+          "time": "23:34:43",
+          "behindMs": 5416,
+          "behindTicks": 108
+        },
+        {
+          "time": "23:35:03",
+          "behindMs": 5105,
+          "behindTicks": 102
+        },
+        {
+          "time": "23:35:22",
+          "behindMs": 4057,
+          "behindTicks": 81
+        },
+        {
+          "time": "23:35:41",
+          "behindMs": 4336,
+          "behindTicks": 86
+        },
+        {
+          "time": "23:36:01",
+          "behindMs": 4609,
+          "behindTicks": 92
+        },
+        {
+          "time": "23:36:21",
+          "behindMs": 5308,
+          "behindTicks": 106
+        },
+        {
+          "time": "23:36:41",
+          "behindMs": 5050,
+          "behindTicks": 101
+        },
+        {
+          "time": "23:37:01",
+          "behindMs": 4643,
+          "behindTicks": 92
+        },
+        {
+          "time": "23:37:20",
+          "behindMs": 4274,
+          "behindTicks": 85
+        },
+        {
+          "time": "23:37:40",
+          "behindMs": 4882,
+          "behindTicks": 97
+        },
+        {
+          "time": "23:38:01",
+          "behindMs": 5734,
+          "behindTicks": 114
+        },
+        {
+          "time": "23:38:22",
+          "behindMs": 6747,
+          "behindTicks": 134
+        },
+        {
+          "time": "23:38:44",
+          "behindMs": 6342,
+          "behindTicks": 126
+        },
+        {
+          "time": "23:39:05",
+          "behindMs": 6597,
+          "behindTicks": 131
+        },
+        {
+          "time": "23:39:28",
+          "behindMs": 7425,
+          "behindTicks": 148
+        },
+        {
+          "time": "23:39:49",
+          "behindMs": 6778,
+          "behindTicks": 135
+        },
+        {
+          "time": "23:40:10",
+          "behindMs": 5931,
+          "behindTicks": 118
+        },
+        {
+          "time": "23:40:30",
+          "behindMs": 4950,
+          "behindTicks": 99
+        },
+        {
+          "time": "23:40:51",
+          "behindMs": 5531,
+          "behindTicks": 110
+        },
+        {
+          "time": "23:41:12",
+          "behindMs": 5894,
+          "behindTicks": 117
+        },
+        {
+          "time": "23:41:32",
+          "behindMs": 5472,
+          "behindTicks": 109
+        },
+        {
+          "time": "23:41:51",
+          "behindMs": 3602,
+          "behindTicks": 72
+        },
+        {
+          "time": "23:42:08",
+          "behindMs": 2723,
+          "behindTicks": 54
+        },
+        {
+          "time": "23:42:26",
+          "behindMs": 2270,
+          "behindTicks": 45
+        },
+        {
+          "time": "23:42:54",
+          "behindMs": 2002,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:43:25",
+          "behindMs": 2004,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:44:20",
+          "behindMs": 2005,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:44:50",
+          "behindMs": 2000,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:45:17",
+          "behindMs": 2009,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:45:44",
+          "behindMs": 2014,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:46:25",
+          "behindMs": 2005,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:46:43",
+          "behindMs": 3424,
+          "behindTicks": 68
+        },
+        {
+          "time": "23:47:02",
+          "behindMs": 4305,
+          "behindTicks": 86
+        },
+        {
+          "time": "23:47:26",
+          "behindMs": 2001,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:47:43",
+          "behindMs": 2528,
+          "behindTicks": 50
+        },
+        {
+          "time": "23:48:01",
+          "behindMs": 2248,
+          "behindTicks": 44
+        },
+        {
+          "time": "23:48:20",
+          "behindMs": 2018,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:48:39",
+          "behindMs": 2021,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:49:00",
+          "behindMs": 2014,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:49:21",
+          "behindMs": 2002,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:49:38",
+          "behindMs": 2051,
+          "behindTicks": 41
+        },
+        {
+          "time": "23:51:32",
+          "behindMs": 2001,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:51:55",
+          "behindMs": 2004,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:52:16",
+          "behindMs": 2013,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:53:18",
+          "behindMs": 2013,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:53:45",
+          "behindMs": 2002,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:54:29",
+          "behindMs": 2012,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:55:46",
+          "behindMs": 2002,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:56:07",
+          "behindMs": 2017,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:56:30",
+          "behindMs": 2012,
+          "behindTicks": 40
+        },
+        {
+          "time": "23:56:48",
+          "behindMs": 2640,
+          "behindTicks": 52
+        },
+        {
+          "time": "23:57:05",
+          "behindMs": 2139,
+          "behindTicks": 42
+        }
+      ],
+      "exceptionClasses": {
+        "com.mojang.serialization.DataResult$Error": 7,
+        "com.google.gson.JsonParseException": 6,
+        "java.lang.ClassNotFoundException": 3,
+        "io.netty.handler.codec.DecoderException": 1
+      },
+      "warningModules": {
+        "unlabelled": 1134
+      },
+      "versions": [
+        {
+          "minecraft": "26.2",
+          "fabricLoader": "0.19.5"
+        }
+      ]
+    },
+    {
+      "file": "latest.log",
+      "lines": 4224,
+      "counts": {
+        "cant_keep_up": 1,
+        "watchdog": 0,
+        "out_of_memory": 0,
+        "chunk_errors": 0,
+        "network_timeout": 0,
+        "connection_reset": 0,
+        "voicechat_warning": 0,
+        "mixin_failure": 0,
+        "save_errors": 0,
+        "duplicate_entity": 0,
+        "moved_too_quickly": 14,
+        "server_start": 1,
+        "server_stop": 0,
+        "thread_starvation": 0
+      },
+      "lagEvents": [
+        {
+          "time": "08:59:47",
+          "behindMs": 2206,
+          "behindTicks": 44
+        }
+      ],
+      "exceptionClasses": {
+        "com.mojang.serialization.DataResult$Error": 7,
+        "com.google.gson.JsonParseException": 6,
+        "java.lang.ClassNotFoundException": 3,
+        "io.netty.handler.codec.DecoderException": 1
+      },
+      "warningModules": {
+        "unlabelled": 896
+      },
+      "versions": [
+        {
+          "minecraft": "26.2",
+          "fabricLoader": "0.19.5"
+        }
+      ]
+    }
+  ]
+}

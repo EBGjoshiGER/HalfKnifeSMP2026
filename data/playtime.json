@@ -2,12 +2,16 @@
   "mode": "active",
   "players": [
     {
-      "name": "Bambiistda",
-      "seconds": 48070
+      "name": "zCallMeApple",
+      "seconds": 53449
     },
     {
-      "name": "zCallMeApple",
-      "seconds": 47768
+      "name": "Bambiistda",
+      "seconds": 51672
+    },
+    {
+      "name": "Zondar67",
+      "seconds": 50359
     },
     {
       "name": "EBGjoshiGER",
@@ -15,15 +19,11 @@
     },
     {
       "name": "Moeewe",
-      "seconds": 47052
+      "seconds": 47322
     },
     {
       "name": "3b0",
       "seconds": 46996
-    },
-    {
-      "name": "Zondar67",
-      "seconds": 46822
     },
     {
       "name": "Tsingtao05",
@@ -86,10 +86,14 @@
       "seconds": 707
     },
     {
+      "name": "DR_Husch",
+      "seconds": 273
+    },
+    {
       "name": "Bananenmeister23",
       "seconds": 81
     }
   ],
-  "updatedAt": "2026-10-25T01:28:37.660177644Z",
+  "updatedAt": "2026-10-25T06:38:34.129043767Z",
   "afkTimeoutSeconds": 300
 }

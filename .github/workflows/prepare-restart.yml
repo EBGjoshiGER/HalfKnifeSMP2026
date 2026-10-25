@@ -1,8 +1,5 @@
 name: Neustart vorbereiten
 on:
-  push:
-    branches: ['maintenance/restart-2026-10-25']
-    paths: ['.github/workflows/prepare-restart.yml', 'scripts/prepare_restart.py']
   workflow_dispatch:
 permissions:
   contents: read

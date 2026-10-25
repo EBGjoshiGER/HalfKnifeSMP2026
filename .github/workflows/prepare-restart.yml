@@ -1,0 +1,32 @@
+name: Neustart vorbereiten
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: halfknife-restart-preparation
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - name: Änderungen isoliert testen und mit Sicherungen übertragen
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: python3 scripts/prepare_restart.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: restart-preparation
+          path: |
+            temp/restart-result.json
+            temp/restart-smoke/smoke-output.log

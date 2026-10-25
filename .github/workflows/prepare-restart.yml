@@ -1,0 +1,60 @@
+name: Neustart vorbereiten
+on:
+  push:
+    branches: ['maintenance/restart-2026-10-25']
+    paths: ['.github/workflows/prepare-restart.yml', 'scripts/prepare_restart.py']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: halfknife-restart-preparation
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - name: Anzeige-Konfiguration und Mod-Schnittstellen prüfen (nur lesend)
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import ftplib,io,os,json,zipfile,subprocess
+          from pathlib import Path
+          f=ftplib.FTP(timeout=30)
+          f.connect(os.environ['FTP_HOST'],int(os.environ.get('FTP_PORT') or 21))
+          f.login(os.environ['FTP_USER'],os.environ['FTP_PASSWORD'])
+          def read(p):
+              b=io.BytesIO();f.retrbinary('RETR '+p,b.write);return b.getvalue()
+          mods=[p.rsplit('/',1)[-1] for p in f.nlst('mods') if p.endswith('.jar')]
+          for name in mods:
+              if any(s in name.lower() for s in ('playtime-rewards','customname','enhanced-celestials','styled-chat','tab-info')):
+                  data=read('mods/'+name)
+                  Path('/tmp/'+name).write_bytes(data)
+                  z=zipfile.ZipFile(io.BytesIO(data))
+                  print('MOD',name,z.read('fabric.mod.json').decode())
+                  if 'playtime-rewards' in name:
+                      classes=[n[:-6].replace('/','.') for n in z.namelist() if n.endswith('.class') and n.startswith('com/sovern/')]
+                      print('CLASSES',classes)
+                      for cls in classes:
+                          print(subprocess.run(['javap','-p','-classpath','/tmp/'+name,cls],capture_output=True,text=True).stdout)
+          for p in ['world/config/playtime-rewards/config.json','config/playtime-rewards/config.json','config/styled-chat.json','config/tab-info.json','config/tabinfo.json']:
+              try:
+                  data=json.loads(read(p))
+                  def safe(v):
+                      if isinstance(v,dict):return {k:safe(x) for k,x in v.items() if not any(s in k.lower() for s in ('password','token','secret','webhook'))}
+                      if isinstance(v,list):return [safe(x) for x in v]
+                      return v
+                  print('CONFIG',p,json.dumps(safe(data),ensure_ascii=True))
+              except ftplib.error_perm as e:
+                  if not str(e).startswith('550'):raise
+          f.close()
+          PY

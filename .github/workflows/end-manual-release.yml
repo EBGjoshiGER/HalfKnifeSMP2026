@@ -1,0 +1,46 @@
+name: End neue Sammelziele und manuelle Freischaltung
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'mods/end-project/**'
+      - 'scripts/end_manual_release.py'
+      - '.github/workflows/end-manual-release.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: halfknife-end-manual-release
+  cancel-in-progress: false
+jobs:
+  build-test-stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.5.1'
+      - name: Mod bauen
+        working-directory: mods/end-project
+        run: gradle build --no-daemon --stacktrace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: end-project-1.1.0
+          path: mods/end-project/build/libs/*.jar
+      - name: Migration und manuelle Freischaltung testen und installieren
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: python3 scripts/end_manual_release.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: end-manual-test-logs
+          path: temp/end-manual-smoke/*.log

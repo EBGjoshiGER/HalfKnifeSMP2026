@@ -2,36 +2,40 @@
   "mode": "active",
   "players": [
     {
-      "name": "Tsingtao05",
-      "seconds": 104429
+      "name": "3b0",
+      "seconds": 114325
     },
     {
-      "name": "3b0",
-      "seconds": 98718
+      "name": "Tsingtao05",
+      "seconds": 105710
+    },
+    {
+      "name": "EBGjoshiGER",
+      "seconds": 101618
     },
     {
       "name": "Bambiistda",
       "seconds": 96429
     },
     {
-      "name": "EBGjoshiGER",
-      "seconds": 96146
+      "name": "Moeewe",
+      "seconds": 92317
+    },
+    {
+      "name": "Zondar67",
+      "seconds": 92217
     },
     {
       "name": "zCallMeApple",
       "seconds": 86317
     },
     {
-      "name": "Zondar67",
-      "seconds": 85866
-    },
-    {
-      "name": "Moeewe",
-      "seconds": 84870
-    },
-    {
       "name": "RedFabi",
       "seconds": 78884
+    },
+    {
+      "name": "Juronimo",
+      "seconds": 69020
     },
     {
       "name": "squashninja4422",
@@ -46,28 +50,28 @@
       "seconds": 53782
     },
     {
-      "name": "Juronimo",
-      "seconds": 49647
+      "name": "Clown132",
+      "seconds": 44573
     },
     {
       "name": "aseasyas",
       "seconds": 36113
     },
     {
-      "name": "n00bbert",
-      "seconds": 34990
+      "name": "Bananenmeister23",
+      "seconds": 35034
     },
     {
-      "name": "Clown132",
-      "seconds": 34480
+      "name": "n00bbert",
+      "seconds": 34990
     },
     {
       "name": "luxamy",
       "seconds": 33138
     },
     {
-      "name": "Bananenmeister23",
-      "seconds": 31674
+      "name": "StaLKerinoO",
+      "seconds": 29936
     },
     {
       "name": "27Flo",
@@ -82,10 +86,6 @@
       "seconds": 21994
     },
     {
-      "name": "StaLKerinoO",
-      "seconds": 19071
-    },
-    {
       "name": "SnapdragonHD",
       "seconds": 17212
     },
@@ -95,13 +95,13 @@
     },
     {
       "name": "EscalationAndy",
-      "seconds": 13007
+      "seconds": 14721
     },
     {
       "name": "DerTemporini",
       "seconds": 11547
     }
   ],
-  "updatedAt": "2026-10-26T06:19:08.187869912Z",
+  "updatedAt": "2026-10-26T13:18:41.364490928Z",
   "afkTimeoutSeconds": 300
 }

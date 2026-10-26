@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "syncedAt": "2026-10-26T10:30:36.892129+00:00",
-  "status": "active",
+  "syncedAt": "2026-10-26T16:56:42.314883+00:00",
+  "status": "completed",
   "resources": [
     {
       "id": "minecraft:obsidian",
@@ -13,7 +13,7 @@
       "id": "minecraft:iron_ingot",
       "name": "Eisenbarren",
       "required": 5120,
-      "donated": 3737
+      "donated": 5120
     },
     {
       "id": "minecraft:gold_ingot",

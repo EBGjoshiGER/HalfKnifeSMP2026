@@ -1,7 +1,12 @@
 {
   "online": true,
-  "onlineCount": 0,
+  "onlineCount": 4,
   "maxPlayers": 40,
-  "players": [],
-  "updatedAt": "2026-10-26T05:23:22.547675+00:00"
+  "players": [
+    "Clown132",
+    "Moeewe",
+    "StaLKerinoO",
+    "Zondar67"
+  ],
+  "updatedAt": "2026-10-26T11:24:16.604015+00:00"
 }

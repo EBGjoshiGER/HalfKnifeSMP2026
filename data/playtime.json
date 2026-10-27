@@ -3,105 +3,105 @@
   "players": [
     {
       "name": "3b0",
-      "seconds": 155495
+      "seconds": 164206
     },
     {
       "name": "EBGjoshiGER",
-      "seconds": 146751
-    },
-    {
-      "name": "Tsingtao05",
-      "seconds": 144745
+      "seconds": 162287
     },
     {
       "name": "Moeewe",
-      "seconds": 129715
+      "seconds": 148911
     },
     {
-      "name": "Bambiistda",
-      "seconds": 126135
+      "name": "Tsingtao05",
+      "seconds": 148659
     },
     {
       "name": "Zondar67",
-      "seconds": 123897
+      "seconds": 134890
+    },
+    {
+      "name": "Bambiistda",
+      "seconds": 133697
     },
     {
       "name": "zCallMeApple",
-      "seconds": 117662
+      "seconds": 128798
     },
     {
       "name": "Juronimo",
-      "seconds": 106137
+      "seconds": 108517
+    },
+    {
+      "name": "StaLKerinoO",
+      "seconds": 102825
+    },
+    {
+      "name": "n00bbert",
+      "seconds": 99925
     },
     {
       "name": "RedFabi",
       "seconds": 87728
     },
     {
-      "name": "StaLKerinoO",
-      "seconds": 83628
+      "name": "Bananenmeister23",
+      "seconds": 80460
     },
     {
-      "name": "n00bbert",
-      "seconds": 80729
+      "name": "schmxdiii",
+      "seconds": 76450
     },
     {
       "name": "squashninja4422",
       "seconds": 72989
     },
     {
-      "name": "Bananenmeister23",
-      "seconds": 72560
-    },
-    {
-      "name": "schmxdiii",
-      "seconds": 70258
-    },
-    {
       "name": "cholimba",
-      "seconds": 66451
+      "seconds": 71461
     },
     {
       "name": "Clown132",
       "seconds": 46835
     },
     {
+      "name": "Leon911isreal",
+      "seconds": 45891
+    },
+    {
       "name": "aseasyas",
-      "seconds": 42754
+      "seconds": 45814
+    },
+    {
+      "name": "DerTemporini",
+      "seconds": 36112
+    },
+    {
+      "name": "johahaag54",
+      "seconds": 35328
     },
     {
       "name": "luxamy",
       "seconds": 33138
     },
     {
-      "name": "Leon911isreal",
-      "seconds": 30870
-    },
-    {
-      "name": "johahaag54",
-      "seconds": 27707
+      "name": "DR_Husch",
+      "seconds": 25929
     },
     {
       "name": "27Flo",
       "seconds": 25763
     },
     {
-      "name": "DR_Husch",
-      "seconds": 25631
-    },
-    {
       "name": "EscalationAndy",
       "seconds": 22423
     },
     {
-      "name": "DerTemporini",
-      "seconds": 20342
-    },
-    {
       "name": "SnapdragonHD",
-      "seconds": 17212
+      "seconds": 20228
     }
   ],
-  "updatedAt": "2026-10-27T13:30:17.906827446Z",
+  "updatedAt": "2026-10-27T18:50:13.937855769Z",
   "afkTimeoutSeconds": 300
 }

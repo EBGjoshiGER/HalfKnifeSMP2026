@@ -3,19 +3,19 @@
   "players": [
     {
       "name": "EBGjoshiGER",
-      "seconds": 180105
+      "seconds": 196564
     },
     {
       "name": "3b0",
-      "seconds": 179875
+      "seconds": 195749
     },
     {
       "name": "Tsingtao05",
-      "seconds": 170685
+      "seconds": 182657
     },
     {
       "name": "Moeewe",
-      "seconds": 168379
+      "seconds": 174061
     },
     {
       "name": "Zondar67",
@@ -23,51 +23,55 @@
     },
     {
       "name": "Bambiistda",
-      "seconds": 143288
+      "seconds": 155498
     },
     {
       "name": "StaLKerinoO",
-      "seconds": 136915
+      "seconds": 155425
     },
     {
       "name": "Juronimo",
-      "seconds": 136788
+      "seconds": 145218
     },
     {
       "name": "zCallMeApple",
-      "seconds": 130674
-    },
-    {
-      "name": "Bananenmeister23",
-      "seconds": 108605
+      "seconds": 136761
     },
     {
       "name": "n00bbert",
-      "seconds": 108228
+      "seconds": 126093
     },
     {
-      "name": "RedFabi",
-      "seconds": 87728
+      "name": "Bananenmeister23",
+      "seconds": 110773
     },
     {
       "name": "schmxdiii",
-      "seconds": 83771
+      "seconds": 98907
+    },
+    {
+      "name": "RedFabi",
+      "seconds": 96869
     },
     {
       "name": "squashninja4422",
-      "seconds": 79744
+      "seconds": 83571
     },
     {
       "name": "cholimba",
-      "seconds": 73589
+      "seconds": 76876
     },
     {
       "name": "Leon911isreal",
-      "seconds": 63655
+      "seconds": 69785
     },
     {
       "name": "johahaag54",
-      "seconds": 50573
+      "seconds": 61545
+    },
+    {
+      "name": "DerTemporini",
+      "seconds": 52956
     },
     {
       "name": "Clown132",
@@ -78,20 +82,16 @@
       "seconds": 45814
     },
     {
-      "name": "DerTemporini",
-      "seconds": 44341
-    },
-    {
       "name": "luxamy",
       "seconds": 33138
     },
     {
-      "name": "DR_Husch",
-      "seconds": 25929
+      "name": "27Flo",
+      "seconds": 28587
     },
     {
-      "name": "27Flo",
-      "seconds": 25763
+      "name": "DR_Husch",
+      "seconds": 25929
     },
     {
       "name": "EscalationAndy",
@@ -110,6 +110,6 @@
       "seconds": 33
     }
   ],
-  "updatedAt": "2026-10-28T14:16:32.302405096Z",
+  "updatedAt": "2026-10-28T19:35:50.583777520Z",
   "afkTimeoutSeconds": 300
 }

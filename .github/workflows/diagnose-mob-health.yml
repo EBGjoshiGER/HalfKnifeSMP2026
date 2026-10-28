@@ -1,0 +1,73 @@
+name: Diagnose mob health (read only)
+on:
+  push:
+    branches: [diagnose/mob-health-20261028]
+    paths: [.github/workflows/diagnose-mob-health.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Inspect health modifiers without changing server files
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          python3 -u - <<'PY'
+          import ftplib,io,os,zipfile,re,json
+          ftp=ftplib.FTP(timeout=45)
+          ftp.connect(os.environ["FTP_HOST"],int(os.environ.get("FTP_PORT") or "21"))
+          ftp.login(os.environ["FTP_USER"],os.environ["FTP_PASSWORD"])
+          def read(path):
+              b=io.BytesIO();ftp.retrbinary("RETR "+path,b.write);return b.getvalue()
+          def walk(root,depth=0):
+              if depth>5:return
+              try: items=list(ftp.mlsd(root))
+              except ftplib.error_perm:return
+              for n,f in items:
+                  if n in {".",".."}:continue
+                  p=root+"/"+n
+                  if f.get("type")=="dir":yield from walk(p,depth+1)
+                  elif f.get("type")=="file":yield p,int(f.get("size",0))
+          health=re.compile(rb"max_health|MAX_HEALTH|setMaxHealth|generic.maxHealth|generic.max_health|mob_health",re.I)
+          def scanjar(path,b):
+              with zipfile.ZipFile(io.BytesIO(b)) as z:
+                  for n in z.namelist():
+                      if n.endswith((".class",".json",".mcfunction",".toml",".properties",".js")) and "/lang/" not in n and not n.startswith(("META-INF/","org/","com/google/","net/fabricmc/")):
+                          data=z.read(n)
+                          if health.search(data):
+                              print("HEALTH_REFERENCE",path,n,flush=True)
+                              if not n.endswith(".class"):
+                                  text=data.decode(errors="replace")
+                                  print("HEALTH_TEXT",text[:16000],flush=True)
+                              else:
+                                  strings=re.findall(rb"[ -~]{5,}",data)
+                                  print("CLASS_SYMBOLS",json.dumps([s.decode() for s in strings if re.search(rb"health|spawn|random|scale|modifier|attribute|entity|mob|config",s,re.I)][:100]),flush=True)
+          try:
+              for p in sorted(ftp.nlst("mods")):
+                  if p.endswith(".jar"):
+                      path=p if p.startswith("mods/") else "mods/"+p
+                      try:scanjar(path,read(path))
+                      except Exception as e:print("ERROR",path,type(e).__name__,flush=True)
+              for p,size in walk("config"):
+                  if size<1000000 and p.endswith((".json",".json5",".toml",".properties",".cfg")):
+                      b=read(p)
+                      if re.search(rb"mob.{0,30}health|health.{0,30}mob|max_health|generic.maxHealth|health_multiplier|health_scale",b,re.I):
+                          print("CONFIG_HEALTH",p,flush=True)
+                          for line in b.decode(errors="replace").splitlines():
+                              if re.search(r"health|mob|scal|chance|enabled",line,re.I) and not re.search(r"password|secret|token|webhook",line,re.I): print(line[:500],flush=True)
+              props=read("server.properties").decode()
+              world=next((l.split("=",1)[1].strip() for l in props.splitlines() if l.startswith("level-name=")),"world")
+              for p,size in walk(world+"/datapacks"):
+                  print("DATAPACK_FILE",p,flush=True)
+                  if p.endswith(".zip") and size<50000000:
+                      scanjar(p,read(p))
+                  elif p.endswith((".mcfunction",".json")) and size<1000000:
+                      b=read(p)
+                      if health.search(b):print("DATAPACK_HEALTH",p,b.decode(errors="replace")[:12000],flush=True)
+          finally:ftp.close()
+          PY

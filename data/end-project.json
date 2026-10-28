@@ -1,54 +1,78 @@
 {
   "schemaVersion": 1,
-  "syncedAt": "2026-10-27T00:45:42.992667+00:00",
+  "syncedAt": "2026-10-28T06:00:02.869421+00:00",
   "status": "not_started",
   "resources": [
     {
-      "id": "minecraft:blaze_rod",
-      "name": "Lohenruten",
-      "required": 512,
+      "id": "minecraft:netherrack",
+      "name": "minecraft:netherrack",
+      "required": 73728,
       "donated": 0
     },
     {
-      "id": "minecraft:ender_pearl",
-      "name": "Enderperlen",
-      "required": 768,
+      "id": "minecraft:blackstone",
+      "name": "minecraft:blackstone",
+      "required": 18432,
       "donated": 0
     },
     {
-      "id": "minecraft:nether_quartz",
+      "id": "minecraft:soul_sand",
+      "name": "minecraft:soul_sand",
+      "required": 6144,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:nether_wart",
+      "name": "minecraft:nether_wart",
+      "required": 3584,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:quartz",
       "name": "Netherquarz",
-      "required": 4096,
+      "required": 11520,
       "donated": 0
     },
     {
       "id": "minecraft:glowstone_dust",
       "name": "Glowstonestaub",
-      "required": 4096,
+      "required": 9216,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:blaze_rod",
+      "name": "Lohenruten",
+      "required": 1408,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:ender_pearl",
+      "name": "Enderperlen",
+      "required": 1664,
       "donated": 0
     },
     {
       "id": "minecraft:magma_cream",
       "name": "Magmacreme",
-      "required": 1024,
-      "donated": 0
-    },
-    {
-      "id": "minecraft:ghast_tear",
-      "name": "Ghasttränen",
-      "required": 160,
+      "required": 896,
       "donated": 0
     },
     {
       "id": "minecraft:crying_obsidian",
       "name": "Weinender Obsidian",
-      "required": 384,
+      "required": 704,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:ghast_tear",
+      "name": "Ghasttränen",
+      "required": 80,
       "donated": 0
     },
     {
       "id": "minecraft:ancient_debris",
       "name": "Antiker Schrott",
-      "required": 96,
+      "required": 56,
       "donated": 0
     }
   ]

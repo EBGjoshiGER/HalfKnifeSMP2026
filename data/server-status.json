@@ -1,7 +1,9 @@
 {
   "online": true,
-  "onlineCount": 0,
+  "onlineCount": 1,
   "maxPlayers": 40,
-  "players": [],
-  "updatedAt": "2026-10-28T19:37:27.492218+00:00"
+  "players": [
+    "Leon911isreal"
+  ],
+  "updatedAt": "2026-10-28T23:34:04.613643+00:00"
 }

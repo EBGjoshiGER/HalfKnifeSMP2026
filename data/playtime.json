@@ -2,28 +2,28 @@
   "mode": "active",
   "players": [
     {
-      "name": "3b0",
-      "seconds": 215978
+      "name": "EBGjoshiGER",
+      "seconds": 216365
     },
     {
-      "name": "EBGjoshiGER",
-      "seconds": 215160
+      "name": "3b0",
+      "seconds": 216065
     },
     {
       "name": "Tsingtao05",
       "seconds": 213307
     },
     {
-      "name": "Moeewe",
-      "seconds": 177227
-    },
-    {
       "name": "StaLKerinoO",
-      "seconds": 170128
+      "seconds": 184087
     },
     {
       "name": "Bambiistda",
-      "seconds": 168420
+      "seconds": 182516
+    },
+    {
+      "name": "Moeewe",
+      "seconds": 177227
     },
     {
       "name": "Zondar67",
@@ -31,7 +31,7 @@
     },
     {
       "name": "Juronimo",
-      "seconds": 154888
+      "seconds": 155818
     },
     {
       "name": "zCallMeApple",
@@ -39,11 +39,11 @@
     },
     {
       "name": "n00bbert",
-      "seconds": 126890
+      "seconds": 134564
     },
     {
       "name": "schmxdiii",
-      "seconds": 114341
+      "seconds": 114418
     },
     {
       "name": "Bananenmeister23",
@@ -54,20 +54,20 @@
       "seconds": 100282
     },
     {
+      "name": "cholimba",
+      "seconds": 85398
+    },
+    {
+      "name": "Leon911isreal",
+      "seconds": 84067
+    },
+    {
       "name": "squashninja4422",
       "seconds": 83743
     },
     {
-      "name": "Leon911isreal",
-      "seconds": 80740
-    },
-    {
-      "name": "cholimba",
-      "seconds": 76876
-    },
-    {
       "name": "DerTemporini",
-      "seconds": 73196
+      "seconds": 83338
     },
     {
       "name": "johahaag54",
@@ -102,14 +102,14 @@
       "seconds": 20228
     },
     {
-      "name": "marlixx13",
-      "seconds": 5911
+      "name": "Fralefanz94",
+      "seconds": 10332
     },
     {
-      "name": "Fralefanz94",
-      "seconds": 4812
+      "name": "marlixx13",
+      "seconds": 7501
     }
   ],
-  "updatedAt": "2026-10-29T15:43:07.634374520Z",
+  "updatedAt": "2026-10-29T20:35:44.933678231Z",
   "afkTimeoutSeconds": 300
 }

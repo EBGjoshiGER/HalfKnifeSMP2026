@@ -2,24 +2,24 @@
   "mode": "active",
   "players": [
     {
-      "name": "Tsingtao05",
-      "seconds": 230715
+      "name": "EBGjoshiGER",
+      "seconds": 233693
     },
     {
-      "name": "EBGjoshiGER",
-      "seconds": 227694
+      "name": "Tsingtao05",
+      "seconds": 233400
     },
     {
       "name": "3b0",
-      "seconds": 221962
+      "seconds": 225722
     },
     {
       "name": "StaLKerinoO",
-      "seconds": 195302
+      "seconds": 209300
     },
     {
       "name": "Bambiistda",
-      "seconds": 188610
+      "seconds": 195088
     },
     {
       "name": "Moeewe",
@@ -27,7 +27,7 @@
     },
     {
       "name": "Juronimo",
-      "seconds": 169602
+      "seconds": 173774
     },
     {
       "name": "Zondar67",
@@ -54,20 +54,20 @@
       "seconds": 100282
     },
     {
+      "name": "cholimba",
+      "seconds": 95163
+    },
+    {
+      "name": "DerTemporini",
+      "seconds": 91870
+    },
+    {
       "name": "Leon911isreal",
       "seconds": 90449
     },
     {
-      "name": "cholimba",
-      "seconds": 87594
-    },
-    {
       "name": "squashninja4422",
       "seconds": 83743
-    },
-    {
-      "name": "DerTemporini",
-      "seconds": 83578
     },
     {
       "name": "johahaag54",
@@ -110,6 +110,6 @@
       "seconds": 11238
     }
   ],
-  "updatedAt": "2026-10-30T12:36:32.898574980Z",
+  "updatedAt": "2026-10-30T18:08:08.294931658Z",
   "afkTimeoutSeconds": 300
 }

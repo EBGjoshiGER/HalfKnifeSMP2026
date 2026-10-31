@@ -1,10 +1,10 @@
-name: End neue Sammelziele und manuelle Freischaltung
+name: Endprojekt mit aufeinanderfolgenden Stufen
 on:
   push:
     branches: [main]
     paths:
       - 'mods/end-project/**'
-      - 'scripts/end_manual_release.py'
+      - 'scripts/end_stages_release.py'
       - '.github/workflows/end-manual-release.yml'
   workflow_dispatch:
 permissions:
@@ -30,7 +30,7 @@ jobs:
         run: gradle build --no-daemon --stacktrace
       - uses: actions/upload-artifact@v4
         with:
-          name: end-project-1.1.0
+          name: end-project-1.2.0
           path: mods/end-project/build/libs/*.jar
       - name: Migration und manuelle Freischaltung testen und installieren
         env:
@@ -38,9 +38,9 @@ jobs:
           FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
           FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
           FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
-        run: python3 scripts/end_manual_release.py
+        run: python3 scripts/end_stages_release.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: end-manual-test-logs
-          path: temp/end-manual-smoke/*.log
+          name: end-stages-test-logs
+          path: temp/end-stages-smoke/*.log

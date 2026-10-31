@@ -9,7 +9,10 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +21,7 @@ public final class ProjectConfig {
     private static final Path DIR = FabricLoader.getInstance().getConfigDir().resolve("endproject");
     private static final Path FILE = DIR.resolve("config.json");
 
-    public int configVersion = 2;
+    public int configVersion = 3;
     public String guiTitle = "End-Gemeinschaftsprojekt";
     public boolean broadcastDonations = true;
     public boolean joinReminderEnabled = true;
@@ -26,6 +29,26 @@ public final class ProjectConfig {
     public boolean lockEndWhileInactive = true;
 
     public Map<String, Integer> requirements = defaultRequirements();
+    public List<List<String>> stages = List.of(
+            List.of("minecraft:netherrack", "minecraft:blackstone", "minecraft:soul_sand"),
+            List.of("minecraft:nether_wart", "minecraft:quartz", "minecraft:glowstone_dust"),
+            List.of("minecraft:blaze_rod", "minecraft:ender_pearl", "minecraft:magma_cream"),
+            List.of("minecraft:crying_obsidian", "minecraft:ghast_tear", "minecraft:ancient_debris"));
+
+    // Keep custom requirements and quantities. Every configured resource occurs once.
+    public List<List<String>> stageItems() {
+        List<List<String>> result = new ArrayList<>();
+        Set<String> remaining = new LinkedHashSet<>(requirements.keySet());
+        if (stages != null) for (List<String> group : stages) {
+            if (group == null) continue;
+            List<String> items = new ArrayList<>();
+            for (String id : group) if (remaining.remove(id)) items.add(id);
+            if (!items.isEmpty()) result.add(List.copyOf(items));
+        }
+        if (!remaining.isEmpty()) result.add(List.copyOf(remaining));
+        return List.copyOf(result);
+    }
+
     public Map<String, Integer> contributionWeights = defaultWeights();
 
     // Ohne führenden Slash. Wird nach manuell gestartetem Countdown einmalig ausgeführt.
@@ -40,6 +63,11 @@ public final class ProjectConfig {
             if (Files.notExists(FILE)) {
                 ProjectConfig config = new ProjectConfig();
                 save(config);
+                if (config.configVersion < 3) {
+                    // Only add the stage structure; never alter amounts or donation history.
+                    config.configVersion = 3;
+                    save(config);
+                }
                 return config;
             }
             try (Reader reader = Files.newBufferedReader(FILE)) {
@@ -59,6 +87,11 @@ public final class ProjectConfig {
                     config.configVersion = 2;
                     save(config);
                     EndProjectMod.LOGGER.info("Migrated End Project to the approved twelve resource goals; progress retained.");
+                }
+                if (config.configVersion < 3) {
+                    // Only add the stage structure; never alter amounts or donation history.
+                    config.configVersion = 3;
+                    save(config);
                 }
                 return config;
             }

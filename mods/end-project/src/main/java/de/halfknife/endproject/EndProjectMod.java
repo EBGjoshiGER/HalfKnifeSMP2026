@@ -26,11 +26,13 @@ public final class EndProjectMod implements ModInitializer {
     public static ProjectState STATE;
     private static MinecraftServer SERVER;
     private static int completionTicksRemaining = -1;
+    private static int lastAnnouncedStage;
 
     @Override
     public void onInitialize() {
         CONFIG = ProjectConfig.load();
         STATE = ProjectState.load(CONFIG);
+        lastAnnouncedStage = STATE.currentStage(CONFIG);
 
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             dispatcher.register(Commands.literal("endproject")
@@ -98,6 +100,7 @@ public final class EndProjectMod implements ModInitializer {
                                 completionTicksRemaining = -1;
                                 CONFIG = ProjectConfig.load();
                                 STATE = ProjectState.load(CONFIG);
+                                lastAnnouncedStage = STATE.currentStage(CONFIG);
                                 ctx.getSource().sendSuccess(() -> Component.literal("End Project neu geladen."), true);
                                 return Command.SINGLE_SUCCESS;
                             }))
@@ -139,6 +142,7 @@ public final class EndProjectMod implements ModInitializer {
                             .requires(src -> src.permissions().hasPermission(Permissions.COMMANDS_ADMIN))
                             .executes(ctx -> {
                                 STATE = ProjectState.fresh(CONFIG);
+                                lastAnnouncedStage = 0;
                                 STATE.save();
                                 completionTicksRemaining = -1;
                                 runLockCommands();
@@ -169,8 +173,8 @@ public final class EndProjectMod implements ModInitializer {
                 player.sendSystemMessage(Component.literal("§6End-Sammelziel erreicht! §7Das End bleibt bis zur gemeinsamen Freischaltung durch einen Admin gesperrt."));
             }
             if (CONFIG.joinReminderEnabled && STATE.active && !STATE.paused && !STATE.completed) {
-                int percent = Math.round(STATE.progress(CONFIG) * 100.0f);
-                player.sendSystemMessage(Component.literal("§5End-Projekt aktiv! §7Aktueller Fortschritt: §e" + percent + "%§7. §e/endproject §7zum Einzahlen."));
+                int percent = Math.round(STATE.stageProgress(CONFIG) * 100.0f);
+                player.sendSystemMessage(Component.literal("§5End-Projekt aktiv! §7" + stageLabel() + ": §e" + percent + "%§7. §e/endproject §7zum Einzahlen."));
             }
         });
 
@@ -184,7 +188,7 @@ public final class EndProjectMod implements ModInitializer {
             }
         });
 
-        LOGGER.info("End Project V1.1 initialized for Minecraft 26.2");
+        LOGGER.info("End Project V1.2 staged goals initialized for Minecraft 26.2");
     }
 
     public static void broadcastDonation(ServerPlayer player, int acceptedTotal, int points) {
@@ -194,6 +198,12 @@ public final class EndProjectMod implements ModInitializer {
     public static void afterProgressChanged() {
         boolean wasCompleted = STATE.completed;
         STATE.completed = STATE.isComplete(CONFIG);
+        int stage = STATE.currentStage(CONFIG);
+        if (stage > lastAnnouncedStage && !STATE.completed) {
+            broadcast("§5§lEnd-Projekt: §r§aStufe abgeschlossen! §e" + stageLabel()
+                    + " §7ist jetzt freigeschaltet. §e/endproject status §7zeigt die neuen Materialien.");
+        }
+        lastAnnouncedStage = stage;
         announceMilestoneIfNeeded();
         STATE.save();
 
@@ -207,7 +217,10 @@ public final class EndProjectMod implements ModInitializer {
     public static void sendStatus(ServerPlayer player) {
         String stateText = STATE.completed ? (STATE.completionCommandsExecuted ? "§aEnd freigeschaltet" : "§eZiel erreicht – wartet auf Freischaltung") : !STATE.active ? "§7Noch nicht gestartet" : STATE.paused ? "§ePausiert" : "§aAktiv";
         player.sendSystemMessage(Component.literal("§5§lEnd-Gemeinschaftsprojekt §r§8- " + stateText));
-        for (Map.Entry<String, Integer> entry : CONFIG.requirements.entrySet()) {
+        if (STATE.active && !STATE.completed) {
+            player.sendSystemMessage(Component.literal("§d" + stageLabel() + " §8· §e" + Math.round(STATE.stageProgress(CONFIG) * 100.0f) + "%"));
+        }
+        for (Map.Entry<String, Integer> entry : (STATE.active && !STATE.completed ? STATE.currentRequirements(CONFIG) : Map.<String, Integer>of()).entrySet()) {
             int current = STATE.donated.getOrDefault(entry.getKey(), 0);
             player.sendSystemMessage(Component.literal("§7" + pretty(entry.getKey()) + ": §e" + current + "§7/§e" + entry.getValue()));
         }
@@ -237,9 +250,13 @@ public final class EndProjectMod implements ModInitializer {
         }
     }
 
+    private static String stageLabel() {
+        return "Stufe " + Math.min(STATE.currentStage(CONFIG) + 1, CONFIG.stageItems().size()) + " von " + CONFIG.stageItems().size();
+    }
+
     private static String statusLine() {
         String state = STATE.completed ? (STATE.completionCommandsExecuted ? "End freigeschaltet" : "Ziel erreicht – wartet auf Freischaltung") : !STATE.active ? "nicht gestartet" : STATE.paused ? "pausiert" : "aktiv";
-        return "End Project: " + Math.round(STATE.progress(CONFIG) * 100.0f) + "% (" + state + ")";
+        return "End Project: " + stageLabel() + " | " + Math.round(STATE.progress(CONFIG) * 100.0f) + "% (" + state + ")";
     }
 
     private static String pretty(String id) {

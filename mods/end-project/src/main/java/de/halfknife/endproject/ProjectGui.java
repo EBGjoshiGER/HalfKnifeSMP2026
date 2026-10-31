@@ -27,6 +27,10 @@ public final class ProjectGui {
             return;
         }
 
+        EndProjectMod.sendStatus(player);
+        int openedStage = EndProjectMod.STATE.currentStage(EndProjectMod.CONFIG);
+        ProjectState openedState = EndProjectMod.STATE;
+        ProjectConfig openedConfig = EndProjectMod.CONFIG;
         SimpleContainer deposit = new SimpleContainer(54);
         player.openMenu(new SimpleMenuProvider((containerId, playerInventory, ignored) ->
                 new ChestMenu(net.minecraft.world.inventory.MenuType.GENERIC_9x6, containerId, playerInventory, deposit, 6) {
@@ -36,14 +40,21 @@ public final class ProjectGui {
                     public void removed(Player closingPlayer) {
                         if (!processed && closingPlayer instanceof ServerPlayer serverPlayer) {
                             processed = true;
-                            processDeposit(serverPlayer, deposit);
+                            processDeposit(serverPlayer, deposit, openedStage, openedState, openedConfig);
                         }
                         super.removed(closingPlayer);
                     }
-                }, Component.literal(EndProjectMod.CONFIG.guiTitle)));
+                }, Component.literal(EndProjectMod.CONFIG.guiTitle + " · Stufe " + (openedStage + 1))));
     }
 
-    private static void processDeposit(ServerPlayer player, SimpleContainer deposit) {
+    private static void processDeposit(ServerPlayer player, SimpleContainer deposit, int openedStage,
+                                       ProjectState openedState, ProjectConfig openedConfig) {
+        // A stale GUI (another donor advanced, reset or reload) cannot pay into a new stage.
+        boolean validSession = openedState == EndProjectMod.STATE && openedConfig == EndProjectMod.CONFIG
+                && openedStage == EndProjectMod.STATE.currentStage(EndProjectMod.CONFIG);
+        java.util.Set<String> allowed = validSession
+                ? java.util.Set.copyOf(EndProjectMod.STATE.currentRequirements(EndProjectMod.CONFIG).keySet())
+                : java.util.Set.of();
         int acceptedTotal = 0;
         int pointsTotal = 0;
 
@@ -53,7 +64,9 @@ public final class ProjectGui {
 
             ItemStack original = stack.copy();
             String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
-            ProjectState.DonationResult result = EndProjectMod.STATE.donate(player, itemId, stack.getCount(), EndProjectMod.CONFIG);
+            ProjectState.DonationResult result = allowed.contains(itemId)
+                    ? EndProjectMod.STATE.donate(player, itemId, stack.getCount(), EndProjectMod.CONFIG)
+                    : new ProjectState.DonationResult(0, 0);
             acceptedTotal += result.items();
             pointsTotal += result.points();
 

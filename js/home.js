@@ -93,7 +93,7 @@
     const results = await Promise.allSettled([
       Promise.all([json('data/statistics.json'), json('data/whitelist.json')]).then(([snapshot, whitelist]) => renderStats(snapshot, whitelist)),
       json('data/server-status.json'),
-      Promise.all(['nether', 'end'].map(refreshProject))
+      refreshProject('nether')
     ]);
     if (results[0].status === 'rejected' && !roster.length) $('home-top-three').innerHTML = '<li class="world-empty">Die Statistiken sind gerade nicht verfügbar. Schau gleich noch einmal vorbei.</li>';
     if (results[1].status === 'fulfilled') {

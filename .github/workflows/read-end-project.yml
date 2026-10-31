@@ -1,0 +1,51 @@
+name: Endprojekt vom Server lesen
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/read-end-project.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Aktuelle Mod und Projektkonfiguration lesen
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import ftplib, hashlib, json, os, pathlib, zipfile
+          out = pathlib.Path('end-server-snapshot')
+          out.mkdir()
+          ftp = ftplib.FTP(timeout=45)
+          try:
+              ftp.connect(os.environ['FTP_HOST'], int(os.environ.get('FTP_PORT') or '21'))
+              ftp.login(os.environ['FTP_USER'], os.environ['FTP_PASSWORD'])
+              names = ftp.nlst('mods')
+              matches = [n for n in names if pathlib.PurePosixPath(n).name.startswith('end-project') and n.endswith('.jar')]
+              if len(matches) != 1:
+                  raise RuntimeError('Expected exactly one end-project jar: ' + repr(matches))
+              remote = matches[0]
+              if '/' not in remote: remote = 'mods/' + remote
+              dest = out / pathlib.PurePosixPath(remote).name
+              with dest.open('wb') as stream: ftp.retrbinary('RETR ' + remote, stream.write)
+              with zipfile.ZipFile(dest) as jar:
+                  print(jar.read('fabric.mod.json').decode())
+              print('SHA256:', hashlib.sha256(dest.read_bytes()).hexdigest())
+              for name in ('config.json', 'progress.json'):
+                  with (out / name).open('wb') as stream:
+                      ftp.retrbinary('RETR config/endproject/' + name, stream.write)
+              print('Snapshot downloaded; server unchanged.')
+          finally:
+              ftp.close()
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: end-server-snapshot
+          path: end-server-snapshot/
+          retention-days: 3

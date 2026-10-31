@@ -1,8 +1,27 @@
 {
   "schemaVersion": 1,
-  "syncedAt": "2026-10-31T17:53:42.906502+00:00",
-  "status": "not_started",
-  "resources": [],
+  "syncedAt": "2026-10-31T20:59:27.184713+00:00",
+  "status": "active",
+  "resources": [
+    {
+      "id": "minecraft:netherrack",
+      "name": "minecraft:netherrack",
+      "required": 73728,
+      "donated": 4839
+    },
+    {
+      "id": "minecraft:blackstone",
+      "name": "minecraft:blackstone",
+      "required": 18432,
+      "donated": 0
+    },
+    {
+      "id": "minecraft:soul_sand",
+      "name": "minecraft:soul_sand",
+      "required": 6144,
+      "donated": 0
+    }
+  ],
   "currentStage": 1,
   "totalStages": 4
 }

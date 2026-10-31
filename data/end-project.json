@@ -1,79 +1,8 @@
 {
   "schemaVersion": 1,
-  "syncedAt": "2026-10-31T06:56:23.234371+00:00",
+  "syncedAt": "2026-10-31T11:46:36.078734+00:00",
   "status": "not_started",
-  "resources": [
-    {
-      "id": "minecraft:netherrack",
-      "name": "minecraft:netherrack",
-      "required": 73728,
-      "donated": 0
-    },
-    {
-      "id": "minecraft:blackstone",
-      "name": "minecraft:blackstone",
-      "required": 18432,
-      "donated": 0
-    },
-    {
-      "id": "minecraft:soul_sand",
-      "name": "minecraft:soul_sand",
-      "required": 6144,
-      "donated": 0
-    },
-    {
-      "id": "minecraft:nether_wart",
-      "name": "minecraft:nether_wart",
-      "required": 3584,
-      "donated": 0
-    },
-    {
-      "id": "minecraft:quartz",
-      "name": "Netherquarz",
-      "required": 11520,
-      "donated": 0
-    },
-    {
-      "id": "minecraft:glowstone_dust",
-      "name": "Glowstonestaub",
-      "required": 9216,
-      "donated": 0
-    },
-    {
-      "id": "minecraft:blaze_rod",
-      "name": "Lohenruten",
-      "required": 1408,
-      "donated": 0
-    },
-    {
-      "id": "minecraft:ender_pearl",
-      "name": "Enderperlen",
-      "required": 1664,
-      "donated": 0
-    },
-    {
-      "id": "minecraft:magma_cream",
-      "name": "Magmacreme",
-      "required": 896,
-      "donated": 0
-    },
-    {
-      "id": "minecraft:crying_obsidian",
-      "name": "Weinender Obsidian",
-      "required": 704,
-      "donated": 0
-    },
-    {
-      "id": "minecraft:ghast_tear",
-      "name": "Ghasttränen",
-      "required": 80,
-      "donated": 0
-    },
-    {
-      "id": "minecraft:ancient_debris",
-      "name": "Antiker Schrott",
-      "required": 56,
-      "donated": 0
-    }
-  ]
+  "resources": [],
+  "currentStage": 1,
+  "totalStages": 4
 }

@@ -1,10 +1,7 @@
 {
   "online": true,
-  "onlineCount": 2,
+  "onlineCount": 0,
   "maxPlayers": 40,
-  "players": [
-    "DerTemporini",
-    "MarliVex"
-  ],
-  "updatedAt": "2026-11-01T19:08:53.273756+00:00"
+  "players": [],
+  "updatedAt": "2026-11-01T22:50:01.571982+00:00"
 }

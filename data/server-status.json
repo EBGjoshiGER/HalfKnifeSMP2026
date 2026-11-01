@@ -1,9 +1,7 @@
 {
   "online": true,
-  "onlineCount": 1,
+  "onlineCount": 0,
   "maxPlayers": 40,
-  "players": [
-    "DerTemporini"
-  ],
-  "updatedAt": "2026-11-01T01:07:47.980385+00:00"
+  "players": [],
+  "updatedAt": "2026-11-01T07:31:45.908145+00:00"
 }

@@ -3,15 +3,15 @@
   "players": [
     {
       "name": "EBGjoshiGER",
-      "seconds": 280779
+      "seconds": 286822
     },
     {
       "name": "StaLKerinoO",
-      "seconds": 280393
+      "seconds": 282620
     },
     {
       "name": "Tsingtao05",
-      "seconds": 267521
+      "seconds": 276831
     },
     {
       "name": "3b0",
@@ -19,7 +19,7 @@
     },
     {
       "name": "Bambiistda",
-      "seconds": 250324
+      "seconds": 257174
     },
     {
       "name": "Juronimo",
@@ -34,12 +34,12 @@
       "seconds": 177510
     },
     {
-      "name": "Zondar67",
-      "seconds": 157671
+      "name": "DerTemporini",
+      "seconds": 162078
     },
     {
-      "name": "DerTemporini",
-      "seconds": 149998
+      "name": "Zondar67",
+      "seconds": 157671
     },
     {
       "name": "zCallMeApple",
@@ -47,11 +47,11 @@
     },
     {
       "name": "cholimba",
-      "seconds": 127118
+      "seconds": 137992
     },
     {
       "name": "schmxdiii",
-      "seconds": 123400
+      "seconds": 123799
     },
     {
       "name": "Bananenmeister23",
@@ -63,11 +63,11 @@
     },
     {
       "name": "johahaag54",
-      "seconds": 91627
+      "seconds": 93247
     },
     {
       "name": "Leon911isreal",
-      "seconds": 90449
+      "seconds": 92421
     },
     {
       "name": "squashninja4422",
@@ -87,7 +87,7 @@
     },
     {
       "name": "marlixx13",
-      "seconds": 32856
+      "seconds": 34149
     },
     {
       "name": "27Flo",
@@ -110,6 +110,6 @@
       "seconds": 12054
     }
   ],
-  "updatedAt": "2026-11-02T16:34:03.164590463Z",
+  "updatedAt": "2026-11-02T23:35:10.606507717Z",
   "afkTimeoutSeconds": 300
 }

@@ -6,16 +6,16 @@
       "seconds": 280779
     },
     {
+      "name": "StaLKerinoO",
+      "seconds": 280393
+    },
+    {
       "name": "Tsingtao05",
       "seconds": 267521
     },
     {
       "name": "3b0",
       "seconds": 257636
-    },
-    {
-      "name": "StaLKerinoO",
-      "seconds": 256520
     },
     {
       "name": "Bambiistda",
@@ -27,7 +27,7 @@
     },
     {
       "name": "n00bbert",
-      "seconds": 178177
+      "seconds": 206021
     },
     {
       "name": "Moeewe",
@@ -39,7 +39,7 @@
     },
     {
       "name": "DerTemporini",
-      "seconds": 148084
+      "seconds": 149998
     },
     {
       "name": "zCallMeApple",
@@ -86,16 +86,16 @@
       "seconds": 37362
     },
     {
+      "name": "marlixx13",
+      "seconds": 32856
+    },
+    {
       "name": "27Flo",
       "seconds": 28629
     },
     {
       "name": "DR_Husch",
       "seconds": 25929
-    },
-    {
-      "name": "marlixx13",
-      "seconds": 25297
     },
     {
       "name": "EscalationAndy",
@@ -110,6 +110,6 @@
       "seconds": 12054
     }
   ],
-  "updatedAt": "2026-11-02T06:48:51.007224915Z",
+  "updatedAt": "2026-11-02T16:34:03.164590463Z",
   "afkTimeoutSeconds": 300
 }

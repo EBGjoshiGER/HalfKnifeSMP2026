@@ -3,7 +3,7 @@
   "players": [
     {
       "name": "StaLKerinoO",
-      "seconds": 309860
+      "seconds": 330169
     },
     {
       "name": "EBGjoshiGER",
@@ -23,7 +23,7 @@
     },
     {
       "name": "n00bbert",
-      "seconds": 242735
+      "seconds": 256104
     },
     {
       "name": "Juronimo",
@@ -35,7 +35,7 @@
     },
     {
       "name": "DerTemporini",
-      "seconds": 170045
+      "seconds": 170604
     },
     {
       "name": "Zondar67",
@@ -110,6 +110,6 @@
       "seconds": 12054
     }
   ],
-  "updatedAt": "2026-11-04T10:58:47.938556889Z",
+  "updatedAt": "2026-11-04T18:30:08.891060895Z",
   "afkTimeoutSeconds": 300
 }

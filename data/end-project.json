@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "syncedAt": "2026-11-05T09:21:57.289087+00:00",
+  "syncedAt": "2026-11-05T17:31:00.965780+00:00",
   "status": "active",
   "resources": [
     {
       "id": "minecraft:netherrack",
       "name": "minecraft:netherrack",
       "required": 73728,
-      "donated": 18492
+      "donated": 22777
     },
     {
       "id": "minecraft:blackstone",

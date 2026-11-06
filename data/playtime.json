@@ -3,15 +3,15 @@
   "players": [
     {
       "name": "StaLKerinoO",
-      "seconds": 356339
+      "seconds": 367889
     },
     {
       "name": "EBGjoshiGER",
-      "seconds": 295071
+      "seconds": 295948
     },
     {
       "name": "n00bbert",
-      "seconds": 288829
+      "seconds": 290098
     },
     {
       "name": "Tsingtao05",
@@ -27,7 +27,7 @@
     },
     {
       "name": "Juronimo",
-      "seconds": 219489
+      "seconds": 238614
     },
     {
       "name": "DerTemporini",
@@ -110,6 +110,6 @@
       "seconds": 12054
     }
   ],
-  "updatedAt": "2026-11-06T07:01:07.780932235Z",
+  "updatedAt": "2026-11-06T14:52:28.237089288Z",
   "afkTimeoutSeconds": 300
 }

@@ -69,6 +69,7 @@ def require_stopped(props):
     return digest(log)
 
 def boot(probe=False):
+    print('STARTING_ISOLATED_SERVER probe=' + str(probe), flush=True)
     output = []
     q = queue.Queue()
     process = subprocess.Popen(['java','-Xms512M','-Xmx4G','-jar','server.jar','nogui'], cwd=ROOT,
@@ -77,6 +78,8 @@ def boot(probe=False):
         for line in process.stdout:
             output.append(line)
             q.put(line)
+            if any(x in line for x in ('Downloading ', 'Starting minecraft server', 'Preparing start region', 'Done (', 'Stopping server')) and 'seed' not in line.lower():
+                print('TEST_SERVER',line.rstrip(),flush=True)
     thread = threading.Thread(target=consume, daemon=True)
     thread.start()
     def send(command):

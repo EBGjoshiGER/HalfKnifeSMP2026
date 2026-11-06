@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "syncedAt": "2026-11-06T10:27:35.170771+00:00",
+  "syncedAt": "2026-11-06T17:39:18.649963+00:00",
   "status": "active",
   "resources": [
     {
@@ -13,7 +13,7 @@
       "id": "minecraft:blackstone",
       "name": "minecraft:blackstone",
       "required": 18432,
-      "donated": 2680
+      "donated": 2872
     },
     {
       "id": "minecraft:soul_sand",

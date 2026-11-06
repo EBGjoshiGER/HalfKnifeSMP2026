@@ -194,6 +194,9 @@ try:
         print('PREPARATION_PASS_NO_PRODUCTION_WRITES',flush=True)
     else:
         # Check the live inputs again after the entire isolated test.
+        FTP.close()
+        FTP.connect(os.environ['FTP_HOST'], int(os.environ.get('FTP_PORT') or '21'))
+        FTP.login(os.environ['FTP_USER'], os.environ['FTP_PASSWORD'])
         first_log = require_stopped(props)
         if read(TARGET) != original:
             raise RuntimeError('Original world generation file changed during testing')

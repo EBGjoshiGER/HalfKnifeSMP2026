@@ -1,0 +1,60 @@
+name: End-Reparatur vorbereiten (nur lesend)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - run: python3 -m pip install nbtlib==2.0.4
+      - name: Original und passende Generatorvorlage lesen
+        env:
+          FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
+          FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
+          FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import ftplib,io,os,json,gzip,zipfile,nbtlib,pathlib,hashlib
+          ftp=ftplib.FTP(timeout=60)
+          def read(p):
+           b=io.BytesIO();ftp.retrbinary("RETR "+p,b.write);return b.getvalue()
+          def safe(v):
+           if isinstance(v,dict):return {k:safe(x) for k,x in v.items() if "seed" not in k.lower()}
+           if isinstance(v,list):return [safe(x) for x in v]
+           return v
+          out=pathlib.Path("end-repair-inspection");out.mkdir()
+          try:
+           ftp.connect(os.environ["FTP_HOST"],int(os.environ.get("FTP_PORT") or "21"));ftp.login(os.environ["FTP_USER"],os.environ["FTP_PASSWORD"])
+           props={}
+           for l in read("server.properties").decode("utf-8-sig").splitlines():
+            if "=" in l and not l.startswith("#"):
+             k,v=l.split("=",1);props[k]=v
+           assert props["level-name"]=="HalfKnifeSMP2026"
+           p=props["level-name"]+"/data/minecraft/world_gen_settings.dat"
+           raw=read(p);(out/"world_gen_settings.original.dat").write_bytes(raw)
+           root=nbtlib.File.parse(io.BytesIO(gzip.decompress(raw)))
+           print("WORLD_GEN_KEYS",list(root.keys()),flush=True)
+           def show_end(v,path="root"):
+            if isinstance(v,dict):
+             for k,x in v.items():
+              if k=="minecraft:the_end":print("SAVED_END",path+"/"+k,json.dumps(safe(x),default=str),flush=True)
+              else:show_end(x,path+"/"+k)
+           show_end(root.unpack())
+           print("ORIGINAL_SHA256",hashlib.sha256(raw).hexdigest(),flush=True)
+           print("RCON_ENABLED",props.get("enable-rcon","false"),flush=True)
+           for name in ("better-end-26.201.4.jar","worldweaver-26.201.4.jar"):
+            b=read("mods/"+name);(out/name).write_bytes(b)
+            with zipfile.ZipFile(io.BytesIO(b)) as z:
+             for entry in z.namelist():
+              if entry.endswith(".json") and ("world_preset" in entry or "/dimension/" in entry or "generator_config" in entry):
+               txt=z.read(entry).decode("utf-8")
+               if len(txt)<24000: print("PRESET",name,entry,txt,flush=True)
+             for entry in z.namelist():
+              if entry.endswith(".class") and ("EndBiomeSource" in entry or "WorldGeneratorConfig" in entry or "GeneratorConfig" in entry):print("CLASS",name,entry,flush=True)
+           print("INSPECTION_PASS_READ_ONLY",flush=True)
+          finally:ftp.close()
+          
+          PY

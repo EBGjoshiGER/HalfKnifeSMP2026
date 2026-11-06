@@ -10,6 +10,7 @@ from pathlib import Path
 import queue
 import re
 import subprocess
+import socket
 import threading
 import time
 import urllib.request
@@ -21,6 +22,7 @@ ROOT.mkdir(exist_ok=True)
 FTP = ftplib.FTP(timeout=60)
 WORLD = 'HalfKnifeSMP2026'
 TARGET = WORLD + '/data/minecraft/world_gen_settings.dat'
+APPLY = os.environ.get('END_REPAIR_APPLY', 'false').lower() == 'true'
 
 def read(path):
     b = io.BytesIO()
@@ -42,6 +44,29 @@ def download(url):
     req = urllib.request.Request(url, headers={'User-Agent':'HalfKnife-End-Repair'})
     with urllib.request.urlopen(req, timeout=90) as r:
         return r.read()
+
+def require_stopped(props):
+    if os.environ.get('END_REPAIR_BACKUP_CONFIRMED', 'false').lower() != 'true':
+        raise RuntimeError('A complete stopped-server backup must be confirmed first')
+    log = read('logs/latest.log')
+    text = log.decode('utf-8',errors='replace')
+    stop = text.rfind('Stopping server')
+    saved = text.rfind('All dimensions are saved')
+    if stop < 0 or saved < stop or 'Done (' in text[stop:]:
+        raise RuntimeError('No clean production shutdown confirmed in latest.log')
+    host = 'halfknife2026.serverminer.com'
+    port = int(props.get('server-port', '25565'))
+    # Resolve first: a DNS error must never be mistaken for an offline server.
+    addresses = socket.getaddrinfo(host,port,type=socket.SOCK_STREAM)
+    for family, kind, proto, _, address in addresses:
+        s = socket.socket(family,kind,proto)
+        s.settimeout(5)
+        try:
+            if s.connect_ex(address) == 0:
+                raise RuntimeError('Production game port is still accepting connections')
+        finally:
+            s.close()
+    return digest(log)
 
 def boot(probe=False):
     output = []
@@ -109,6 +134,8 @@ try:
             k, v = line.split('=',1)
             props[k] = v
     assert props['level-name'] == WORLD
+    if APPLY:
+        require_stopped(props)
     original = read(TARGET)
     tree = parse(original)
     dims = tree['data']['dimensions']
@@ -154,8 +181,71 @@ try:
     assert saved['data']['seed'] == tree['data']['seed']
     print('VERIFIED_ONLY_END_GENERATOR_CHANGED',flush=True)
     print('GENERATOR_TYPES',str(generator['type']),str(generator['biome_source']['type']),flush=True)
+    public_template = copy.deepcopy(generator).unpack()
+    if 'seed' in public_template['biome_source']:
+        public_template['biome_source']['seed'] = 0
+    print('GENERATOR_TEMPLATE',json.dumps(public_template,default=str),flush=True)
     print('ORIGINAL_SHA256',digest(original),flush=True)
     print('CANDIDATE_SHA256',digest(candidate),flush=True)
-    print('PREPARATION_PASS_NO_PRODUCTION_WRITES',flush=True)
+    if not APPLY:
+        print('PREPARATION_PASS_NO_PRODUCTION_WRITES',flush=True)
+    else:
+        # Check the live inputs again after the entire isolated test.
+        first_log = require_stopped(props)
+        if read(TARGET) != original:
+            raise RuntimeError('Original world generation file changed during testing')
+        current_mods = sorted(Path(n).name for n in FTP.nlst('mods') if n.endswith('.jar'))
+        if current_mods != installed:
+            raise RuntimeError('Production mod list changed during testing')
+        time.sleep(10)
+        if require_stopped(props) != first_log or read(TARGET) != original:
+            raise RuntimeError('Production files are not stable; refusing to write')
+        from datetime import datetime, timezone
+        stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+        directory = 'maintenance-backups'
+        try:
+            FTP.mkd(directory)
+        except ftplib.error_perm:
+            FTP.cwd(directory)
+            FTP.cwd('..')
+        directory += '/end-generator-' + stamp
+        FTP.mkd(directory)
+        backup = directory + '/world_gen_settings.original.dat'
+        FTP.storbinary('STOR '+backup,io.BytesIO(original))
+        if read(backup) != original:
+            raise RuntimeError('Backup byte verification failed')
+        temporary = TARGET + '.end-repair-' + stamp + '.pending'
+        kept_original = TARGET + '.before-end-repair-' + stamp
+        FTP.storbinary('STOR '+temporary,io.BytesIO(candidate))
+        if read(temporary) != candidate:
+            raise RuntimeError('Candidate byte verification failed')
+        if read(TARGET) != original or require_stopped(props) != first_log:
+            raise RuntimeError('Final offline/input check failed')
+        swapped = False
+        original_moved = False
+        try:
+            FTP.rename(TARGET,kept_original)
+            original_moved = True
+            FTP.rename(temporary,TARGET)
+            swapped = True
+            actual = read(TARGET)
+            if actual != candidate or parse(actual) != changed:
+                raise RuntimeError('Installed file verification failed')
+            if read(kept_original) != original:
+                raise RuntimeError('Preserved original verification failed')
+        except Exception:
+            if swapped:
+                FTP.rename(TARGET,TARGET+'.failed-'+stamp)
+            if original_moved:
+                FTP.rename(kept_original,TARGET)
+            if read(TARGET) != original:
+                raise RuntimeError('ROLLBACK REQUIRES MANUAL ATTENTION')
+            raise
+        manifest = {'status':'applied-awaiting-server-start','originalSha256':digest(original),
+            'candidateSha256':digest(candidate),'target':TARGET,'backup':backup,
+            'preservedOriginal':kept_original,'changedPath':'data.dimensions.minecraft:the_end.generator',
+            'chunksEdited':False,'playerDataEdited':False,'dragonStateEdited':False}
+        FTP.storbinary('STOR '+directory+'/manifest.json',io.BytesIO(json.dumps(manifest,indent=2).encode()))
+        print('END_REPAIR_APPLIED_AND_VERIFIED',json.dumps(manifest),flush=True)
 finally:
     FTP.close()

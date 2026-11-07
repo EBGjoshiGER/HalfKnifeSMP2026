@@ -83,6 +83,8 @@ def boot(probe=False):
                 print('TEST_SERVER',line.rstrip(),flush=True)
             if '/ERROR]' in line and 'seed' not in line.lower():
                 print('TEST_ERROR',line.rstrip(),flush=True)
+            if probe and any(s in line for s in ('END_REPAIR_', 'nearest betterend:', 'not loaded', 'Marked chunk', 'Test failed')):
+                print('TEST_PROBE',line.rstrip(),flush=True)
     thread = threading.Thread(target=consume, daemon=True)
     thread.start()
     def send(command):
@@ -123,10 +125,30 @@ def boot(probe=False):
                 raise RuntimeError('No BetterEnd biome located')
             x, y, z = match.groups()
             y = '80' if y == '~' else y
-            send(f'execute in minecraft:the_end positioned {x} {y} {z} if biome ~ ~ ~ betterend:glowing_grasslands run say END_REPAIR_BIOME_PASS')
-            wait_for(lambda line:'END_REPAIR_BIOME_PASS' in line, 45)
             send(f'execute in minecraft:the_end run forceload add {x} {z}')
             wait_for(lambda line:'Marked chunk' in line or 'already marked' in line, 45)
+            # locate biome samples the generator without loading terrain. The biome
+            # command needs a loaded chunk; wait for real chunk generation first.
+            loaded = False
+            for attempt in range(90):
+                send(f'execute in minecraft:the_end if loaded {x} {y} {z} run say END_REPAIR_CHUNK_LOADED')
+                deadline = time.monotonic() + 1
+                while time.monotonic() < deadline:
+                    try:
+                        line = q.get(timeout=0.1)
+                    except queue.Empty:
+                        continue
+                    if 'END_REPAIR_CHUNK_LOADED' in line:
+                        loaded = True
+                        break
+                if loaded:
+                    break
+                if process.poll() is not None:
+                    raise RuntimeError('Test server exited during chunk generation')
+            if not loaded:
+                raise RuntimeError('Located BetterEnd chunk did not load')
+            send(f'execute in minecraft:the_end positioned {x} {y} {z} if biome ~ ~ ~ betterend:glowing_grasslands run say END_REPAIR_BIOME_PASS')
+            wait_for(lambda line:'END_REPAIR_BIOME_PASS' in line, 45)
             send('save-all flush')
             wait_for(lambda line:'Saved the game' in line, 90)
         print('ISOLATED_BOOT_PASS probe=' + str(probe), flush=True)

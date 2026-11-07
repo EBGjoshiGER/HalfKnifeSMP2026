@@ -194,11 +194,24 @@ try:
         raise RuntimeError('Cannot uniquely resolve installed WoVer End template')
     template_json = next(iter(unique.values()))
     print('INSTALLED_END_TEMPLATE',json.dumps(template_json),flush=True)
-    # Use a trivial temporary Overworld spawn, then load a copy of the exact production
-    # worldgen settings. This avoids a new-Overworld spawn search unrelated to this End repair.
-    (ROOT/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=0\nonline-mode=false\nview-distance=2\nsimulation-distance=2\nlevel-name=test-world\nlevel-type=minecraft:flat\nlevel-seed=7261126\nspawn-protection=0\n')
-    boot()
+    # Clone existing world metadata instead of initializing an unrelated new Overworld.
+    # No player records, terrain or entities are copied or touched on production.
+    (ROOT/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=0\nonline-mode=false\nview-distance=2\nsimulation-distance=2\nlevel-name=test-world\nspawn-protection=0\n')
+    level_bytes = read(WORLD+'/level.dat')
+    level = parse(level_bytes)
+    level_data = level.get('Data',level)
+    if not bool(level_data.get('initialized',False)):
+        raise RuntimeError('Production metadata is not marked initialized; refusing assumptions')
+    (ROOT/'test-world').mkdir(exist_ok=True)
+    (ROOT/'test-world/level.dat').write_bytes(level_bytes)
+    for remote in FTP.nlst(WORLD+'/datapacks'):
+        name = Path(remote).name
+        if name.endswith('.zip'):
+            dest = ROOT/'test-world/datapacks'/name
+            dest.parent.mkdir(parents=True,exist_ok=True)
+            dest.write_bytes(read(WORLD+'/datapacks/'+name))
     test_path = ROOT/'test-world/data/minecraft/world_gen_settings.dat'
+    test_path.parent.mkdir(parents=True,exist_ok=True)
     template = nbtlib.parse_nbt(json.dumps(template_json))
     assert str(template['biome_source']['type']).startswith('wover:')
     changed = copy.deepcopy(tree)
@@ -212,6 +225,7 @@ try:
     assert restored == tree
     candidate = encode(changed)
     assert parse(candidate) == changed
+    print('NBT_ROUNDTRIP_PASS_ONLY_END_GENERATOR_CHANGED',flush=True)
     test_path.write_bytes(candidate)
     boot(probe=True)
     saved = parse(test_path.read_bytes())

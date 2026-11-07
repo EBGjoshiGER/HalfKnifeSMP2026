@@ -351,7 +351,8 @@ try:
         manifest = {'status':'applied-awaiting-server-start','originalSha256':digest(original),
             'candidateSha256':digest(candidate),'target':TARGET,'backup':backup,
             'preservedOriginal':kept_original,'changedPath':'data.dimensions.minecraft:the_end.generator',
-            'chunksEdited':False,'outerRegionsArchived':len(region_journal),
+            'chunksEdited':False,'outerFilesArchived':len(end_plan['move']) if RESET_OUTER else 0,
+            'archiveRenameOperations':len(region_journal),
             'outerArchive':directory+'/outer-end' if RESET_OUTER else None,
             'playerDataEdited':False,'dragonStateEdited':False}
         FTP.storbinary('STOR '+directory+'/manifest.json',io.BytesIO(json.dumps(manifest,indent=2).encode()))

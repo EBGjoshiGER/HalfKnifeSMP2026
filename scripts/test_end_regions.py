@@ -39,6 +39,12 @@ class FakeFTP:
         self.calls += 1
         if self.fail_after == self.calls:
             raise RuntimeError('simulated rename failure')
+        if source in self.dirs:
+            if target in self.dirs or target in self.files:
+                raise RuntimeError('unsafe directory rename')
+            self.dirs = {target + p[len(source):] if p == source or p.startswith(source+'/') else p for p in self.dirs}
+            self.files = {target + p[len(source):] if p.startswith(source+'/') else p: v for p,v in self.files.items()}
+            return
         if source not in self.files or target in self.files:
             raise RuntimeError('unsafe rename')
         self.files[target] = self.files.pop(source)
@@ -65,20 +71,23 @@ class RegionTests(unittest.TestCase):
         journal = []
         er.archive(ftp,WORLD,plan,'backup/outer',journal,lambda:None)
         self.assertEqual(er.inventory(ftp,WORLD)['files'],plan['keep'])
-        self.assertEqual(len(journal),36)
+        self.assertEqual(len(journal),18)
         er.rollback(ftp,journal)
         self.assertEqual(ftp.files,original)
 
     def test_partial_failure_restores_originals(self):
-        ftp = FakeFTP()
-        original = copy.deepcopy(ftp.files)
-        plan = er.inventory(ftp,WORLD)
-        journal = []
-        ftp.fail_after = 3
-        with self.assertRaises(RuntimeError):
-            er.archive(ftp,WORLD,plan,'backup/outer',journal,lambda:None)
-        er.rollback(ftp,journal)
-        self.assertEqual(ftp.files,original)
+        for failure in range(1,19):
+            with self.subTest(failure=failure):
+                ftp = FakeFTP()
+                original = copy.deepcopy(ftp.files)
+                plan = er.inventory(ftp,WORLD)
+                journal = []
+                ftp.fail_after = failure
+                with self.assertRaises(RuntimeError):
+                    er.archive(ftp,WORLD,plan,'backup/outer',journal,lambda:None)
+                er.rollback(ftp,journal)
+                self.assertEqual(ftp.files,original)
+                self.assertEqual(er.inventory(ftp,WORLD),plan)
 
     def test_changed_input_and_legacy_folder_abort(self):
         ftp = FakeFTP()

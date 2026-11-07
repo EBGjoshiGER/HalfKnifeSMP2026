@@ -73,7 +73,7 @@ def boot(probe=False):
     print('STARTING_ISOLATED_SERVER probe=' + str(probe), flush=True)
     output = []
     q = queue.Queue()
-    process = subprocess.Popen(['java','-Xms512M','-Xmx4G','-jar','server.jar','nogui'], cwd=ROOT,
+    process = subprocess.Popen(['java','-XX:ActiveProcessorCount=4','-Djava.util.concurrent.ForkJoinPool.common.parallelism=4','-Xms512M','-Xmx4G','-jar','server.jar','nogui'], cwd=ROOT,
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
     def consume():
         for line in process.stdout:
@@ -194,8 +194,9 @@ try:
         raise RuntimeError('Cannot uniquely resolve installed WoVer End template')
     template_json = next(iter(unique.values()))
     print('INSTALLED_END_TEMPLATE',json.dumps(template_json),flush=True)
-    # Bootstrap with the production's vanilla preset; do not enable a different Nether generator.
-    (ROOT/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=0\nonline-mode=false\nview-distance=2\nsimulation-distance=2\nlevel-name=test-world\nlevel-type=minecraft:normal\nlevel-seed=7261126\nspawn-protection=0\n')
+    # Use a trivial temporary Overworld spawn, then load a copy of the exact production
+    # worldgen settings. This avoids a new-Overworld spawn search unrelated to this End repair.
+    (ROOT/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=0\nonline-mode=false\nview-distance=2\nsimulation-distance=2\nlevel-name=test-world\nlevel-type=minecraft:flat\nlevel-seed=7261126\nspawn-protection=0\n')
     boot()
     test_path = ROOT/'test-world/data/minecraft/world_gen_settings.dat'
     template = nbtlib.parse_nbt(json.dumps(template_json))

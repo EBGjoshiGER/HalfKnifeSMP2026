@@ -14,6 +14,7 @@ import socket
 import threading
 import time
 import urllib.request
+import zipfile
 import nbtlib
 
 ROOT = Path('end-repair-test')
@@ -80,6 +81,8 @@ def boot(probe=False):
             q.put(line)
             if any(x in line for x in ('Downloading ', 'Starting minecraft server', 'Preparing start region', 'Done (', 'Stopping server')) and 'seed' not in line.lower():
                 print('TEST_SERVER',line.rstrip(),flush=True)
+            if '/ERROR]' in line and 'seed' not in line.lower():
+                print('TEST_ERROR',line.rstrip(),flush=True)
     thread = threading.Thread(target=consume, daemon=True)
     thread.start()
     def send(command):
@@ -87,7 +90,18 @@ def boot(probe=False):
         process.stdin.flush()
     def wait_for(predicate, seconds):
         deadline = time.monotonic() + seconds
+        diagnostic_at = time.monotonic() + 60
         while time.monotonic() < deadline:
+            if time.monotonic() > diagnostic_at:
+                diagnostic_at = float('inf')
+                try:
+                    dump = subprocess.run(['jcmd',str(process.pid),'Thread.print'],capture_output=True,text=True,timeout=15).stdout
+                    for name in ('main','Server thread'):
+                        match = re.search(r'^"'+re.escape(name)+r'".*?(?=\n\n)',dump,re.M|re.S)
+                        if match:
+                            print('TEST_THREAD_DIAGNOSTIC',match.group(0)[:6500],flush=True)
+                except Exception as error:
+                    print('TEST_THREAD_DIAGNOSTIC_UNAVAILABLE',type(error).__name__,flush=True)
             if process.poll() is not None:
                 raise RuntimeError('Isolated server exited: ' + ''.join(output[-12:]))
             try:
@@ -159,10 +173,32 @@ try:
     installers = json.loads(download('https://meta.fabricmc.net/v2/versions/installer'))
     installer = next(x['version'] for x in installers if x.get('stable'))
     (ROOT/'server.jar').write_bytes(download(f'https://meta.fabricmc.net/v2/versions/loader/26.2/0.19.5/{installer}/server/jar'))
-    (ROOT/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=0\nonline-mode=false\nview-distance=2\nsimulation-distance=2\nlevel-name=test-world\nlevel-type=wover:normal\nlevel-seed=7261126\nspawn-protection=0\n')
+    # Read the End template directly from the exact installed nested WoVer JAR.
+    templates = []
+    def inspect_jar(raw, depth=0):
+        if depth > 4:
+            raise RuntimeError('Unexpected nested mod depth')
+        with zipfile.ZipFile(io.BytesIO(raw)) as jar:
+            for name in jar.namelist():
+                if '/worldgen/world_preset/' in name and name.endswith('/normal.json'):
+                    preset = json.loads(jar.read(name))
+                    end = preset.get('dimensions',{}).get('minecraft:the_end',{})
+                    g = end.get('generator',{})
+                    if str(g.get('biome_source',{}).get('type','')).startswith('wover:'):
+                        templates.append(g)
+                elif name.endswith('.jar'):
+                    inspect_jar(jar.read(name),depth+1)
+    inspect_jar((ROOT/'mods/worldweaver-26.201.4.jar').read_bytes())
+    unique = {json.dumps(g,sort_keys=True):g for g in templates}
+    if len(unique) != 1:
+        raise RuntimeError('Cannot uniquely resolve installed WoVer End template')
+    template_json = next(iter(unique.values()))
+    print('INSTALLED_END_TEMPLATE',json.dumps(template_json),flush=True)
+    # Bootstrap with the production's vanilla preset; do not enable a different Nether generator.
+    (ROOT/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=0\nonline-mode=false\nview-distance=2\nsimulation-distance=2\nlevel-name=test-world\nlevel-type=minecraft:normal\nlevel-seed=7261126\nspawn-protection=0\n')
     boot()
     test_path = ROOT/'test-world/data/minecraft/world_gen_settings.dat'
-    template = parse(test_path.read_bytes())['data']['dimensions']['minecraft:the_end']['generator']
+    template = nbtlib.parse_nbt(json.dumps(template_json))
     assert str(template['biome_source']['type']).startswith('wover:')
     changed = copy.deepcopy(tree)
     generator = copy.deepcopy(template)

@@ -16,6 +16,7 @@ import time
 import urllib.request
 import zipfile
 import nbtlib
+import end_regions
 
 ROOT = Path('end-repair-test')
 ROOT.mkdir(exist_ok=True)
@@ -24,6 +25,7 @@ FTP = ftplib.FTP(timeout=60)
 WORLD = 'HalfKnifeSMP2026'
 TARGET = WORLD + '/data/minecraft/world_gen_settings.dat'
 APPLY = os.environ.get('END_REPAIR_APPLY', 'false').lower() == 'true'
+RESET_OUTER = os.environ.get('END_REPAIR_RESET_OUTER', 'false').lower() == 'true'
 
 def read(path):
     b = io.BytesIO()
@@ -175,6 +177,8 @@ try:
     assert props['level-name'] == WORLD
     if APPLY:
         require_stopped(props)
+    end_plan = end_regions.inventory(FTP, WORLD)
+    print('OUTER_END_PLAN',json.dumps(end_regions.summary(end_plan)),flush=True)
     original = read(TARGET)
     tree = parse(original)
     dims = tree['data']['dimensions']
@@ -277,6 +281,8 @@ try:
         time.sleep(10)
         if require_stopped(props) != first_log or read(TARGET) != original:
             raise RuntimeError('Production files are not stable; refusing to write')
+        if end_regions.inventory(FTP, WORLD) != end_plan:
+            raise RuntimeError('End region inventory changed during testing')
         from datetime import datetime, timezone
         stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
         directory = 'maintenance-backups'
@@ -300,6 +306,7 @@ try:
             raise RuntimeError('Final offline/input check failed')
         swapped = False
         original_moved = False
+        region_journal = []
         try:
             FTP.rename(TARGET,kept_original)
             original_moved = True
@@ -310,18 +317,43 @@ try:
                 raise RuntimeError('Installed file verification failed')
             if read(kept_original) != original:
                 raise RuntimeError('Preserved original verification failed')
+            if RESET_OUTER:
+                def still_stopped():
+                    if require_stopped(props) != first_log:
+                        raise RuntimeError('Production server state changed')
+                # Write the complete recovery map BEFORE moving any region.
+                recovery = {'endRoot':end_plan['root'], 'archiveRoot':directory+'/outer-end',
+                    'files':end_plan['move'], 'protected':end_plan['keep']}
+                recovery_bytes = json.dumps(recovery,indent=2,sort_keys=True).encode()
+                recovery_path = directory+'/outer-end-recovery.json'
+                FTP.storbinary('STOR '+recovery_path,io.BytesIO(recovery_bytes))
+                if read(recovery_path) != recovery_bytes:
+                    raise RuntimeError('Recovery inventory verification failed')
+                end_regions.archive(FTP,WORLD,end_plan,directory+'/outer-end',region_journal,still_stopped)
+                print('OUTER_END_ARCHIVED_AND_MAIN_ISLAND_PRESERVED',json.dumps(end_regions.summary(end_plan)),flush=True)
         except Exception:
+            region_error = None
+            try:
+                end_regions.rollback(FTP,region_journal)
+                if end_regions.inventory(FTP,WORLD) != end_plan:
+                    raise RuntimeError('End inventory mismatch after rollback')
+            except Exception as error:
+                region_error = error
             if swapped:
                 FTP.rename(TARGET,TARGET+'.failed-'+stamp)
             if original_moved:
                 FTP.rename(kept_original,TARGET)
             if read(TARGET) != original:
                 raise RuntimeError('ROLLBACK REQUIRES MANUAL ATTENTION')
+            if region_error is not None:
+                raise RuntimeError('REGION ROLLBACK REQUIRES MANUAL ATTENTION') from region_error
             raise
         manifest = {'status':'applied-awaiting-server-start','originalSha256':digest(original),
             'candidateSha256':digest(candidate),'target':TARGET,'backup':backup,
             'preservedOriginal':kept_original,'changedPath':'data.dimensions.minecraft:the_end.generator',
-            'chunksEdited':False,'playerDataEdited':False,'dragonStateEdited':False}
+            'chunksEdited':False,'outerRegionsArchived':len(region_journal),
+            'outerArchive':directory+'/outer-end' if RESET_OUTER else None,
+            'playerDataEdited':False,'dragonStateEdited':False}
         FTP.storbinary('STOR '+directory+'/manifest.json',io.BytesIO(json.dumps(manifest,indent=2).encode()))
         print('END_REPAIR_APPLIED_AND_VERIFIED',json.dumps(manifest),flush=True)
 finally:

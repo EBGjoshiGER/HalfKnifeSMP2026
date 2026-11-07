@@ -8,78 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
-      - name: NBT-Lesebibliothek installieren
-        run: python3 -m pip install nbtlib==2.0.4
-      - name: End-Biomquelle, Mods und Einstellungen lesen
+      - uses: actions/checkout@v4
+      - run: python3 -m pip install nbtlib==2.0.4
+      - name: Live-Start, End-Generator und Regionsarchiv nur lesend pruefen
         env:
           FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
           FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
           FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
           FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
-        run: |
-          python3 - <<'PY'
-          import ftplib, io, os, json, re, pathlib, nbtlib
-          from datetime import datetime, timezone
-          ftp=ftplib.FTP(timeout=40)
-          report={"capturedAt":datetime.now(timezone.utc).isoformat()}
-          def read(path, limit=12*1024*1024):
-              b=io.BytesIO()
-              def recv(c):
-                  if b.tell()+len(c)>limit: raise ValueError("size limit")
-                  b.write(c)
-              ftp.retrbinary("RETR "+path,recv)
-              return b.getvalue()
-          def listing(path):
-              try: return sorted(ftp.nlst(path))
-              except ftplib.all_errors: return []
-          try:
-              ftp.connect(os.environ["FTP_HOST"],int(os.environ.get("FTP_PORT") or "21"))
-              ftp.login(os.environ["FTP_USER"],os.environ["FTP_PASSWORD"])
-              report["mods"]=[pathlib.PurePosixPath(p).name for p in listing("mods") if p.endswith(".jar")]
-              props={}
-              for line in read("server.properties",1024*1024).decode("utf-8-sig",errors="replace").splitlines():
-                  if "=" in line and not line.startswith("#"):
-                      k,v=line.split("=",1); props[k]=v
-              report["worldSettings"]={k:props.get(k) for k in ("level-type","generate-structures","initial-enabled-packs","initial-disabled-packs")}
-              world=props.get("level-name","world")
-              raw=read(world+"/level.dat")
-              import gzip
-              nbt=nbtlib.File.parse(io.BytesIO(gzip.decompress(raw)))
-              data=nbt.get("Data",nbt)
-              wgs=data.get("WorldGenSettings",{})
-              dim=wgs.get("dimensions",{}).get("minecraft:the_end")
-              report["savedEndDimension"]=dim.unpack() if dim is not None else None
-              dp=data.get("DataPacks")
-              report["dataPacks"]=dp.unpack() if dp is not None else None
-              report["worldDatapackFiles"]=[pathlib.PurePosixPath(p).name for p in listing(world+"/datapacks")]
-              report["configs"]={}
-              candidates=[]
-              for p in listing("config"):
-                  name=pathlib.PurePosixPath(p).name
-                  if re.search(r"(?i)better.?end|bclib|wover|worldweaver|dimensiondaddy|edf",name):
-                      full=p if p.startswith("config/") else "config/"+p
-                      if name.endswith((".json",".json5",".toml",".properties")): candidates.append(full)
-                      else:
-                          for q in listing(full):
-                              qname=pathlib.PurePosixPath(q).name
-                              if re.search(r"(?i)generator|biome|world|main|config|end",qname) and qname.endswith((".json",".json5",".toml",".properties")):
-                                  candidates.append(q if q.startswith("config/") else full+"/"+qname)
-              for path in candidates[:40]:
-                  try:
-                      content=read(path,256*1024).decode("utf-8-sig",errors="replace")
-                      if re.search(r"(?i)password|secret|token|credential",content):
-                          report["configs"][path]="omitted: credential-like field"
-                      else: report["configs"][path]=content
-                  except Exception as e: report["configs"][path]=type(e).__name__
-              lines=read("logs/latest.log").decode("utf-8",errors="replace").splitlines()
-              relevant=[]
-              for i,line in enumerate(lines):
-                  if re.search(r"(?i)world dimensions|not a BetterEnd|BetterEnd island terrain|biome source|biomesource|world preset|wover.*(?:WARN|ERROR)|betterend.*(?:WARN|ERROR)|Loading Minecraft",line):
-                      relevant.extend(lines[max(0,i-1):min(len(lines),i+18)] if "World Dimensions" in line else [line])
-              report["worldgenLog"]=list(dict.fromkeys(relevant))[:180]
-          finally: ftp.close()
-          print("BEGIN_END_DIAGNOSTIC")
-          print(json.dumps(report,indent=2,default=str))
-          print("END_END_DIAGNOSTIC")
-          
-          PY
+        run: python3 -u scripts/verify_end_repair.py

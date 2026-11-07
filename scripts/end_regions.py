@@ -74,15 +74,26 @@ def archive(ftp, world, plan, directory, journal, check_stopped):
     check_stopped()
     ftp.mkd(directory)
     for kind in KINDS:
-        if any(p.startswith(kind + '/') for p in plan['move']):
-            ftp.mkd(directory + '/' + kind)
-    for i, (rel, identity) in enumerate(sorted(plan['move'].items())):
-        if i % 20 == 0:
-            check_stopped()
-        source = plan['root'] + '/' + rel
-        destination = directory + '/' + rel
-        ftp.rename(source, destination)
-        journal.append((source, destination, identity))
+        if not any(p.startswith(kind + '/') for p in plan['move']):
+            continue
+        check_stopped()
+        current = plan['root'] + '/' + kind
+        retained = directory + '/retained-' + kind
+        archived = directory + '/' + kind
+        ftp.mkd(retained)
+        # Only move the few protected files individually. Rename the directory
+        # holding thousands of outer files in one filesystem operation.
+        for rel, identity in sorted(plan['keep'].items()):
+            if not rel.startswith(kind + '/'):
+                continue
+            source = plan['root'] + '/' + rel
+            destination = retained + '/' + rel.split('/',1)[1]
+            ftp.rename(source,destination)
+            journal.append((source,destination,identity))
+        ftp.rename(current,archived)
+        journal.append((current,archived,None))
+        ftp.rename(retained,current)
+        journal.append((retained,current,None))
     after = inventory(ftp, world)
     if after['files'] != plan['keep']:
         raise RuntimeError('Protected regions differ or outer files remain')

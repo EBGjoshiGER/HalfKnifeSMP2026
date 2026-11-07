@@ -194,22 +194,20 @@ try:
         raise RuntimeError('Cannot uniquely resolve installed WoVer End template')
     template_json = next(iter(unique.values()))
     print('INSTALLED_END_TEMPLATE',json.dumps(template_json),flush=True)
-    # Clone existing world metadata instead of initializing an unrelated new Overworld.
-    # No player records, terrain or entities are copied or touched on production.
-    (ROOT/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=0\nonline-mode=false\nview-distance=2\nsimulation-distance=2\nlevel-name=test-world\nspawn-protection=0\n')
-    level_bytes = read(WORLD+'/level.dat')
-    level = parse(level_bytes)
-    level_data = level.get('Data',level)
-    if not bool(level_data.get('initialized',False)):
-        raise RuntimeError('Production metadata is not marked initialized; refusing assumptions')
-    (ROOT/'test-world').mkdir(exist_ok=True)
-    (ROOT/'test-world/level.dat').write_bytes(level_bytes)
-    for remote in FTP.nlst(WORLD+'/datapacks'):
-        name = Path(remote).name
-        if name.endswith('.zip'):
-            dest = ROOT/'test-world/datapacks'/name
-            dest.parent.mkdir(parents=True,exist_ok=True)
-            dest.write_bytes(read(WORLD+'/datapacks/'+name))
+    # Produce initialized metadata using a synthetic vanilla flat test world. Never
+    # export production level.dat, datapack contents, terrain, entities or player data.
+    flat_settings = {'biome':'minecraft:plains','layers':[{'block':'minecraft:bedrock','height':1},
+        {'block':'minecraft:dirt','height':2},{'block':'minecraft:grass_block','height':1}],
+        'features':False,'lakes':False,'structure_overrides':[]}
+    (ROOT/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=0\nonline-mode=false\nview-distance=2\nsimulation-distance=2\nlevel-name=test-world\nlevel-type=minecraft:flat\nlevel-seed=7261126\nspawn-protection=0\ngenerator-settings='+json.dumps(flat_settings)+'\n')
+    (ROOT/'mods').rename(ROOT/'bootstrap-disabled-mods')
+    try:
+        boot()
+    finally:
+        # Fabric may create the empty mods directory during vanilla bootstrap.
+        if (ROOT/'mods').exists():
+            (ROOT/'mods').rmdir()
+        (ROOT/'bootstrap-disabled-mods').rename(ROOT/'mods')
     test_path = ROOT/'test-world/data/minecraft/world_gen_settings.dat'
     test_path.parent.mkdir(parents=True,exist_ok=True)
     template = nbtlib.parse_nbt(json.dumps(template_json))

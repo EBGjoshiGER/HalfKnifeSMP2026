@@ -23,12 +23,14 @@ jobs:
           distribution: temurin
           java-version: '25'
       - run: python3 -m pip install nbtlib==2.0.4
-      - name: Erneut isoliert testen, Original sichern und ausschliesslich End-Generator ersetzen
+      - run: python3 -m unittest discover -s scripts -p test_end_regions.py -v
+      - name: Isoliert testen, End-Generator reparieren und aeussere End-Regionen archivieren
         env:
           FTP_HOST: ${{ secrets.SERVERMINER_FTP_HOST }}
           FTP_PORT: ${{ secrets.SERVERMINER_FTP_PORT }}
           FTP_USER: ${{ secrets.SERVERMINER_FTP_USER }}
           FTP_PASSWORD: ${{ secrets.SERVERMINER_FTP_PASSWORD }}
           END_REPAIR_APPLY: 'true'
+          END_REPAIR_RESET_OUTER: 'true'
           END_REPAIR_BACKUP_CONFIRMED: ${{ inputs.backup_confirmed }}
         run: python3 -u scripts/prepare_end_repair.py

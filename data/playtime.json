@@ -3,23 +3,23 @@
   "players": [
     {
       "name": "StaLKerinoO",
-      "seconds": 378448
+      "seconds": 391019
     },
     {
       "name": "EBGjoshiGER",
-      "seconds": 337900
+      "seconds": 342758
     },
     {
       "name": "n00bbert",
-      "seconds": 306379
+      "seconds": 314899
     },
     {
       "name": "Bambiistda",
-      "seconds": 291515
+      "seconds": 297889
     },
     {
       "name": "3b0",
-      "seconds": 284952
+      "seconds": 287231
     },
     {
       "name": "Tsingtao05",
@@ -27,7 +27,7 @@
     },
     {
       "name": "Juronimo",
-      "seconds": 270444
+      "seconds": 275298
     },
     {
       "name": "DerTemporini",
@@ -47,7 +47,7 @@
     },
     {
       "name": "schmxdiii",
-      "seconds": 140158
+      "seconds": 143323
     },
     {
       "name": "zCallMeApple",
@@ -110,6 +110,6 @@
       "seconds": 12054
     }
   ],
-  "updatedAt": "2026-11-07T17:54:36.115239108Z",
+  "updatedAt": "2026-11-07T21:32:01.531806203Z",
   "afkTimeoutSeconds": 300
 }

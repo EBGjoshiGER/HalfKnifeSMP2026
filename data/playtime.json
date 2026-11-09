@@ -3,11 +3,11 @@
   "players": [
     {
       "name": "StaLKerinoO",
-      "seconds": 422854
+      "seconds": 439541
     },
     {
       "name": "Bambiistda",
-      "seconds": 347659
+      "seconds": 348139
     },
     {
       "name": "EBGjoshiGER",
@@ -15,7 +15,7 @@
     },
     {
       "name": "n00bbert",
-      "seconds": 330186
+      "seconds": 337725
     },
     {
       "name": "3b0",
@@ -31,7 +31,7 @@
     },
     {
       "name": "DerTemporini",
-      "seconds": 220163
+      "seconds": 226238
     },
     {
       "name": "Moeewe",
@@ -83,7 +83,7 @@
     },
     {
       "name": "marlixx13",
-      "seconds": 37889
+      "seconds": 38973
     },
     {
       "name": "luxamy",
@@ -110,6 +110,6 @@
       "seconds": 12054
     }
   ],
-  "updatedAt": "2026-11-09T08:37:02.430353441Z",
+  "updatedAt": "2026-11-09T19:04:24.389199356Z",
   "afkTimeoutSeconds": 300
 }

@@ -3,7 +3,7 @@
   "players": [
     {
       "name": "StaLKerinoO",
-      "seconds": 442126
+      "seconds": 461000
     },
     {
       "name": "Bambiistda",
@@ -46,12 +46,12 @@
       "seconds": 152404
     },
     {
-      "name": "schmxdiii",
-      "seconds": 143323
+      "name": "johahaag54",
+      "seconds": 147778
     },
     {
-      "name": "johahaag54",
-      "seconds": 142616
+      "name": "schmxdiii",
+      "seconds": 143323
     },
     {
       "name": "zCallMeApple",
@@ -110,6 +110,6 @@
       "seconds": 12054
     }
   ],
-  "updatedAt": "2026-11-10T09:31:34.521846114Z",
+  "updatedAt": "2026-11-10T17:10:39.981899441Z",
   "afkTimeoutSeconds": 300
 }

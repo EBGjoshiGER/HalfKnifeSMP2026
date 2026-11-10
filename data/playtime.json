@@ -3,11 +3,11 @@
   "players": [
     {
       "name": "StaLKerinoO",
-      "seconds": 439541
+      "seconds": 442126
     },
     {
       "name": "Bambiistda",
-      "seconds": 348139
+      "seconds": 356701
     },
     {
       "name": "EBGjoshiGER",
@@ -83,7 +83,7 @@
     },
     {
       "name": "marlixx13",
-      "seconds": 38973
+      "seconds": 41056
     },
     {
       "name": "luxamy",
@@ -110,6 +110,6 @@
       "seconds": 12054
     }
   ],
-  "updatedAt": "2026-11-09T19:04:24.389199356Z",
+  "updatedAt": "2026-11-10T01:56:06.630733341Z",
   "afkTimeoutSeconds": 300
 }

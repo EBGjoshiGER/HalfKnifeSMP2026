@@ -31,7 +31,7 @@
     },
     {
       "name": "DerTemporini",
-      "seconds": 228820
+      "seconds": 235616
     },
     {
       "name": "Moeewe",
@@ -110,6 +110,6 @@
       "seconds": 12054
     }
   ],
-  "updatedAt": "2026-11-12T19:53:52.668964936Z",
+  "updatedAt": "2026-11-13T00:51:09.113632236Z",
   "afkTimeoutSeconds": 300
 }

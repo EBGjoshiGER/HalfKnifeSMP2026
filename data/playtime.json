@@ -3,7 +3,7 @@
   "players": [
     {
       "name": "StaLKerinoO",
-      "seconds": 512672
+      "seconds": 512749
     },
     {
       "name": "n00bbert",
@@ -35,7 +35,7 @@
     },
     {
       "name": "cholimba",
-      "seconds": 188572
+      "seconds": 199389
     },
     {
       "name": "Moeewe",
@@ -110,6 +110,6 @@
       "seconds": 12054
     }
   ],
-  "updatedAt": "2026-11-14T14:51:39.852746407Z",
+  "updatedAt": "2026-11-14T19:35:35.372238892Z",
   "afkTimeoutSeconds": 300
 }

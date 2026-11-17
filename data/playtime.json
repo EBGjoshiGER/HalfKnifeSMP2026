@@ -31,11 +31,11 @@
     },
     {
       "name": "DerTemporini",
-      "seconds": 236916
+      "seconds": 239001
     },
     {
       "name": "cholimba",
-      "seconds": 227160
+      "seconds": 229804
     },
     {
       "name": "Moeewe",
@@ -110,6 +110,6 @@
       "seconds": 12054
     }
   ],
-  "updatedAt": "2026-11-16T17:48:25.364643810Z",
+  "updatedAt": "2026-11-17T01:10:28.103899045Z",
   "afkTimeoutSeconds": 300
 }

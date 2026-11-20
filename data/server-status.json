@@ -1,7 +1,9 @@
 {
   "online": true,
-  "onlineCount": 0,
+  "onlineCount": 1,
   "maxPlayers": 40,
-  "players": [],
-  "updatedAt": "2026-11-19T01:06:29.084975+00:00"
+  "players": [
+    "cholimba"
+  ],
+  "updatedAt": "2026-11-20T15:47:34.669102+00:00"
 }

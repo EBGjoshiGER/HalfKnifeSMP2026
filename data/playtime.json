@@ -26,12 +26,12 @@
       "seconds": 276887
     },
     {
-      "name": "Juronimo",
-      "seconds": 275298
+      "name": "cholimba",
+      "seconds": 275512
     },
     {
-      "name": "cholimba",
-      "seconds": 258485
+      "name": "Juronimo",
+      "seconds": 275298
     },
     {
       "name": "DerTemporini",
@@ -110,6 +110,6 @@
       "seconds": 12054
     }
   ],
-  "updatedAt": "2026-11-22T07:47:57.286874652Z",
+  "updatedAt": "2026-11-22T15:39:08.446837844Z",
   "afkTimeoutSeconds": 300
 }
